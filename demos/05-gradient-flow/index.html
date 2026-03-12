@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Chen | 渐变流动</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: system-ui, sans-serif; }
+    
+    .gradient-animate {
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+    
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .card-flow {
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <!-- Animated Background -->
+  <div class="fixed inset-0 gradient-animate z-0"></div>
+  
+  <!-- Content -->
+  <div class="relative z-10">
+    <!-- Nav -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-8 py-6">
+      <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <div class="text-xl font-bold">RC</div>
+        <div class="flex gap-6 text-sm">
+          <a href="#" class="hover:text-black/70 transition-colors">Works</a>
+          <a href="#" class="hover:text-black/70 transition-colors">About</a>
+          <a href="#" class="hover:text-black/70 transition-colors">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="min-h-screen flex items-center justify-center px-8">
+      <div class="text-center max-w-2xl">
+        <p class="text-white/60 text-sm tracking-widest uppercase mb-4">Portfolio</p>
+        <h1 class="text-6xl md:text-8xl font-bold mb-6 text-black">
+          Rock<br>Chen
+        </h1>
+        <p class="text-xl text-black/70 mb-10">
+          Engineer · Builder · Product Thinker
+        </p>
+        <div class="flex gap-4 justify-center">
+          <a href="#" class="glass px-6 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-all">
+            View Work
+          </a>
+          <a href="#" class="glass px-6 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-all">
+            Contact
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Works -->
+    <section class="py-32 px-8">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-black">Selected Works</h2>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="card-flow rounded-2xl p-8 hover:scale-[1.02] transition-transform">
+            <div class="text-4xl mb-4">🎙️</div>
+            <h3 class="text-2xl font-bold mb-2 text-black">Voice Helper</h3>
+            <p class="text-black/60 mb-4">本地 AI 语音助手</p>
+            <div class="flex gap-2">
+              <span class="px-2 py-1 bg-white/20 rounded text-xs">Python</span>
+              <span class="px-2 py-1 bg-white/20 rounded text-xs">OpenAI</span>
+            </div>
+          </div>
+          
+          <div class="card-flow rounded-2xl p-8 hover:scale-[1.02] transition-transform md:mt-16">
+            <div class="text-4xl mb-4">🚀</div>
+            <h3 class="text-2xl font-bold mb-2 text-black">Coming Soon</h3>
+            <p class="text-black/60 mb-4">新项目开发中...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

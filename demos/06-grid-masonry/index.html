@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Chen | 网格瀑布</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: system-ui, sans-serif; }
+    
+    .masonry {
+      column-count: 1;
+    }
+    @media (min-width: 768px) {
+      .masonry { column-count: 2; }
+    }
+    @media (min-width: 1024px) {
+      .masonry { column-count: 3; }
+    }
+    
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-magic {
+      transition: all 0.3s ease;
+    }
+    .card-magic:hover {
+      transform: translateY(-8px);
+    }
+  </style>
+</head>
+<body class="bg-zinc-950 text-white">
+  <!-- Header -->
+  <header class="py-8 px-6 border-b border-zinc-800">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="text-xl font-bold tracking-tight">Rock Chen</div>
+      <div class="flex gap-6 text-sm text-zinc-400">
+        <a href="#" class="hover:text-white transition-colors">Work</a>
+        <a href="#" class="hover:text-white transition-colors">About</a>
+        <a href="#" class="hover:text-white transition-colors">Resume</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="py-24 px-6">
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">
+        I build <span class="text-zinc-500">meaningful</span><br>digital products
+      </h1>
+      <p class="text-xl text-zinc-400 max-w-2xl">
+        软件工程师，专注于产品开发。每一个项目都是解决真实问题的机会。
+      </p>
+    </div>
+  </section>
+
+  <!-- Masonry Grid -->
+  <section class="py-12 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="masonry">
+        <!-- Large Card -->
+        <div class="masonry-item">
+          <div class="card-magic bg-zinc-900 rounded-2xl p-8 border border-zinc-800 hover:border-zinc-600 cursor-pointer">
+            <div class="text-5xl mb-6">🎙️</div>
+            <h3 class="text-2xl font-bold mb-2">Voice Helper</h3>
+            <p class="text-zinc-400 mb-4">本地 AI 语音助手 for 开发者</p>
+            <p class="text-sm text-zinc-500">1000+ Downloads · MIT License</p>
+          </div>
+        </div>
+        
+        <!-- Tall Card -->
+        <div class="masonry-item">
+          <div class="card-magic bg-zinc-900 rounded-2xl p-8 border border-zinc-800 hover:border-zinc-600 h-64 flex flex-col justify-end cursor-pointer">
+            <h3 class="text-xl font-bold mb-2">Skills</h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 bg-zinc-800 rounded text-xs">Python</span>
+              <span class="px-2 py-1 bg-zinc-800 rounded text-xs">TS</span>
+              <span class="px-2 py-1 bg-zinc-800 rounded text-xs">AI</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Wide Card -->
+        <div class="masonry-item">
+          <div class="card-magic bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 border border-zinc-800 hover:border-zinc-600 cursor-pointer">
+            <h3 class="text-xl font-bold mb-2">About Me</h3>
+            <p class="text-zinc-400">
+              相信技术服务于真实需求，注重产品体验和技术架构的平衡。
+            </p>
+          </div>
+        </div>
+        
+        <!-- Small Card -->
+        <div class="masonry-item">
+          <div class="card-magic bg-zinc-900 rounded-2xl p-6 border border-zinc-800 hover:border-zinc-600 cursor-pointer">
+            <div class="text-3xl mb-4">📧</div>
+            <p class="text-zinc-400">email@domain.com</p>
+          </div>
+        </div>
+        
+        <!-- Medium Card -->
+        <div class="masonry-item">
+          <div class="card-magic bg-zinc-900 rounded-2xl p-8 border border-zinc-800 hover:border-zinc-600 cursor-pointer">
+            <h3 class="text-xl font-bold mb-2">Philosophy</h3>
+            <p class="text-zinc-400 text-sm">
+              少即是多。每一个功能都应该有存在的理由。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
