@@ -180,3 +180,28 @@ gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 3. **内容优先**: 设计服务于内容，不要喧宾夺主
 4. **性能考量**: 动画不要影响加载速度
 5. **测试验证**: 在真实设备和浏览器上测试
+
+---
+
+## 8. Variant.com AI 设计工具
+
+详细使用 Variant.com AI 设计工具生成网页的完整指南，详见 [variant-guide.md](variant-guide.md)
+
+### Variant 快速提示词示例
+
+```markdown
+# 暗色优雅
+Minimalist dark portfolio for software engineer,
+hero with name and title, works grid, about section, contact,
+#0a0a0a background, #3b82f6 accent, smooth animations
+
+# 渐变流动
+Dynamic gradient portfolio with glassmorphism cards,
+animated background, hero with centered text,
+project cards with hover effects, #667eea → #764ba2 gradient
+
+# 终端风格
+Developer portfolio in terminal aesthetic,
+dark background (#0d1117), green accent (#39d353),
+monospace font, command-line inspired UI
+```
