@@ -205,3 +205,26 @@ Developer portfolio in terminal aesthetic,
 dark background (#0d1117), green accent (#39d353),
 monospace font, command-line inspired UI
 ```
+
+---
+
+## 9. AI 前端工具全景指南
+
+详细收录了 15+ 个最新 AI 和设计工具的完整指南，详见 [ai-design-tools-guide.md](ai-design-tools-guide.md)
+
+### 工具分类速查
+
+| 类别 | 工具 |
+|------|------|
+| AI 设计生成 | Framer, Dora AI, Google Stitch, Variant |
+| UI 组件库 | shadcn/ui, React Bits |
+| 动画交互 | Framer Motion, GSAP, Three.js |
+| 设计灵感 | Mobbin, Dribbble, Awwwards |
+| AI 编程 | Kimi, Cursor, v0 |
+
+### 推荐工作流
+
+```
+Kimi (需求) → Figma (设计) → shadcn/ui (组件) 
+→ Framer Motion (动画) → Vercel (部署)
+```
