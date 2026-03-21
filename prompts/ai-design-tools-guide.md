@@ -1,17 +1,18 @@
-# 🎨 AI 前端开发与设计工具全景指南
+# 🎨 AI 前端开发与设计工具全景指南 (v2.0)
 
-> 2025 最新一代交互式前端生成工具完整盘点
+> 2025-2026 最新一代交互式前端生成工具完整盘点 | 附实际使用技巧
 
 ---
 
 ## 目录
 
 1. [AI 设计生成工具](#1-ai-设计生成工具)
-2. [UI 组件库](#2-ui-组件库)
-3. [动画与交互](#3-动画与交互)
-4. [灵感与参考](#4-灵感与参考)
-5. [AI 编程助手](#5-ai-编程助手)
+2. [AI 编程助手](#2-ai-编程助手)
+3. [UI 组件库](#3-ui-组件库)
+4. [动画与交互](#4-动画与交互)
+5. [灵感与参考](#5-灵感与参考)
 6. [视觉编程](#6-视觉编程)
+7. [2026 工作流](#7-2026-推荐工作流)
 
 ---
 
@@ -21,140 +22,246 @@
 
 **官网**: [framer.com](https://framer.com)
 
-> 专业网站构建工具，设计师最爱
+> 专业网站构建工具，设计师最爱，AI 能力业界领先
 
 | 特点 | 说明 |
 |------|------|
-| **AI 生成** | 用文字描述生成完整页面布局 |
+| **AI Site 生成** | 用文字描述生成完整网站 |
 | **所见即所得** | 拖拽式设计，实时预览 |
+| **AI 组件** | 生成高级交互组件 |
 | **CMS 内置** | 内置内容管理系统 |
 | **发布便捷** | 一键部署到全球 CDN |
 
-**使用技巧**:
-```
-提示词示例：
-"Create a dark minimalist portfolio with hero section, 
-project gallery grid, about section with skills tags, 
-and contact form. Use #0a0a0a background with #3b82f6 accent"
+**核心功能**:
 
-AI 可以生成：
-- 完整布局
-- 响应式设计
-- 动画效果
-- 内容结构
+- **AI Layout**: 描述页面布局，AI 自动生成
+- **AI Copy**: AI 辅助撰写文案
+- **Convert**: A/B 测试和转化分析
+- **Plugins**: 丰富插件生态
+
+**使用技巧**:
+```markdown
+# 好的提示词结构
+"Create a dark minimalist portfolio website with:
+- Hero: Large name, subtitle, CTA button
+- Works: Grid of 6 project cards with hover effects
+- About: Two columns with photo and text
+- Contact: Simple form with email and social links
+- Use #0a0a0a background, #3b82f6 accent"
 ```
 
 **适合场景**: 快速原型 → 专业设计 → 一键部署
 
 ---
 
-### 🎯 Dora AI (dora.ai)
+### 🎯 Dora AI
 
 **官网**: [dora.ai](https://dora.ai)
 
-> AI 网站生成器，支持 3D 场景
+> AI 网站生成器，支持 3D 场景和高级动画
 
 | 特点 | 说明 |
 |------|------|
-| **3D 支持** | 支持 3D 场景和交互 |
-| **AI 生成** | 文字描述生成网站 |
+| **3D 支持** | 支持 Three.js 3D 场景 |
+| **AI 生成** | 自然语言描述生成 |
 | **无需代码** | 完全可视化操作 |
+| **动画引擎** | 内置高级动画系统 |
 | **模板丰富** | 多种预设模板 |
 
 **使用技巧**:
 - 描述越具体，生成越准确
-- 支持调整布局、颜色、动画
+- 支持实时编辑和调整
 - 可导出代码或直接部署
+- 3D 场景适合展示创意
 
 ---
 
 ### 🏢 Google Stitch (Labs)
 
-**官网**: [google.com/stitch](https://labs.google/stitch)
+**官网**: [labs.google/stitch](https://labs.google/stitch)
 
 > Google 官方 AI 设计工具
 
 | 特点 | 说明 |
 |------|------|
-| **Google 生态** | 与 Figma 等工具深度集成 |
+| **Google 生态** | 与 Google 工具深度集成 |
 | **自然语言** | 用日常语言描述设计 |
 | **组件识别** | 智能理解 UI 组件结构 |
 | **代码生成** | 生成高质量前端代码 |
-
-**使用技巧**:
-```
-示例提示词：
-"Create a landing page for a developer portfolio 
-with dark theme, showing my name, skills as tags, 
-project cards with hover effects, and a contact form"
-
-Google Stitch 会：
-- 分析设计意图
-- 生成语义化代码
-- 保持响应式
-```
+| **Figma 兼容** | 支持导入 Figma 设计 |
 
 ---
 
-### 🎨 Design (设计工具)
+### 🎨 shadcn/ui (Design System)
 
-**代表**: Figma + AI 插件
-
-**官网**: [figma.com](https://www.figma.com)
-
-> 设计界标配，AI 能力持续增强
-
-| 特点 | 说明 |
-|------|------|
-| **Figma AI** | AI 辅助设计建议 |
-| **生成布局** | 自动生成页面布局 |
-| **组件生成** | AI 创建 UI 组件 |
-| **Dev Mode** | 开发者模式，代码导出 |
-
-**使用技巧**:
-1. 使用 Figma Convert 插件
-2. 利用 AI 生成初始布局
-3. 使用 Make Design 功能
-4. 通过 Dev Mode 获取代码
-
----
-
-## 2. UI 组件库
-
-### 💎 shadcn/ui
-
-**官网**: [ui.shadcn.com](https://ui.shadcn.com)
+**官网**: [ui.shadcn.com](https://ui.shadcn.com) | [github.com/shadcn-ui](https://github.com/shadcn-cn/ui)
 
 > 现代 React UI 组件库，可定制程度高
 
 | 特点 | 说明 |
 |------|------|
 | **代码优先** | 直接复制粘贴代码 |
-| **完全定制** | 所有权归你 |
+| **完全定制** | 代码归你，不是依赖 |
 | **TypeScript** | 完整类型支持 |
 | **Tailwind** | 基于 Tailwind CSS |
+| **开箱即用** | 精美组件，直接可用 |
 
 **安装使用**:
 ```bash
-# 安装
-npx shadcn-ui@latest init
+# 初始化
+npx shadcn@latest init
 
 # 添加组件
-npx shadcn-ui@latest add button
-npx shadcn-ui@latest add card
-npx shadcn-ui@latest add dialog
+npx shadcn@latest add button
+npx shadcn@latest add card
+npx shadcn@latest add dialog
+npx shadcn@latest add form
+npx shadcn@latest add input
 ```
 
 **核心组件**:
-- Button, Input, Card
-- Dialog, Dropdown
-- Form, Table
-- Navigation, Sidebar
-- Charts, Calendar
-
-**适合场景**: 需要高定制性的 React 项目
+- 🎯 Button, Input, Select
+- 📦 Card, Dialog, Dropdown
+- 📝 Form, Table, Tabs
+- 🧭 Navigation, Sidebar
+- 📊 Charts, Calendar
 
 ---
+
+### 💎 v0 (Vercel)
+
+**官网**: [v0.dev](https://v0.dev)
+
+> Vercel 官方 AI UI 生成工具
+
+| 特点 | 说明 |
+|------|------|
+| **AI 生成** | 描述生成 React UI |
+| **Vercel 生态** | 完美集成 Next.js |
+| **代码质量** | 生成高质量代码 |
+| **一键部署** | 直接部署到 Vercel |
+
+**使用技巧**:
+```markdown
+# 示例提示词
+"Create a landing page for my AI voice assistant product.
+Hero with logo, dark theme (#0a0a0a),
+two CTA buttons: Download for Mac, Watch Demo.
+Features section with 4 cards.
+Include a terminal window showing usage."
+```
+
+---
+
+## 2. AI 编程助手
+
+### 🧠 Kimi (月之暗面)
+
+**官网**: [kimi.com](https://kimi.com)
+
+> 中国顶尖 AI，擅长中文编程和长文本
+
+| 特点 | 说明 |
+|------|------|
+| **超长上下文** | 200 万字上下文窗口 |
+| **代码理解** | 理解复杂代码库 |
+| **中文优化** | 中文编程友好 |
+| **K2.5 多模态** | 支持视觉理解 |
+| **Kimi+** | 专家模式 |
+
+**使用技巧**:
+
+```markdown
+# 生成网页
+帮我用 HTML + Tailwind 生成一个暗色主题的个人作品集网站
+
+# 优化代码
+这是我的 React 组件，帮我优化性能和可访问性
+
+# 解释代码
+用中文解释这段代码的逻辑
+
+# 辅助编程
+帮我写一个使用 Framer Motion 的页面过渡动画
+```
+
+**适合场景**:
+- 中文代码注释和文档
+- 复杂代码理解和调试
+- 长文本处理和总结
+- 前端开发辅助
+
+---
+
+### 🤖 Cursor
+
+**官网**: [cursor.sh](https://cursor.sh)
+
+> AI 增强版 VS Code，编程效率革命
+
+| 特点 | 说明 |
+|------|------|
+| **AI 补全** | 智能代码补全 |
+| **Chat 模式** | 对话式编程 |
+| **Agent 模式** | AI 自动执行任务 |
+| **Ctrl+K** | 选中代码 AI 改写 |
+| **完整 IDE** | VS Code 超集 |
+
+**核心功能**:
+
+- **Cmd+K**: 选中代码 AI 改写
+- **Cmd+L**: 对话模式编程
+- **Cmd+K**: 自动补全
+- **Agent**: 自动执行复杂任务
+
+---
+
+### ⚡ Bolt.new
+
+**官网**: [bolt.new](https://bolt.new)
+
+> 全栈 AI 开发环境
+
+| 特点 | 说明 |
+|------|------|
+| **AI 全栈** | 前端 + 后端 + 数据库 |
+| **WebContainer** | 浏览器运行 Node.js |
+| **实时预览** | 即时查看效果 |
+| **一键部署** | 连接到 Netlify |
+
+---
+
+### 🎯 GitHub Spark
+
+**官网**: [github.com/features/spark](https://github.com/features/spark)
+
+> GitHub 官方 AI 应用构建工具
+
+| 特点 | 说明 |
+|------|------|
+| **AI 构建** | 描述生成完整应用 |
+| **GitHub 集成** | 深度集成 GitHub |
+| **免费托管** | GitHub Pages 托管 |
+| **可编辑** | 生成后继续开发 |
+
+---
+
+### 🌊 Windsurf
+
+**官网**: [windsurf.com](https://windsurf.com)
+
+> 新一代 AI 编程体验
+
+| 特点 | 说明 |
+|------|------|
+| **Flow State** | 保持心流的编程 |
+| **Agentic** | 智能体能力 |
+| **多文件** | 跨文件编辑 |
+| **MCP 支持** | 扩展工具集成 |
+
+---
+
+## 3. UI 组件库
 
 ### ⚡ React Bits
 
@@ -167,9 +274,26 @@ npx shadcn-ui@latest add dialog
 | **开箱即用** | 直接导入使用 |
 | **效果丰富** | 100+ 动画效果 |
 | **轻量级** | 无依赖 |
-| **文档完善** | 交互式预览 |
+| **TypeScript** | 完整类型支持 |
 
 **核心动画组件**:
+
+```jsx
+import { Fireworks, Sparkles, Confetti } from 'reactbits';
+
+// 庆祝时刻
+<Fireworks />
+
+// 星光闪烁
+<Sparkles count={50} />
+
+// 彩带庆祝
+<Confetti />
+
+// 加载动画
+import { Spinner } from 'reactbits';
+<Spinner />
+```
 
 | 组件 | 效果 |
 |------|------|
@@ -180,89 +304,68 @@ npx shadcn-ui@latest add dialog
 | `Ripples` | 水波纹 |
 | `Gradient Text` | 渐变文字 |
 | `Marquee` | 滚动公告 |
-| `Ticker` | 股票 ticker |
-
-**使用示例**:
-```jsx
-import { Fireworks } from 'reactbits';
-
-// 庆祝时刻
-<Fireworks />
-
-// 加载动画
-import { Spinner } from 'reactbits';
-<Spinner />
-```
 
 ---
-
-## 3. 动画与交互
 
 ### 🎬 Framer Motion
 
 **官网**: [framer.com/motion](https://www.framer.com/motion/)
 
-> React 动画库的事实标准
-
-| 特点 | 说明 |
-|------|------|
-| **声明式** | 声明式动画 API |
-| **手势支持** | 拖拽、滑动等 |
-| **布局动画** | 自动布局过渡 |
-| **性能优化** | GPU 加速 |
-
-**核心概念**:
+> React 动画库事实标准
 
 ```jsx
 import { motion } from 'framer-motion';
 
 // 基础动画
 <motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.5 }}
 />
 
-// 手势交互
+// 悬停效果
 <motion.div
-  whileHover={{ scale: 1.1 }}
-  whileTap={{ scale: 0.9 }}
-  drag
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
 />
 
 // 滚动动画
 <motion.div
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
   viewport={{ once: true }}
 />
 ```
 
-**常用动画**:
+---
 
-| 类型 | 代码 | 效果 |
-|------|------|------|
-| 淡入 | `opacity: [0 → 1]` | 基础淡入 |
-| 上浮 | `y: [50 → 0]` | 向上滑入 |
-| 缩放 | `scale: [0.8 → 1]` | 放大进入 |
-| 弹跳 | `type: "spring"` | 弹性效果 |
-| 交错 | `staggerChildren` | 依次出现 |
+### 📊 组件库选择指南
+
+| 场景 | 推荐 |
+|------|------|
+| React + 定制 | shadcn/ui |
+| 酷炫动画 | React Bits |
+| 快速原型 | Framer |
+| 数据可视化 | Tremor, Recharts |
+| 表单 | React Hook Form + Zod |
 
 ---
 
-### ✨ 动画效果集合
+## 4. 动画与交互
 
-| 库 | 特点 | 适用 |
-|------|------|------|
-| **Animate.css** | CSS 动画集合 | 简单项目 |
-| **GSAP** | 高级动画 | 复杂序列 |
-| **Lottie** | 动画文件播放 | 设计师动画 |
-| **Three.js** | 3D 动画 | 3D 场景 |
-| **AutoAnimate** | 自动动画 | 列表过渡 |
+### 动画库对比
+
+| 库 | 特点 | 适用场景 |
+|------|------|----------|
+| **Framer Motion** | 声明式 API，手势支持 | React 项目 |
+| **GSAP** | 高级动画，时间线控制 | 复杂动画 |
+| **Three.js** | WebGL 3D | 3D 场景 |
+| **AutoAnimate** | 自动列表动画 | 列表过渡 |
+| **Lottie** | 设计师动画 | 复杂动画播放 |
 
 ---
 
-## 4. 灵感与参考
+## 5. 灵感与参考
 
 ### 📱 Mobbin
 
@@ -277,123 +380,32 @@ import { motion } from 'framer-motion';
 | 用户流程 | 321,100+ |
 
 **功能**:
-
-| 功能 | 说明 |
-|------|------|
-| **设计发现** | 搜索 1000+ 主流 App |
-| **流程查看** | 完整用户流程 |
-| **Figma 导出** | 直接复制到 Figma |
-| **视频模式** | 观看完整交互 |
-
-**使用技巧**:
-1. 按平台筛选 (iOS/Android/Web)
-2. 按类别筛选 (电商/社交/工具)
-3. 搜索特定功能 (登录/下单/分享)
-4. 保存到收藏夹
-5. 导出到 Figma 参考
+- 设计发现：搜索 1000+ 主流 App
+- 流程查看：完整用户流程
+- Figma 导出：直接复制到 Figma
+- 视频模式：观看完整交互
 
 ---
 
-### 🖼️ 设计灵感来源
+### 🎨 设计灵感平台
 
 | 平台 | 特点 | 网址 |
 |------|------|------|
-| **Dribbble** |设计师社区 | dribbble.com |
+| **Dribbble** | 设计师社区 | dribbble.com |
 | **Behance** | 创意作品 | behance.net |
 | **Awwwards** | 网站评选 | awwwards.com |
-| **SiteInspire** | 网站灵感 | siteinspire.com |
 | **Collect UI** | UI 每日精选 | collectui.com |
-
----
-
-## 5. AI 编程助手
-
-### 🧠 Kimi (月之暗面)
-
-**官网**: [kimi.com](https://kimi.com)
-
-> 中国顶尖 AI，擅长中文编程和文档
-
-| 特点 | 说明 |
-|------|------|
-| **长上下文** | 200 万字上下文 |
-| **代码理解** | 理解复杂代码库 |
-| **中文优化** | 中文编程友好 |
-| **K2.5 多模态** | 支持视觉理解 |
-
-**使用技巧**:
-
-```markdown
-# 生成网页
-帮我用 HTML + Tailwind 生成一个暗色主题的个人作品集网站，
-包含 hero 区、作品展示、技能标签、联系表单
-
-# 优化代码
-这是我的 React 组件，帮我优化性能和可访问性
-
-# 解释代码
-用中文解释这段代码的逻辑
-```
-
-**适合场景**:
-- 中文代码注释和文档
-- 复杂代码理解
-- 长文本处理
-
----
-
-### 🤖 其他 AI 编程助手
-
-| 工具 | 特点 | 官网 |
-|------|------|------|
-| **Cursor** | AI 增强版 VS Code | cursor.sh |
-| **Windsurf** | AI 编程新体验 | windsurf.com |
-| **GitHub Copilot** | 代码补全 | github.com/features/copilot |
-| **v0** | AI 生成 UI | v0.dev |
-| **Bolt.new** | 全栈 AI 开发 | bolt.new |
-
----
-
-### 🎯 AI 前端开发工作流
-
-```
-┌─────────────────────────────────────────────────┐
-│  1. 需求定义                                      │
-│  Kimi / ChatGPT 描述需求                         │
-└─────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────┐
-│  2. 设计生成                                      │
-│  Framer / Variant / Dora AI 生成设计             │
-└─────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────┐
-│  3. 代码生成                                      │
-│  shadcn/ui 搭建组件                              │
-│  React Bits 添加动画                             │
-└─────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────┐
-│  4. 优化完善                                      │
-│  Framer Motion 添加交互动画                       │
-│  响应式调整                                      │
-└─────────────────────────────────────────────────┘
-                        ↓
-┌─────────────────────────────────────────────────┐
-│  5. 部署上线                                      │
-│  Vercel / Netlify 一键部署                      │
-└─────────────────────────────────────────────────┘
-```
+| **Land Book** | 产品落地页 | land-book.com |
 
 ---
 
 ## 6. 视觉编程
 
-### 🎛️ Touch Designer
+### 🎛️ TouchDesigner
 
 **官网**: [derivative.ca](https://www.derivative.ca/)
 
-> 实时视觉编程环境
+> 实时视觉编程环境，用于创意和交互装置
 
 | 特点 | 说明 |
 |------|------|
@@ -403,108 +415,133 @@ import { motion } from 'framer-motion';
 | **硬件集成** | 支持 Kinect/Arduino |
 
 **适合场景**:
-- 互动装置
+- 互动装置艺术
 - 现场视觉表演
 - 投影映射
 - 生成艺术
+- 展览展示
 
-**替代方案**:
+**学习资源**:
+- 官方教程库
+- Derivative 官方 YouTube
+- TouchDesigner 中文社区
 
-| 工具 | 特点 |
+---
+
+### 🎨 p5.js
+
+**官网**: [p5js.org](https://p5js.org)
+
+> Web 版 Processing，创意编程
+
+| 特点 | 说明 |
 |------|------|
-| **Processing** | 创意编程 Java |
-| **p5.js** | Web 版 Processing |
-| **Three.js** | Web 3D 引擎 |
-| **Unity** | 游戏引擎可视化 |
+| **JavaScript** | Web 环境运行 |
+| **简单易学** | 入门友好 |
+| **社区活跃** | 丰富示例 |
+| **Web 编辑器** | 在线编写运行 |
 
 ---
 
-## 工具选择指南
+## 7. 2026 推荐工作流
 
-### 🎯 根据场景选择
-
-| 场景 | 推荐工具组合 |
-|------|-------------|
-| **快速原型** | Framer AI → 导出 |
-| **高定制网站** | Figma + shadcn/ui + Framer Motion |
-| **酷炫效果** | React Bits + Three.js |
-| **移动端参考** | Mobbin + Figma |
-| **AI 生成** | Variant + v0 + Kimi |
-| **数据可视化** | Tremor + Recharts |
-
-### 📊 工具能力对比
-
-| 工具 | 设计 | 代码 | 动画 | AI |
-|------|------|------|------|-----|
-| Figma | ⭐⭐⭐ | ⭐ | ⭐ | ⭐⭐ |
-| Framer | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
-| shadcn/ui | ⭐ | ⭐⭐⭐ | ⭐ | - |
-| React Bits | - | ⭐⭐⭐ | ⭐⭐⭐ | - |
-| Mobbin | ⭐⭐⭐ | - | - | - |
-| Variant | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
-
----
-
-## 快速开始推荐
-
-### 方案 A: 快速上线
+### 方案 A: 快速上线 (1-2天)
 
 ```
-1. Variant.com → 生成设计
-2. 导出 HTML/CSS
-3. Vercel 部署
+1. Framer AI → 生成初稿
+2. 手动微调
+3. 一键部署
 ```
 
-### 方案 B: 专业定制
+### 方案 B: 专业定制 (3-5天)
 
 ```
-1. Figma → 设计初稿
+1. Figma / 设计工具 → 设计初稿
 2. shadcn/ui → 搭建组件
 3. Framer Motion → 添加动画
-4. Vercel 部署
+4. 响应式调整
+5. Vercel 部署
 ```
 
-### 方案 C: AI 增强
+### 方案 C: AI 增强 (2-3天)
 
 ```
-1. Kimi → 生成需求文档
-2. v0 / Framer AI → 生成代码
+1. Kimi → 生成需求和代码
+2. v0 → 生成 UI 组件
 3. 手动优化
 4. Mobbin → 参考改进
-5. 部署
+5. React Bits → 添加特效
+6. Vercel 部署
+```
+
+### 方案 D: 全栈 AI (1-2天)
+
+```
+1. Bolt.new → 描述需求
+2. AI 生成完整应用
+3. 调整和优化
+4. Netlify 部署
 ```
 
 ---
 
-## 更多资源
+## 工具选择决策树
 
-### 📚 学习资源
+```
+需要做什么？
+    │
+    ├─► 快速建站 → Framer / Dora AI
+    │
+    ├─► 定制开发 → Figma + shadcn/ui + Framer Motion
+    │
+    ├─► AI 辅助编程 → Kimi / Cursor / Bolt.new
+    │
+    ├─► 酷炫动画 → React Bits / Three.js
+    │
+    └─► 找灵感 → Mobbin / Dribbble / Awwwards
+```
 
-- [Tailwind CSS 文档](https://tailwindcss.com/docs)
-- [Framer Motion 文档](https://www.framer.com/motion/)
-- [React 官方教程](https://react.dev)
-- [Figma 入门](https://help.figma.com)
+---
 
-### 🛠️ 开发工具
+## 快速参考表
 
-- [Vercel](https://vercel.com) - 免费部署
-- [Netlify](https://netlify.com) - 拖拽部署
-- [CodeSandbox](https://codesandbox.io) - 在线开发
-- [StackBlitz](https://stackblitz.com) - WebContainer 开发
+| 类别 | 推荐工具 | 官网 |
+|------|----------|------|
+| AI 网站生成 | **Framer** | framer.com |
+| AI UI 生成 | **v0** | v0.dev |
+| UI 组件库 | **shadcn/ui** | ui.shadcn.com |
+| 动画组件 | **React Bits** | reactbits.dev |
+| 动画库 | **Framer Motion** | framer.com/motion |
+| AI 编程 | **Kimi** | kimi.com |
+| AI IDE | **Cursor** | cursor.sh |
+| 设计灵感 | **Mobbin** | mobbin.com |
+| 视觉编程 | **TouchDesigner** | derivative.ca |
+| 3D 动画 | **Three.js** | threejs.org |
 
 ---
 
 ## 总结
 
-2025 年的前端开发已进入 AI 时代：
+2025-2026 年的前端开发工具已经发生了根本性变化：
 
-1. **设计阶段**: AI 生成 → 人工微调
-2. **开发阶段**: 组件库 + 动画库
-3. **部署阶段**: 一键部署
-4. **迭代阶段**: AI 辅助优化
+1. **AI 主导**: 从设计到代码，AI 参与每个环节
+2. **效率革命**: 以前需要几天，现在需要几小时
+3. **门槛降低**: 非设计师也能做出专业级网站
+4. **工具融合**: 设计工具和开发工具边界模糊
 
-记住：**工具是手段，内容是核心**。无论用多酷炫的技术，最终还是要服务于你的个人品牌和求职目标。
+**核心建议**:
+- 组合使用多个工具，往往效果最佳
+- 工具是手段，内容才是核心
+- 保持学习和尝试新工具
+
+> 💡 **记住**: 最好的工具是能帮助你完成目标的工具。不要追逐工具本身，而是专注于你要传达的内容和价值。
 
 ---
 
-> 💡 提示：组合使用多个工具往往能取得最佳效果。例如：Variant 生成 → shadcn/ui 优化 → Framer Motion 动画 → Mobbin 参考 → Vercel 部署
+## 相关资源
+
+- [Framer 官方文档](https://www.framer.com/docs/)
+- [shadcn/ui 文档](https://ui.shadcn.com/docs)
+- [Framer Motion 文档](https://www.framer.com/motion/)
+- [React Bits 示例](https://reactbits.dev/)
+- [TouchDesigner 学习](https://derivative.ca/)
