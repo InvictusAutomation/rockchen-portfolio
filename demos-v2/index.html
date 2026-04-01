@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Chen Portfolio - 10 Design Concepts</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0A0A0A;
+      color: #E0E0E0;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      padding: 80px 24px 40px;
+    }
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 0%, #888 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header p {
+      color: #666;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .card {
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .card-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .card-number {
+      font-size: 0.75rem;
+      color: #555;
+      font-weight: 500;
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: #999;
+    }
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: #444;
+      font-size: 0.85rem;
+    }
+    /* Preview gradients for each card */
+    .card:nth-child(1) .card-preview { background: linear-gradient(135deg, #FAF5EF 0%, #D4A574 50%, #1A1A1A 100%); }
+    .card:nth-child(2) .card-preview { background: linear-gradient(135deg, #0A0A0A 0%, #1a1033 50%, #7C3AED 100%); }
+    .card:nth-child(3) .card-preview { background: linear-gradient(135deg, #050510 0%, #0D1B3E 50%, #00D4FF 100%); }
+    .card:nth-child(4) .card-preview { background: linear-gradient(135deg, #F5F0EB 0%, #FF6B4A 50%, #1E3A5F 100%); }
+    .card:nth-child(5) .card-preview { background: linear-gradient(135deg, #FDF6EC 0%, #FEF3C7 50%, #3C2415 100%); }
+    .card:nth-child(6) .card-preview { background: linear-gradient(135deg, #000 0%, #333 50%, #FF0000 100%); }
+    .card:nth-child(7) .card-preview { background: linear-gradient(135deg, #FFF8E7 0%, #FF6B35 50%, #00B4D8 100%); }
+    .card:nth-child(8) .card-preview { background: linear-gradient(135deg, #0C0C0C 0%, #1a1510 50%, #C8A97E 100%); }
+    .card:nth-child(9) .card-preview { background: linear-gradient(135deg, #000 0%, #FFE500 50%, #0055FF 100%); }
+    .card:nth-child(10) .card-preview { background: linear-gradient(135deg, #0A1628 0%, #0D9488 50%, #F59E0B 100%); }
+
+    .card-preview .overlay-text {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      font-size: 2.5rem;
+      font-weight: 800;
+      opacity: 0.15;
+      letter-spacing: -0.02em;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Portfolio Concepts</h1>
+    <p>Rock Chen 的 10 版完全不同的作品集设计方案，围绕 Voice Helper 语音助手项目，突出产品思维与 AI 交互研究。</p>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="01-narrative-scroll/index.html">
+      <div class="card-preview"><div class="overlay-text">Narrative</div></div>
+      <div class="card-body">
+        <div class="card-number">01 / 10</div>
+        <div class="card-title">叙事滚动</div>
+        <div class="card-subtitle">全屏叙事体验 · 视差滚动 · 逐行揭示</div>
+        <div class="card-tags">
+          <span class="tag">Scroll Snap</span>
+          <span class="tag">Parallax</span>
+          <span class="tag">Playfair Display</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="02-bento-grid/index.html">
+      <div class="card-preview"><div class="overlay-text">Bento</div></div>
+      <div class="card-body">
+        <div class="card-number">02 / 10</div>
+        <div class="card-title">便当盒网格</div>
+        <div class="card-subtitle">Apple 风格 Bento 布局 · 渐变边框 · 声波动画</div>
+        <div class="card-tags">
+          <span class="tag">CSS Grid</span>
+          <span class="tag">Gradient Border</span>
+          <span class="tag">Dark Theme</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="03-particle-canvas/index.html">
+      <div class="card-preview"><div class="overlay-text">Particle</div></div>
+      <div class="card-body">
+        <div class="card-number">03 / 10</div>
+        <div class="card-title">粒子画布</div>
+        <div class="card-subtitle">Canvas 粒子网络 · 鼠标交互 · 滚动变态</div>
+        <div class="card-tags">
+          <span class="tag">Canvas</span>
+          <span class="tag">Particles</span>
+          <span class="tag">Glassmorphism</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="04-interaction-showcase/index.html">
+      <div class="card-preview"><div class="overlay-text">Interact</div></div>
+      <div class="card-body">
+        <div class="card-number">04 / 10</div>
+        <div class="card-title">交互展陈</div>
+        <div class="card-subtitle">磁性按钮 · 文字 Scramble · 3D 倾斜 · 涟漪</div>
+        <div class="card-tags">
+          <span class="tag">Magnetic UI</span>
+          <span class="tag">3D Tilt</span>
+          <span class="tag">Draggable</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="05-research-journal/index.html">
+      <div class="card-preview"><div class="overlay-text">Research</div></div>
+      <div class="card-body">
+        <div class="card-number">05 / 10</div>
+        <div class="card-title">研究手札</div>
+        <div class="card-subtitle">学术笔记本 · 手写批注 · 便签 · 框架图</div>
+        <div class="card-tags">
+          <span class="tag">Academic</span>
+          <span class="tag">Annotations</span>
+          <span class="tag">Sticky Notes</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="06-noise-editorial/index.html">
+      <div class="card-preview"><div class="overlay-text">Editorial</div></div>
+      <div class="card-body">
+        <div class="card-number">06 / 10</div>
+        <div class="card-title">噪点杂志</div>
+        <div class="card-subtitle">高级时装杂志 · 非对称排版 · 超大字体</div>
+        <div class="card-tags">
+          <span class="tag">Magazine</span>
+          <span class="tag">Asymmetric</span>
+          <span class="tag">Grain</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="07-zine-editorial/index.html">
+      <div class="card-preview"><div class="overlay-text">Zine</div></div>
+      <div class="card-body">
+        <div class="card-number">07 / 10</div>
+        <div class="card-title">独立杂志</div>
+        <div class="card-subtitle">Indie Zine · 拼贴风格 · Riso 印刷 · 手绘装饰</div>
+        <div class="card-tags">
+          <span class="tag">Collage</span>
+          <span class="tag">Riso Print</span>
+          <span class="tag">Hand-drawn</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="08-bento-agency/index.html">
+      <div class="card-preview"><div class="overlay-text">Agency</div></div>
+      <div class="card-body">
+        <div class="card-number">08 / 10</div>
+        <div class="card-title">Bento Agency</div>
+        <div class="card-subtitle">奢华创意代理 · 黑金配色 · 电影画幅 Demo</div>
+        <div class="card-tags">
+          <span class="tag">Luxury</span>
+          <span class="tag">Gold Accent</span>
+          <span class="tag">Cinematic</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="09-brutalist-diary/index.html">
+      <div class="card-preview"><div class="overlay-text">Brutal</div></div>
+      <div class="card-body">
+        <div class="card-number">09 / 10</div>
+        <div class="card-title">先锋日记</div>
+        <div class="card-subtitle">新粗野主义 · 终端风格 · 报错框 · 源代码</div>
+        <div class="card-tags">
+          <span class="tag">Brutalist</span>
+          <span class="tag">Terminal</span>
+          <span class="tag">Monospace</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="10-experiential-voyage/index.html">
+      <div class="card-preview"><div class="overlay-text">Voyage</div></div>
+      <div class="card-body">
+        <div class="card-number">10 / 10</div>
+        <div class="card-title">体验航程</div>
+        <div class="card-subtitle">电影式沉浸叙事 · 色温渐变 · 星座概念图</div>
+        <div class="card-tags">
+          <span class="tag">Cinematic</span>
+          <span class="tag">Color Journey</span>
+          <span class="tag">Constellation</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 Rock Chen &middot; Portfolio Concepts v2 &middot; Pure HTML + CSS + JS</p>
+  </div>
+</body>
+</html>
