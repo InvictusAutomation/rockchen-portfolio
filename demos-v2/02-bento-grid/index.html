@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Software Engineer & Product Thinker</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0A0A;--surface:#111;--card:#181818;--card-hover:#1f1f1f;
+  --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);
+  --text:#f5f5f7;--text-s:rgba(255,255,255,0.55);--text-t:rgba(255,255,255,0.3);
+  --accent:#7C3AED;--accent-l:#a78bfa;--accent-glow:rgba(124,58,237,0.25);
+  --grad1:linear-gradient(135deg,#7C3AED,#2563EB);
+  --grad2:linear-gradient(135deg,#EC4899,#7C3AED);
+  --grad3:linear-gradient(135deg,#2563EB,#06B6D4);
+  --r:20px;--rs:14px;
+  --tr:0.4s cubic-bezier(.25,.46,.45,.94);--trf:0.25s cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;transition:all .5s cubic-bezier(.25,.46,.45,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(10,10,10,0.6)}
+.nav.minimized{padding:10px 32px;background:rgba(10,10,10,0.92);border-bottom:1px solid var(--border)}
+.nav-logo{font-size:18px;font-weight:700;letter-spacing:-.5px;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--text-s);text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.2px;transition:var(--trf);position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--accent);transition:var(--trf);border-radius:1px}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+
+/* MAIN */
+.main{max-width:1280px;margin:0 auto;padding:120px 24px 80px}
+
+/* GRID */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:160px;gap:16px}
+
+/* CARD BASE */
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);padding:32px;position:relative;overflow:hidden;transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr);cursor:default;opacity:0;transform:translateY(30px)}
+.card.visible{opacity:1;transform:translateY(0)}
+.card:hover{transform:translateY(-4px);border-color:var(--border-hover);box-shadow:0 20px 60px -15px rgba(0,0,0,.5),0 0 40px -10px var(--accent-glow)}
+
+/* GLOW BORDER */
+@property --angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+.card--glow::before{content:'';position:absolute;inset:-1px;border-radius:calc(var(--r)+1px);background:conic-gradient(from var(--angle,0deg),transparent 0%,var(--accent) 10%,transparent 20%,transparent 80%,var(--accent-l) 90%,transparent 100%);opacity:0;transition:opacity var(--tr);z-index:0;animation:rot-border 4s linear infinite}
+.card--glow:hover::before{opacity:1}
+.card--glow>.card-inner{position:relative;z-index:1}
+@keyframes rot-border{to{--angle:360deg}}
+
+/* LABEL */
+.card-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px}
+
+/* ===== HERO ===== */
+.card--hero{grid-column:span 3;grid-row:span 2;display:flex;flex-direction:column;justify-content:flex-end;padding:48px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--accent-l);text-transform:uppercase;letter-spacing:2px;margin-bottom:24px}
+.hero-tag::before{content:'';width:24px;height:2px;background:var(--accent);border-radius:1px}
+.card--hero h1{font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.08;letter-spacing:-2px;margin-bottom:16px}
+.card--hero h1 .hl{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:18px;color:var(--text-s);max-width:540px;line-height:1.7}
+.hero-glow{position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);border-radius:50%;pointer-events:none;animation:pulse-g 6s ease-in-out infinite}
+@keyframes pulse-g{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.7;transform:scale(1.1)}}
+
+/* ===== AVATAR ===== */
+.card--avatar{grid-column:span 1;grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px}
+.avatar-ring{width:88px;height:88px;border-radius:50%;background:var(--grad1);padding:3px;animation:spin-s 8s linear infinite}
+.avatar-inner{width:100%;height:100%;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700}
+@keyframes spin-s{to{transform:rotate(360deg)}}
+.card--avatar .name{font-size:16px;font-weight:600;letter-spacing:-.3px}
+.card--avatar .role{font-size:12px;color:var(--text-s);letter-spacing:.5px}
+
+/* ===== WAVEFORM ===== */
+.card--waveform{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between}
+.wf-head{display:flex;justify-content:space-between;align-items:center}
+.wf-label{font-size:12px;font-weight:600;color:var(--text-s);text-transform:uppercase;letter-spacing:1.5px}
+.wf-live{display:flex;align-items:center;gap:6px;font-size:11px;color:#22c55e;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.wf-live .dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.wf-visual{display:flex;align-items:center;justify-content:center;gap:3px;height:80px}
+.wb{width:3px;background:var(--grad1);border-radius:2px;animation:wave 1.2s ease-in-out infinite;transform-origin:bottom}
+.wb:nth-child(1){height:20px;animation-delay:0s}.wb:nth-child(2){height:35px;animation-delay:.1s}
+.wb:nth-child(3){height:50px;animation-delay:.2s}.wb:nth-child(4){height:65px;animation-delay:.3s}
+.wb:nth-child(5){height:45px;animation-delay:.15s}.wb:nth-child(6){height:70px;animation-delay:.25s}
+.wb:nth-child(7){height:55px;animation-delay:.35s}.wb:nth-child(8){height:75px;animation-delay:.05s}
+.wb:nth-child(9){height:60px;animation-delay:.4s}.wb:nth-child(10){height:40px;animation-delay:.2s}
+.wb:nth-child(11){height:55px;animation-delay:.3s}.wb:nth-child(12){height:70px;animation-delay:.1s}
+.wb:nth-child(13){height:50px;animation-delay:.35s}.wb:nth-child(14){height:30px;animation-delay:.25s}
+.wb:nth-child(15){height:65px;animation-delay:.15s}.wb:nth-child(16){height:45px;animation-delay:.4s}
+.wb:nth-child(17){height:55px;animation-delay:.05s}.wb:nth-child(18){height:35px;animation-delay:.3s}
+.wb:nth-child(19){height:60px;animation-delay:.2s}.wb:nth-child(20){height:25px;animation-delay:.35s}
+.wb:nth-child(21){height:50px;animation-delay:.1s}.wb:nth-child(22){height:40px;animation-delay:.25s}
+.wb:nth-child(23){height:65px;animation-delay:.15s}.wb:nth-child(24){height:30px;animation-delay:.4s}
+.wb:nth-child(25){height:55px;animation-delay:.05s}.wb:nth-child(26){height:45px;animation-delay:.3s}
+.wb:nth-child(27){height:60px;animation-delay:.2s}.wb:nth-child(28){height:35px;animation-delay:.35s}
+.wb:nth-child(29){height:50px;animation-delay:.1s}.wb:nth-child(30){height:25px;animation-delay:.25s}
+@keyframes wave{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.wf-foot{font-size:13px;color:var(--text-t)}
+
+/* ===== PROBLEM ===== */
+.card--problem{grid-column:span 2;grid-row:span 2}
+.card--problem h3{font-size:22px;font-weight:600;line-height:1.4;letter-spacing:-.5px;margin-bottom:12px}
+.card--problem p{font-size:15px;color:var(--text-s);line-height:1.7}
+.pain{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:14px 16px;background:rgba(124,58,237,0.06);border-radius:var(--rs);border:1px solid rgba(124,58,237,0.1)}
+.pain svg{flex-shrink:0;width:20px;height:20px;stroke:var(--accent);margin-top:2px}
+.pain span{font-size:14px;color:var(--text-s);line-height:1.6}
+
+/* ===== INSIGHT ===== */
+.card--insight{grid-column:span 2;background:var(--grad1);border:none;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px 40px}
+.insight-t{font-size:18px;font-weight:600;line-height:1.5;letter-spacing:-.3px}
+.insight-t .zh{display:block;font-size:13px;color:rgba(255,255,255,0.7);margin-top:6px;font-weight:400}
+
+/* ===== VISION ===== */
+.card--vision{grid-column:span 2;grid-row:span 2}
+.card--vision h3{font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:16px;line-height:1.3}
+.card--vision p{font-size:15px;color:var(--text-s);line-height:1.7;margin-bottom:16px}
+.v-concepts{display:flex;flex-direction:column;gap:10px;margin-top:auto}
+.c-pill{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(255,255,255,0.04);border-radius:10px;border:1px solid var(--border);font-size:14px;font-weight:500;transition:var(--trf)}
+.c-pill:hover{background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.2)}
+.c-pill .da{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.c-pill .zl{font-size:12px;color:var(--text-t);margin-left:auto;font-weight:400}
+
+/* ===== SKILLS ===== */
+.card--skills{grid-column:span 2}
+.sk-grid{display:flex;flex-wrap:wrap;gap:8px}
+.sk{padding:8px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;font-size:13px;font-weight:500;color:var(--text-s);transition:var(--trf)}
+.sk:hover{background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.25);color:var(--text);transform:translateY(-1px)}
+
+/* ===== FRAMEWORK ===== */
+.card--framework{grid-column:span 2;grid-row:span 2}
+.card--framework h3{font-size:18px;font-weight:600;margin-bottom:16px;letter-spacing:-.3px}
+.fw-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+.fw-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,0.02);border-radius:var(--rs);border:1px solid var(--border);transition:var(--trf)}
+.fw-item:hover{background:rgba(255,255,255,0.04);border-color:var(--border-hover)}
+.fw-num{font-size:11px;font-weight:700;color:var(--accent);width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:rgba(124,58,237,0.1);border-radius:6px;flex-shrink:0}
+.fw-text{font-size:14px;color:var(--text-s);line-height:1.5}
+.fw-text strong{color:var(--text);font-weight:600}
+
+/* ===== MORPH ===== */
+.card--morph{grid-column:span 2;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
+.morph-front{transition:var(--tr);text-align:center}
+.morph-back{position:absolute;inset:0;padding:32px;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(12px);transition:var(--tr);pointer-events:none}
+.card--morph:hover .morph-front{opacity:0;transform:translateY(-12px)}
+.card--morph:hover .morph-back{opacity:1;transform:translateY(0)}
+.morph-title{font-size:16px;font-weight:600;letter-spacing:-.3px}
+.morph-hint{font-size:12px;color:var(--text-t);margin-top:4px}
+.morph-detail{font-size:14px;color:var(--text-s);line-height:1.7;text-align:center;max-width:460px}
+
+/* ===== APPROACH ===== */
+.card--approach{grid-column:span 2;grid-row:span 2}
+.ap-steps{display:flex;flex-direction:column;gap:16px;margin-top:4px}
+.ap-step{display:flex;gap:14px;align-items:flex-start}
+.ap-ind{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.ap-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
+.ap-line{width:1.5px;height:32px;background:linear-gradient(to bottom,var(--accent),transparent)}
+.ap-content h4{font-size:15px;font-weight:600;margin-bottom:3px}
+.ap-content p{font-size:13px;color:var(--text-s);line-height:1.6}
+.ap-zh{font-size:12px;color:var(--text-t);font-weight:400}
+
+/* ===== DEMO ===== */
+.card--demo{grid-column:span 4;grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;background:linear-gradient(145deg,var(--card) 0%,rgba(124,58,237,0.04) 100%)}
+.dem-prev{width:100%;max-width:640px;aspect-ratio:16/9;background:rgba(255,255,255,0.02);border-radius:12px;border:1px dashed var(--border-hover);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden;transition:var(--trf)}
+.dem-prev::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(124,58,237,0.05) 0%,transparent 70%)}
+.play-btn{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid var(--border-hover);display:flex;align-items:center;justify-content:center;transition:var(--trf);position:relative;z-index:1;cursor:pointer}
+.dem-prev:hover .play-btn{background:var(--accent);border-color:var(--accent);transform:scale(1.08)}
+.play-btn svg{width:20px;height:20px;fill:var(--text);margin-left:2px;transition:var(--trf)}
+.dem-prev:hover .play-btn svg{fill:#fff}
+.dem-lbl{font-size:14px;color:var(--text-t);position:relative;z-index:1}
+.card--demo h3{font-size:22px;font-weight:600;letter-spacing:-.5px}
+.dem-desc{font-size:15px;color:var(--text-s);max-width:480px;line-height:1.7}
+
+/* ===== QUOTE ===== */
+.card--quote{grid-column:span 2;display:flex;align-items:center;gap:20px}
+.q-mark{font-size:48px;line-height:1;color:var(--accent);opacity:.5;font-family:Georgia,serif;flex-shrink:0}
+.card--quote blockquote{font-size:16px;font-weight:500;line-height:1.6;letter-spacing:-.2px;font-style:italic}
+
+/* ===== CONTACT ===== */
+.card--contact{grid-column:span 2;display:flex;flex-direction:column;justify-content:center}
+.card--contact h3{font-size:18px;font-weight:600;margin-bottom:16px}
+.ct-links{display:flex;gap:10px;flex-wrap:wrap}
+.ct-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:500;color:var(--text-s);text-decoration:none;transition:var(--trf)}
+.ct-link:hover{background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.25);color:var(--text)}
+.ct-link svg{width:16px;height:16px;stroke:currentColor}
+
+/* ===== STATS ===== */
+.card--stats{grid-column:span 2}
+.st-row{display:flex;gap:32px;align-items:center}
+.st-item{text-align:center}
+.st-num{font-size:28px;font-weight:700;letter-spacing:-1px;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.st-lbl{font-size:11px;color:var(--text-t);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.st-div{width:1px;height:40px;background:var(--border)}
+
+/* FOOTER */
+.footer{max-width:1280px;margin:40px auto 0;padding:24px 24px 40px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-t{font-size:13px;color:var(--text-t)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px}
+  .card--hero{grid-column:span 2;grid-row:span 2}
+  .card--avatar{grid-column:span 1;grid-row:span 1}
+  .card--waveform{grid-column:span 2;grid-row:span 1}
+  .card--problem{grid-column:span 2;grid-row:span 2}
+  .card--insight{grid-column:span 2}
+  .card--vision{grid-column:span 2;grid-row:span 2}
+  .card--skills{grid-column:span 2}
+  .card--framework{grid-column:span 2;grid-row:span 2}
+  .card--morph{grid-column:span 2}
+  .card--approach{grid-column:span 2;grid-row:span 2}
+  .card--demo{grid-column:span 2}
+  .card--quote{grid-column:span 2}
+  .card--contact{grid-column:span 2}
+  .card--stats{grid-column:span 2}
+  .avatar-ring{width:60px;height:60px}
+  .avatar-inner{font-size:22px}
+}
+@media(max-width:640px){
+  .bento{grid-template-columns:1fr;grid-auto-rows:minmax(160px,auto);gap:12px}
+  .card--hero,.card--avatar,.card--waveform,.card--problem,.card--insight,.card--vision,.card--skills,.card--framework,.card--morph,.card--approach,.card--demo,.card--quote,.card--contact,.card--stats{grid-column:span 1;grid-row:auto}
+  .nav{padding:12px 16px}
+  .nav-links{gap:16px}
+  .nav-links a{font-size:13px}
+  .main{padding:100px 16px 40px}
+  .card{padding:24px;border-radius:16px}
+  .card--hero{padding:32px}
+  .card--hero h1{letter-spacing:-1px}
+  .footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">Rock<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- BENTO GRID -->
+<main class="main">
+<div class="bento">
+
+  <!-- HERO -->
+  <div class="card card--hero card--glow">
+    <div class="card-inner">
+      <div class="hero-glow"></div>
+      <div class="hero-tag">Software Engineer &amp; Product Thinker</div>
+      <h1>Building AI that<br><span class="hl">understands you</span><br>before you ask.</h1>
+      <p class="hero-sub">I'm Rock Chen — an engineer who believes AI should be a proactive companion, not a tool you manually trigger. My core project, <strong>Voice Helper (语音助手)</strong>, explores the next generation of human-AI interaction.</p>
+    </div>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="card card--avatar card--glow">
+    <div class="card-inner">
+      <div class="avatar-ring"><div class="avatar-inner">R</div></div>
+      <div class="name">Rock Chen</div>
+      <div class="role">Software Engineer<br>Product Thinker</div>
+    </div>
+  </div>
+
+  <!-- WAVEFORM -->
+  <div class="card card--waveform card--glow" id="waveform">
+    <div class="card-inner">
+      <div class="wf-head">
+        <span class="wf-label">Voice Interface</span>
+        <span class="wf-live"><span class="dot"></span> Live</span>
+      </div>
+      <div class="wf-visual">
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      </div>
+      <div class="wf-foot">Simulated voice waveform — CSS only</div>
+    </div>
+  </div>
+
+  <!-- PROBLEM -->
+  <div class="card card--problem" id="problem">
+    <div class="card-inner">
+      <div class="card-label">The Problem</div>
+      <h3>Current AI Copilots live in sidebars,<br>waiting to be summoned.</h3>
+      <p>Today's AI assistants are passive tools — they require manual triggers, live in isolated UI panels, and never truly understand your workflow context.</p>
+      <div class="pain">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Users spend more energy managing the AI than benefiting from it. The interaction model is fundamentally broken.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHT -->
+  <div class="card card--insight">
+    <div class="insight-t">
+      AI should be like a silent companion — proactive when appropriate, invisible when not.
+      <span class="zh">AI 应该像一个沉默的伙伴——适时主动，无需时不打扰</span>
+    </div>
+  </div>
+
+  <!-- VISION -->
+  <div class="card card--vision card--glow" id="vision">
+    <div class="card-inner">
+      <div class="card-label">The Vision</div>
+      <h3>Redefining Human-AI Interaction<br>重新定义人机交互</h3>
+      <p>What if your AI assistant could sense when you're stuck, anticipate your needs, and offer help naturally — through voice, gesture, or contextual awareness?</p>
+      <div class="v-concepts">
+        <div class="c-pill"><span class="da"></span>Autonomy — AI that initiates<span class="zl">自主性</span></div>
+        <div class="c-pill"><span class="da"></span>Strong Interactivity<span class="zl">强交互性</span></div>
+        <div class="c-pill"><span class="da"></span>Contextual Awareness<span class="zl">情境感知</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="card card--skills">
+    <div class="card-label" style="margin-bottom:16px">Skills &amp; Tools</div>
+    <div class="sk-grid">
+      <span class="sk">TypeScript</span><span class="sk">React</span><span class="sk">Python</span>
+      <span class="sk">Electron</span><span class="sk">AI / LLM</span><span class="sk">Voice</span>
+      <span class="sk">UX Research</span><span class="sk">Product Design</span>
+    </div>
+  </div>
+
+  <!-- FRAMEWORK -->
+  <div class="card card--framework" id="research">
+    <div class="card-inner">
+      <div class="card-label">Research Framework</div>
+      <h3>Agency in AI — 研究框架</h3>
+      <ul class="fw-list">
+        <li class="fw-item"><span class="fw-num">01</span><span class="fw-text"><strong>Autonomy Spectrum</strong> — Mapping AI agency levels from passive tools to proactive agents</span></li>
+        <li class="fw-item"><span class="fw-num">02</span><span class="fw-text"><strong>Interruption Theory</strong> — When is AI intervention helpful vs. annoying?</span></li>
+        <li class="fw-item"><span class="fw-num">03</span><span class="fw-text"><strong>Trust Calibration</strong> — Building user trust through transparent, predictable behavior</span></li>
+        <li class="fw-item"><span class="fw-num">04</span><span class="fw-text"><strong>Multimodal Signals</strong> — Combining voice, context, and activity for smarter engagement</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MORPH -->
+  <div class="card card--morph">
+    <div class="morph-front">
+      <div class="morph-title">Why Voice Helper? Why now?</div>
+      <div class="morph-hint">Hover to explore →</div>
+    </div>
+    <div class="morph-back">
+      <div class="morph-detail">The gap between AI capability and AI usability has never been wider. LLMs can reason, plan, and create — yet our interfaces force users through text boxes and chat panels. Voice Helper bridges this gap by making AI interaction as natural as talking to a colleague sitting next to you.</div>
+    </div>
+  </div>
+
+  <!-- APPROACH -->
+  <div class="card card--approach">
+    <div class="card-inner">
+      <div class="card-label">Approach</div>
+      <div class="ap-steps">
+        <div class="ap-step">
+          <div class="ap-ind"><div class="ap-dot"></div><div class="ap-line"></div></div>
+          <div class="ap-content">
+            <h4>Research &amp; Insight <span class="ap-zh">调研与洞察</span></h4>
+            <p>Deep dive into AI agency literature and user pain points with current copilots.</p>
+          </div>
+        </div>
+        <div class="ap-step">
+          <div class="ap-ind"><div class="ap-dot"></div><div class="ap-line"></div></div>
+          <div class="ap-content">
+            <h4>Design &amp; Prototype <span class="ap-zh">设计与原型</span></h4>
+            <p>Rapid prototyping of voice-first interaction patterns and proactive AI behaviors.</p>
+          </div>
+        </div>
+        <div class="ap-step">
+          <div class="ap-ind"><div class="ap-dot"></div></div>
+          <div class="ap-content">
+            <h4>Build &amp; Iterate <span class="ap-zh">构建与迭代</span></h4>
+            <p>Full-stack implementation with Electron, cross-platform voice processing, and LLM integration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="card card--demo card--glow" id="demo">
+    <div class="card-inner">
+      <div class="dem-prev">
+        <div class="play-btn">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <span class="dem-lbl">Demo video placeholder</span>
+      </div>
+      <h3>Voice Helper in Action</h3>
+      <p class="dem-desc">See how Voice Helper proactively assists during a real development workflow — from detecting errors to suggesting fixes, all through natural voice interaction.</p>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="card card--quote">
+    <div class="q-mark">&ldquo;</div>
+    <blockquote>The best AI is the one you forget is there — until you need it.</blockquote>
+  </div>
+
+  <!-- STATS -->
+  <div class="card card--stats">
+    <div class="st-row">
+      <div class="st-item"><div class="st-num">1K+</div><div class="st-lbl">Downloads</div></div>
+      <div class="st-div"></div>
+      <div class="st-item"><div class="st-num">2</div><div class="st-lbl">Platforms</div></div>
+      <div class="st-div"></div>
+      <div class="st-item"><div class="st-num">100%</div><div class="st-lbl">Open Source</div></div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="card card--contact" id="contact">
+    <div class="card-inner">
+      <div class="card-label">Get in Touch</div>
+      <h3>Let's build something meaningful.<br>一起做有意义的事。</h3>
+      <div class="ct-links">
+        <a href="mailto:rockchen@example.com" class="ct-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </a>
+        <a href="#" class="ct-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </a>
+        <a href="#" class="ct-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-t">&copy; 2026 Rock Chen. Built with care.</div>
+  <div class="footer-t"><a href="#">rockchen</a> · Portfolio</div>
+</footer>
+
+<script>
+// Sticky nav minimization on scroll
+(function() {
+  var nav = document.getElementById('nav');
+  var lastScroll = 0;
+  window.addEventListener('scroll', function() {
+    var st = window.scrollY;
+    if (st > 60) {
+      nav.classList.add('minimized');
+    } else {
+      nav.classList.remove('minimized');
+    }
+    lastScroll = st;
+  }, { passive: true });
+})();
+
+// Scroll-triggered card reveal with stagger
+(function() {
+  var cards = document.querySelectorAll('.card');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        var card = entry.target;
+        var idx = Array.prototype.indexOf.call(cards, card);
+        setTimeout(function() {
+          card.classList.add('visible');
+        }, Math.min(idx * 60, 400));
+        observer.unobserve(card);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  cards.forEach(function(card) { observer.observe(card); });
+})();
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var href = this.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      var target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+});
+
+// Interactive waveform bars - randomize on click
+document.getElementById('waveform').addEventListener('click', function() {
+  var bars = this.querySelectorAll('.wb');
+  bars.forEach(function(bar) {
+    bar.style.animationDuration = (0.8 + Math.random() * 1.2) + 's';
+    bar.style.animationDelay = (Math.random() * 0.5) + 's';
+  });
+});
+</script>
+</body>
+</html>

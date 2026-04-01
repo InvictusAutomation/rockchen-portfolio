@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — 交互展陈</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F5F0EB;--text:#2D2D2D;--coral:#FF6B4A;--navy:#1E3A5F;
+  --coral-light:#FF8A70;--navy-light:#2C5282;--bg-warm:#EDE7E0;
+  --radius:12px;--shadow:0 4px 24px rgba(45,45,45,.08);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:var(--bg);color:var(--text);font-family:'Georgia','Noto Serif SC',serif;
+  line-height:1.7;cursor:none;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* Custom Cursor */
+.cursor{position:fixed;width:20px;height:20px;border:2px solid var(--coral);border-radius:50%;pointer-events:none;z-index:10000;transition:width .25s,height .25s,border-color .25s,background .25s;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor.hover{width:48px;height:48px;background:rgba(255,107,74,.15);border-color:var(--coral)}
+.cursor.text-mode{width:4px;height:32px;border-radius:2px;background:var(--coral);border:none}
+.cursor.drag-mode{width:32px;height:32px;background:rgba(30,58,95,.3);border:2px solid var(--navy);transform:translate(-50%,-50%) rotate(45deg)}
+.cursor-dot{position:fixed;width:6px;height:6px;background:var(--coral);border-radius:50%;pointer-events:none;z-index:10001;transform:translate(-50%,-50%);transition:transform .1s}
+
+/* Ripple Background */
+.ripple-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,107,74,.06);transform:scale(0);animation:rippleGrow .8s ease-out forwards}
+@keyframes rippleGrow{to{transform:scale(4);opacity:0}}
+
+/* Scroll Progress - SVG Morph */
+.scroll-progress{position:fixed;top:0;left:0;width:100%;height:4px;z-index:9999;pointer-events:none}
+.scroll-progress svg{width:100%;height:100%}
+.scroll-progress path{transition:d .1s linear}
+
+/* Container */
+.container{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* === HERO === */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:60px 24px}
+.hero-label{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:var(--coral);margin-bottom:24px;opacity:0;animation:fadeUp .8s .3s forwards}
+.hero-name{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;line-height:1.1;margin-bottom:16px;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-name .char{display:inline-block;transition:transform .3s,color .3s}
+.hero-name .char:hover{transform:translateY(-8px) rotate(-3deg);color:var(--coral)}
+.hero-subtitle{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:clamp(1rem,2.5vw,1.35rem);color:var(--navy);font-weight:300;opacity:0;animation:fadeUp .8s .7s forwards;max-width:600px}
+.hero-scroll-hint{position:absolute;bottom:40px;opacity:0;animation:fadeUp .8s 1.2s forwards}
+.hero-scroll-hint span{display:block;width:24px;height:40px;border:2px solid var(--text);border-radius:12px;position:relative;margin:0 auto}
+.hero-scroll-hint span::after{content:'';position:absolute;top:6px;left:50%;width:4px;height:8px;background:var(--coral);border-radius:2px;transform:translateX(-50%);animation:scrollDot 1.8s infinite}
+@keyframes scrollDot{0%{opacity:1;top:6px}100%{opacity:0;top:24px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* === PROBLEM CARDS (3D Tilt) === */
+.section{padding:100px 0}
+.section-title{font-size:clamp(1.5rem,4vw,2.5rem);font-weight:900;margin-bottom:12px;text-align:center}
+.section-desc{font-family:-apple-system,'Helvetica Neue',sans-serif;text-align:center;color:var(--navy);max-width:640px;margin:0 auto 48px;font-size:.95rem}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.tilt-card{
+  background:#fff;border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);
+  transition:transform .15s ease-out,box-shadow .15s;transform-style:preserve-3d;
+  will-change:transform;position:relative;overflow:hidden;
+}
+.tilt-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,107,74,.05),transparent);opacity:0;transition:opacity .3s}
+.tilt-card:hover::before{opacity:1}
+.tilt-card-icon{font-size:2rem;margin-bottom:16px;display:block}
+.tilt-card h3{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:8px;transform:translateZ(30px)}
+.tilt-card p{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.88rem;color:#666;line-height:1.6;transform:translateZ(20px)}
+
+/* === VISION TOGGLE === */
+.vision-toggle-wrap{text-align:center;padding:40px 0}
+.vision-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 32px;
+  background:var(--navy);color:#fff;border:none;border-radius:40px;
+  font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.95rem;
+  cursor:none;position:relative;transition:transform .2s,box-shadow .2s;
+}
+.vision-btn::before{content:'';position:absolute;inset:-2px;border-radius:42px;background:var(--coral);opacity:0;transition:opacity .3s;z-index:-1}
+.vision-btn:hover::before{opacity:1}
+.vision-btn .toggle-track{width:44px;height:24px;background:rgba(255,255,255,.25);border-radius:12px;position:relative;transition:background .3s}
+.vision-btn .toggle-thumb{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.vision-btn.active .toggle-track{background:rgba(255,255,255,.35)}
+.vision-btn.active .toggle-thumb{transform:translateX(20px)}
+.vision-content{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px;opacity:1;transition:opacity .4s}
+.vision-content.switching{opacity:0}
+.vision-panel{background:#fff;border-radius:var(--radius);padding:36px;box-shadow:var(--shadow);text-align:left}
+.vision-panel h3{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:12px;color:var(--navy)}
+.vision-panel p{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.9rem;color:#666;line-height:1.7}
+
+/* === RESEARCH LAYERS (Expand/Collapse) === */
+.research-item{
+  background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);
+  margin-bottom:16px;overflow:hidden;transition:box-shadow .3s;
+}
+.research-item:hover{box-shadow:0 8px 32px rgba(45,45,45,.12)}
+.research-header{
+  padding:20px 28px;display:flex;align-items:center;justify-content:space-between;
+  cursor:none;user-select:none;
+}
+.research-header h3{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:1rem;font-weight:600}
+.research-header .chevron{width:20px;height:20px;transition:transform .4s;color:var(--coral)}
+.research-item.open .chevron{transform:rotate(180deg)}
+.research-body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
+.research-body-inner{padding:0 28px 24px;font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.9rem;color:#666;line-height:1.8}
+.research-body-inner .tag{display:inline-block;padding:4px 12px;background:var(--bg-warm);border-radius:20px;font-size:.78rem;margin:4px 4px 0 0;color:var(--navy)}
+
+/* === DEMO PLAYGROUND === */
+.demo-area{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.demo-panel{background:#fff;border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.demo-panel-title{font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.85rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px}
+.wave-canvas{width:100%;height:160px;border-radius:8px}
+.demo-controls{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+.demo-btn{
+  padding:8px 20px;border:2px solid var(--navy);border-radius:24px;
+  background:transparent;font-family:-apple-system,'Helvetica Neue',sans-serif;
+  font-size:.82rem;color:var(--navy);cursor:none;transition:all .25s;
+}
+.demo-btn:hover{background:var(--navy);color:#fff}
+.demo-btn.active{background:var(--coral);border-color:var(--coral);color:#fff}
+
+/* Voice Wave */
+.voice-wave{display:flex;align-items:center;justify-content:center;height:120px;gap:3px}
+.voice-bar{width:4px;border-radius:2px;background:var(--coral);transition:height .1s}
+
+/* Drag Zone */
+.drag-zone{min-height:180px;border:2px dashed var(--bg-warm);border-radius:8px;position:relative;display:flex;align-items:center;justify-content:center;gap:16px;padding:24px}
+.draggable{
+  width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;cursor:grab;user-select:none;transition:box-shadow .2s;
+  touch-action:none;
+}
+.draggable:active{cursor:none}
+.draggable.dragging{box-shadow:0 8px 32px rgba(0,0,0,.2);z-index:10}
+
+/* === CONTACT === */
+.contact{text-align:center;padding:80px 0 120px}
+.magnetic-btn{
+  display:inline-block;padding:18px 48px;background:var(--coral);color:#fff;
+  border-radius:40px;font-family:-apple-system,'Helvetica Neue',sans-serif;
+  font-size:1.05rem;font-weight:600;cursor:none;position:relative;
+  transition:transform .15s ease-out;will-change:transform;
+}
+.magnetic-btn::after{content:'→';margin-left:8px;transition:transform .3s}
+.magnetic-btn:hover::after{transform:translateX(4px)}
+.contact-links{display:flex;justify-content:center;gap:32px;margin-top:32px;font-family:-apple-system,'Helvetica Neue',sans-serif;font-size:.9rem}
+.contact-links a{color:var(--navy);border-bottom:1px solid transparent;transition:border-color .3s}
+.contact-links a:hover{border-bottom-color:var(--coral)}
+
+/* === Scramble Text === */
+.scramble{display:inline-block;position:relative}
+.scramble::after{content:attr(data-text);position:absolute;left:0;top:0;color:var(--coral);clip-path:inset(0 100% 0 0);transition:clip-path .4s}
+.scramble:hover::after{clip-path:inset(0 0 0 0)}
+
+/* === Responsive === */
+@media(max-width:768px){
+  .cursor,.cursor-dot{display:none}
+  body{cursor:auto}
+  .vision-content{grid-template-columns:1fr}
+  .demo-area{grid-template-columns:1fr}
+  .hero{min-height:80vh;padding:40px 24px}
+  .section{padding:60px 0}
+  .cards-grid{grid-template-columns:1fr}
+  .contact-links{flex-direction:column;gap:16px}
+}
+
+/* Smooth expand height */
+.section-reveal{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s}
+.section-reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Ripple Background -->
+<div class="ripple-bg" id="rippleBg"></div>
+
+<!-- Scroll Progress SVG -->
+<div class="scroll-progress" id="scrollProgress">
+  <svg viewBox="0 0 1200 4" preserveAspectRatio="none">
+    <path id="progressPath" d="M0,2 Q300,4 600,2 T1200,2" fill="none" stroke="#FF6B4A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M0,2 Q300,4 600,2 T1200,2" fill="none" stroke="#F5F0EB" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-label">交互展陈 — Interaction Showcase</div>
+  <h1 class="hero-name" id="heroName">Rock Chen</h1>
+  <p class="hero-subtitle">Software Engineer & Product Thinker<br>用技术创造更主动、更有温度的语音体验</p>
+  <div class="hero-scroll-hint">
+    <span></span>
+  </div>
+</section>
+
+<!-- ===== PROBLEM CARDS ===== -->
+<section class="section section-reveal" id="problems">
+  <div class="container">
+    <h2 class="section-title">当前语音助手的困境</h2>
+    <p class="section-desc">现有的 AI 语音工具等待用户主动发起——缺乏真正的自主性与交互深度</p>
+    <div class="cards-grid">
+      <div class="tilt-card" data-tilt>
+        <span class="tilt-card-icon">🎙️</span>
+        <h3>被动响应模式</h3>
+        <p>用户必须主动提问或发出指令，助手无法感知情境并主动介入。这种"问答式"交互限制了语音助手的真正潜力。</p>
+      </div>
+      <div class="tilt-card" data-tilt>
+        <span class="tilt-card-icon">🤖</span>
+        <h3>缺乏上下文理解</h3>
+        <p>每次对话像是从零开始，助手无法累积记忆、感知情绪或理解用户的长期意图与偏好。</p>
+      </div>
+      <div class="tilt-card" data-tilt>
+        <span class="tilt-card-icon">💡</span>
+        <h3>交互方式单一</h3>
+        <p>语音、文字、手势等多种交互模态未能有效融合，用户只能通过有限的通道与 AI 沟通。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VISION TOGGLE ===== -->
+<section class="section section-reveal" id="vision">
+  <div class="container">
+    <h2 class="section-title">两种愿景</h2>
+    <p class="section-desc">在"现状"与"未来"之间切换，感受交互范式的根本差异</p>
+    <div class="vision-toggle-wrap">
+      <button class="vision-btn" id="visionBtn" data-magnetic>
+        <span id="visionLabel">当前模式</span>
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      </button>
+      <div class="vision-content" id="visionContent">
+        <div class="vision-panel" id="panelCurrent">
+          <h3>🔴 现状：被动式语音助手</h3>
+          <p>用户说 "帮我设个闹钟"，助手执行指令。用户不说，助手就沉默。交互是单向的、命令式的。用户需要时刻记住要做什么，AI 只是执行工具。</p>
+        </div>
+        <div class="vision-panel" id="panelFuture" style="display:none">
+          <h3>🟢 未来：主动式语音伙伴</h3>
+          <p>助手感知到用户连续三天加班到深夜，主动提醒："你最近休息很少，要不要我帮你调整明天的日程，留出休息时间？" 交互是双向的、有共情能力的。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESEARCH LAYERS ===== -->
+<section class="section section-reveal" id="research">
+  <div class="container">
+    <h2 class="section-title">研究洞察</h2>
+    <p class="section-desc">点击展开每一层研究发现</p>
+
+    <div class="research-item" data-expand>
+      <div class="research-header">
+        <h3>用户行为分析</h3>
+        <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="research-body">
+        <div class="research-body-inner">
+          通过对 200+ 用户的访谈与行为日志分析，我们发现 78% 的用户希望语音助手能"主动"提供帮助，而非等待指令。用户最高频的需求场景集中在日程管理、信息聚合和情感陪伴三个方向。
+          <div><span class="tag">用户访谈</span><span class="tag">行为日志</span><span class="tag">N=200+</span><span class="tag">定性分析</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-item" data-expand>
+      <div class="research-header">
+        <h3>竞品交互模式对比</h3>
+        <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="research-body">
+        <div class="research-body-inner">
+          对比了 Siri、Google Assistant、Alexa、小爱同学等主流产品的交互设计，发现现有产品在"主动触发"维度的得分普遍低于 2/10。仅少数场景（如日历提醒）实现了半主动行为。核心差距在于情境感知与决策能力的缺失。
+          <div><span class="tag">竞品分析</span><span class="tag">交互评估</span><span class="tag">5款产品</span><span class="tag">评分模型</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-item" data-expand>
+      <div class="research-header">
+        <h3>技术可行性研究</h3>
+        <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="research-body">
+        <div class="research-body-inner">
+          基于 LLM 的情境推理、多模态感知融合、用户意图预测等技术已具备基础能力。Voice Helper 的核心技术栈包括：实时语音流处理、上下文记忆系统、主动决策引擎和自适应交互界面。MVP 阶段已在端侧部署完成核心推理模块。
+          <div><span class="tag">LLM 推理</span><span class="tag">多模态融合</span><span class="tag">端侧部署</span><span class="tag">MVP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEMO PLAYGROUND ===== -->
+<section class="section section-reveal" id="demo">
+  <div class="container">
+    <h2 class="section-title">互动演示</h2>
+    <p class="section-desc">在这里体验 Voice Helper 的交互原型</p>
+    <div class="demo-area">
+      <!-- Voice Wave Panel -->
+      <div class="demo-panel tilt-card">
+        <div class="demo-panel-title">语音波形模拟</div>
+        <div class="voice-wave" id="voiceWave"></div>
+        <div class="demo-controls">
+          <button class="demo-btn active" data-wave="idle">待机</button>
+          <button class="demo-btn" data-wave="listening">聆听中</button>
+          <button class="demo-btn" data-wave="thinking">思考中</button>
+          <button class="demo-btn" data-wave="speaking">回应中</button>
+        </div>
+      </div>
+      <!-- Draggable Panel -->
+      <div class="demo-panel">
+        <div class="demo-panel-title">拖拽排列 — 优先级排序</div>
+        <div class="drag-zone" id="dragZone">
+          <div class="draggable" draggable="false" style="background:#FF6B4A" data-drag>📋</div>
+          <div class="draggable" draggable="false" style="background:#1E3A5F" data-drag>💡</div>
+          <div class="draggable" draggable="false" style="background:#4CAF50" data-drag>🎯</div>
+          <div class="draggable" draggable="false" style="background:#FF9800" data-drag>⚡</div>
+        </div>
+        <p style="font-family:-apple-system,sans-serif;font-size:.78rem;color:#999;margin-top:12px">拖拽图标调整优先级顺序</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact section-reveal" id="contact">
+  <div class="container">
+    <h2 class="section-title" style="margin-bottom:32px">一起构建未来</h2>
+    <a href="mailto:rock@example.com" class="magnetic-btn" data-magnetic>开始对话</a>
+    <div class="contact-links">
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Blog</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // === CUSTOM CURSOR ===
+  const cursor = document.getElementById('cursor');
+  const cursorDot = document.getElementById('cursorDot');
+  let mx = 0, my = 0, cx = 0, cy = 0;
+  const isTouch = 'ontouchstart' in window;
+
+  if (!isTouch) {
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorDot.style.left = mx+'px'; cursorDot.style.top = my+'px'; });
+    (function loop(){ cx += (mx - cx) * .15; cy += (my - cy) * .15; cursor.style.left = cx+'px'; cursor.style.top = cy+'px'; requestAnimationFrame(loop); })();
+
+    // Hover states
+    document.querySelectorAll('a,button,.tilt-card,.research-header,.draggable').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+    document.querySelectorAll('.hero-name .char,.scramble').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); cursor.classList.add('text-mode'); });
+      el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); cursor.classList.remove('text-mode'); });
+    });
+  }
+
+  // === RIPPLE ON CLICK ===
+  const rippleBg = document.getElementById('rippleBg');
+  document.addEventListener('click', e => {
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    const size = Math.max(window.innerWidth, window.innerHeight) * 2;
+    r.style.width = size + 'px';
+    r.style.height = size + 'px';
+    r.style.left = (e.clientX - size/2) + 'px';
+    r.style.top = (e.clientY - size/2) + 'px';
+    rippleBg.appendChild(r);
+    setTimeout(() => r.remove(), 900);
+  });
+
+  // === HERO NAME CHAR ANIMATION ===
+  const heroName = document.getElementById('heroName');
+  const name = 'Rock Chen';
+  heroName.innerHTML = name.split('').map(c => `<span class="char">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+
+  // === SCROLL PROGRESS (SVG morph) ===
+  const progressPath = document.getElementById('progressPath');
+  const totalLength = 1200;
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.min(scrollTop / docHeight, 1);
+    const filled = pct * totalLength;
+    const remaining = totalLength - filled;
+    // Morph the path amplitude based on scroll
+    const amp = 2 + Math.sin(pct * Math.PI) * 3;
+    const d = `M0,2 Q${filled/2},${2+amp} ${filled},2`;
+    progressPath.setAttribute('d', d);
+    progressPath.style.strokeDasharray = `${filled} ${remaining}`;
+    progressPath.style.strokeDashoffset = '0';
+  }
+  window.addEventListener('scroll', updateProgress);
+  updateProgress();
+
+  // === 3D TILT CARDS ===
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+      card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(600px) rotateX(0) rotateY(0) scale(1)';
+    });
+  });
+
+  // === MAGNETIC BUTTONS ===
+  document.querySelectorAll('[data-magnetic]').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * .25}px, ${y * .25}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0,0)';
+    });
+  });
+
+  // === VISION TOGGLE ===
+  const visionBtn = document.getElementById('visionBtn');
+  const visionContent = document.getElementById('visionContent');
+  const visionLabel = document.getElementById('visionLabel');
+  const panelCurrent = document.getElementById('panelCurrent');
+  const panelFuture = document.getElementById('panelFuture');
+  let isFuture = false;
+
+  visionBtn.addEventListener('click', () => {
+    isFuture = !isFuture;
+    visionContent.classList.add('switching');
+    setTimeout(() => {
+      panelCurrent.style.display = isFuture ? 'none' : 'block';
+      panelFuture.style.display = isFuture ? 'block' : 'none';
+      visionLabel.textContent = isFuture ? '未来模式' : '当前模式';
+      visionBtn.classList.toggle('active', isFuture);
+      visionContent.classList.remove('switching');
+    }, 400);
+  });
+
+  // === EXPAND/COLLAPSE RESEARCH ===
+  document.querySelectorAll('[data-expand]').forEach(item => {
+    const header = item.querySelector('.research-header');
+    const body = item.querySelector('.research-body');
+    header.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // Close all first
+      document.querySelectorAll('[data-expand]').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.research-body').style.maxHeight = '0';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // === VOICE WAVE ===
+  const waveContainer = document.getElementById('voiceWave');
+  const barCount = 32;
+  const bars = [];
+  for (let i = 0; i < barCount; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'voice-bar';
+    bar.style.height = '4px';
+    waveContainer.appendChild(bar);
+    bars.push(bar);
+  }
+
+  let waveMode = 'idle';
+  let waveRAF;
+  const waveConfigs = {
+    idle: { min: 3, max: 6, speed: 0.3 },
+    listening: { min: 4, max: 80, speed: 1.5 },
+    thinking: { min: 8, max: 40, speed: 2.5 },
+    speaking: { min: 6, max: 70, speed: 1.0 },
+  };
+
+  function animateWave() {
+    const cfg = waveConfigs[waveMode];
+    const t = Date.now() / 1000;
+    bars.forEach((bar, i) => {
+      const phase = i / barCount * Math.PI * 2;
+      const base = (cfg.min + cfg.max) / 2;
+      const amp = (cfg.max - cfg.min) / 2;
+      const h = base + Math.sin(t * cfg.speed + phase) * amp * (0.5 + 0.5 * Math.sin(t * 0.5 + i * 0.3));
+      bar.style.height = Math.max(2, h) + 'px';
+    });
+    waveRAF = requestAnimationFrame(animateWave);
+  }
+  animateWave();
+
+  document.querySelectorAll('[data-wave]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-wave]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      waveMode = btn.dataset.wave;
+    });
+  });
+
+  // === DRAGGABLE ELEMENTS ===
+  const dragZone = document.getElementById('dragZone');
+  let dragEl = null, offsetX = 0, offsetY = 0, origRect = null;
+
+  dragZone.querySelectorAll('[data-drag]').forEach(el => {
+    el.addEventListener('pointerdown', e => {
+      dragEl = el;
+      origRect = el.getBoundingClientRect();
+      const parentRect = dragZone.getBoundingClientRect();
+      offsetX = e.clientX - origRect.left;
+      offsetY = e.clientY - origRect.top;
+      el.classList.add('dragging');
+      el.style.position = 'fixed';
+      el.style.left = origRect.left + 'px';
+      el.style.top = origRect.top + 'px';
+      el.style.zIndex = '100';
+      el.setPointerCapture(e.pointerId);
+      if (!isTouch) cursor.classList.add('drag-mode');
+    });
+
+    el.addEventListener('pointermove', e => {
+      if (!dragEl) return;
+      dragEl.style.left = (e.clientX - offsetX) + 'px';
+      dragEl.style.top = (e.clientY - offsetY) + 'px';
+    });
+
+    el.addEventListener('pointerup', e => {
+      if (!dragEl) return;
+      const el = dragEl;
+      el.classList.remove('dragging');
+      el.style.transition = 'left .4s cubic-bezier(.34,1.56,.64,1), top .4s cubic-bezier(.34,1.56,.64,1)';
+      el.style.left = origRect.left + 'px';
+      el.style.top = origRect.top + 'px';
+      if (!isTouch) cursor.classList.remove('drag-mode');
+      setTimeout(() => {
+        el.style.position = '';
+        el.style.left = '';
+        el.style.top = '';
+        el.style.zIndex = '';
+        el.style.transition = '';
+      }, 450);
+      dragEl = null;
+    });
+  });
+
+  // === SCROLL REVEAL ===
+  const revealEls = document.querySelectorAll('.section-reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => observer.observe(el));
+
+})();
+</script>
+</body>
+</html>

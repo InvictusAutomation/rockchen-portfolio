@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Experiential Voyage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0A1628;--navy-mid:#0F2847;
+  --teal:#0D9488;--teal-light:#14B8A6;
+  --amber:#F59E0B;--amber-light:#FBBF24;
+  --text-light:rgba(255,255,255,.88);
+  --text-dim:rgba(255,255,255,.55);
+  --fh:'Cormorant Garamond',Georgia,serif;
+  --fb:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--fb);color:var(--text-light);background:var(--navy);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+#ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 120% 80% at 50% 50%,var(--navy-mid),var(--navy));transition:background 1.2s ease}
+#ambient-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle 600px at var(--mx,50%) var(--my,40%),rgba(13,148,136,.12),transparent 70%);transition:background .6s ease}
+#timeline{position:fixed;left:32px;top:0;height:100vh;width:2px;z-index:100;background:rgba(255,255,255,.06)}
+#timeline-progress{width:100%;background:linear-gradient(180deg,var(--teal),var(--amber));border-radius:0 0 2px 2px;transition:height .15s ease;box-shadow:0 0 12px rgba(13,148,136,.5)}
+#timeline-dots{position:fixed;left:25px;top:0;height:100vh;z-index:101;pointer-events:none}
+.tl-dot{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy);transition:all .4s ease;transform:translateX(-50%)}
+.tl-dot.active{border-color:var(--teal-light);background:var(--teal);box-shadow:0 0 16px rgba(13,148,136,.6)}
+.tl-dot.warm{border-color:var(--amber);background:var(--amber);box-shadow:0 0 16px rgba(245,158,11,.5)}
+.scene{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;padding:80px 60px 80px 100px}
+.reveal{opacity:0;transform:translateY(60px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-80px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(80px);transition:opacity .9s cubic-bezier(.23,1,.32,1),transform .9s cubic-bezier(.23,1,.32,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.85);transition:opacity .8s ease,transform .8s cubic-bezier(.23,1,.32,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.reveal-float{opacity:0;transform:translateY(100px);transition:opacity 1s ease .2s,transform 1s cubic-bezier(.23,1,.32,1) .2s}
+.reveal-float.visible{opacity:1;transform:translateY(0)}
+.chapter-card{position:absolute;top:50%;transform:translateY(-50%) translateX(-120%);padding:24px 40px;border-left:3px solid var(--teal-light);background:rgba(255,255,255,.04);backdrop-filter:blur(20px);transition:transform 1s cubic-bezier(.23,1,.32,1),opacity 1s ease;opacity:0;z-index:10}
+.chapter-card.slide-in{transform:translateY(-50%) translateX(0);opacity:1}
+.chapter-card h2{font-family:var(--fh);font-size:2.4rem;font-weight:300;letter-spacing:.02em;margin-bottom:8px}
+.chapter-card .ch-num{font-family:var(--fb);font-size:.7rem;text-transform:uppercase;letter-spacing:.25em;color:var(--teal-light);margin-bottom:12px}
+.quote-float{position:relative;padding:32px 40px;margin:48px 0;border-left:2px solid var(--teal-light);background:linear-gradient(135deg,rgba(13,148,136,.06),transparent);font-family:var(--fh);font-size:1.35rem;font-style:italic;line-height:1.8;color:rgba(255,255,255,.82);max-width:680px}
+.quote-float::before{content:'\201C';position:absolute;top:-10px;left:16px;font-size:4rem;color:var(--teal-light);opacity:.4;font-style:normal}
+.sound-wave{display:flex;align-items:center;gap:3px;height:60px}
+.sound-wave span{width:4px;border-radius:4px;background:var(--teal-light);animation:wave 1.2s ease-in-out infinite}
+@keyframes wave{0%,100%{height:8px;opacity:.3}50%{height:var(--h,40px);opacity:1}}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border:1px solid rgba(255,255,255,.25);border-radius:40px;color:var(--text-light);text-decoration:none;font-family:var(--fb);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;transition:all .4s ease;cursor:pointer;background:transparent}
+.btn-outline:hover{border-color:var(--teal-light);background:rgba(13,148,136,.1);transform:translateY(-2px)}
+.btn-warm{border-color:var(--amber);color:var(--amber-light)}
+.btn-warm:hover{background:rgba(245,158,11,.1);border-color:var(--amber-light)}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.5;animation:sp 2.5s ease-in-out infinite}
+.scroll-indicator span{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim)}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--teal-light),transparent);animation:sl 2s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}50%{opacity:.7;transform:translateX(-50%) translateY(8px)}}
+@keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.scene-opening{flex-direction:column;text-align:center}
+.scene-opening h1{font-family:var(--fh);font-size:clamp(2.8rem,6vw,5rem);font-weight:300;line-height:1.15;margin-bottom:16px}
+.scene-opening .subtitle{font-size:1.05rem;color:var(--text-dim);max-width:520px;margin:0 auto 40px}
+.scene-content{max-width:860px}
+.scene-content h2{font-family:var(--fh);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.25;margin-bottom:24px}
+.scene-content p{font-size:1rem;line-height:1.9;color:rgba(255,255,255,.75);margin-bottom:20px;max-width:640px}
+.section-divider{width:60px;height:1px;background:linear-gradient(90deg,var(--teal-light),transparent);margin:48px 0}
+.framework-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin:40px 0}
+.fw-card{padding:28px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.02);transition:all .5s ease}
+.fw-card:hover{border-color:var(--teal);background:rgba(13,148,136,.05);transform:translateY(-4px)}
+.fw-card h4{font-family:var(--fh);font-size:1.25rem;margin-bottom:8px;color:var(--text-light)}
+.fw-card p{font-size:.85rem;color:var(--text-dim);line-height:1.7}
+.vision-tag{display:inline-block;padding:6px 16px;border:1px solid rgba(245,158,11,.3);border-radius:20px;font-size:.75rem;letter-spacing:.1em;color:var(--amber-light);margin:4px}
+.scene-epilogue{text-align:center;flex-direction:column}
+.epilogue-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.scene-warm{background:linear-gradient(180deg,transparent,rgba(245,158,11,.03) 50%,rgba(245,158,11,.06))}
+.scene-warm .quote-float{border-left-color:var(--amber)}
+.scene-warm .quote-float::before{color:var(--amber)}
+.scene-warm .chapter-card{border-left-color:var(--amber)}
+.scene-warm .chapter-card .ch-num{color:var(--amber-light)}
+.scene-warm .sound-wave span{background:var(--amber-light)}
+.scene-warm .section-divider{background:linear-gradient(90deg,var(--amber),transparent)}
+.media-placeholder{width:100%;max-width:640px;aspect-ratio:16/9;border:1px dashed rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.01);margin:32px 0}
+.demo-area{width:100%;max-width:700px;aspect-ratio:16/10;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.02);padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;margin:32px 0;position:relative;overflow:hidden}
+.demo-area::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(13,148,136,.08),transparent 70%)}
+.demo-area p{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);z-index:1}
+.constellation{position:relative;width:100%;max-width:600px;aspect-ratio:4/3;margin:0 auto}
+.constellation canvas{width:100%;height:100%}
+.research-viz{width:100%;max-width:640px;aspect-ratio:4/3;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.01);padding:24px;margin:32px 0;position:relative;overflow:hidden}
+.research-viz canvas{width:100%;height:100%}
+@media(max-width:768px){
+  .scene{padding:60px 24px}
+  #timeline,#timeline-dots{display:none}
+  .chapter-card{position:relative;top:auto;transform:translateX(-120%);padding:16px 24px;margin-bottom:32px}
+  .chapter-card.slide-in{transform:translateX(0)}
+  .scene-content h2{font-size:1.8rem}
+  .sound-wave{justify-content:center}
+  .framework-grid{grid-template-columns:1fr}
+  .epilogue-links{flex-direction:column;align-items:center}
+}
+#grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px}
+</style>
+</head>
+<body>
+<div id="ambient-bg"></div>
+<div id="grain"></div>
+<div id="timeline"><div id="timeline-progress" style="height:0%"></div></div>
+<div id="timeline-dots"></div>
+
+<!-- SCENE 1: OPENING -->
+<section class="scene scene-opening" data-scene="opening">
+  <div>
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--teal-light);margin-bottom:20px">Software Engineer &amp; Product Thinker</p>
+    <h1 class="reveal" style="transition-delay:.15s">Rock Chen</h1>
+    <p class="subtitle reveal" style="transition-delay:.3s">Building products at the intersection of<br>autonomous AI and human experience</p>
+    <div class="sound-wave reveal" style="justify-content:center;transition-delay:.5s" id="hero-wave"></div>
+  </div>
+  <div class="scroll-indicator reveal" style="transition-delay:.8s">
+    <span>Scroll to begin the journey</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- SCENE 2: THE DISCOVERY -->
+<section class="scene" data-scene="discovery">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 01</div><h2>The Discovery</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">It started with a question<br>that wouldn't go away.</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal" style="transition-delay:.2s">In a world increasingly populated by AI assistants, voice interfaces promised to be the most natural bridge between human intent and machine capability. Yet something felt fundamentally off. Users weren't having conversations — they were issuing commands to a very fast search engine.</p>
+    <p class="reveal" style="transition-delay:.35s">The gap wasn't in technology. It was in philosophy. Every voice assistant was designed to react — to wait, to listen, to respond. But what if AI could be proactive? What if it understood not just what you said, but what you needed before you said it?</p>
+    <div class="quote-float reveal-float">"The best interface is one that anticipates you — not one that waits for you."</div>
+    <div class="media-placeholder reveal"></div>
+  </div>
+</section>
+
+<!-- SCENE 3: THE QUESTION -->
+<section class="scene" data-scene="question">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 02</div><h2>The Question</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-right">What would it mean for AI<br>to truly understand context?</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">This wasn't just about making assistants smarter. It was about rethinking the relationship between human and machine. Could an AI build a model of your world — your habits, your patterns, your unspoken needs — and act on that understanding with appropriate autonomy?</p>
+    <p class="reveal" style="transition-delay:.15s">The tension was clear: autonomy without understanding is chaos. Understanding without autonomy is a waste. The sweet spot — proactive intelligence grounded in deep contextual awareness — became the guiding star.</p>
+    <div style="margin:40px 0">
+      <p class="reveal" style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:16px">Voice as the natural interface</p>
+      <div class="sound-wave reveal" id="voice-wave-1"></div>
+    </div>
+    <div class="quote-float reveal-float">"Proactive AI autonomy + natural interactivity — two ideas that could reshape how humans experience technology."</div>
+    <div class="research-viz reveal-scale" id="research-viz-1"></div>
+  </div>
+</section>
+
+<!-- SCENE 4: DEEP DIVE -->
+<section class="scene" data-scene="deep-dive">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 03</div><h2>Deep Dive</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">Researching the landscape<br>of autonomous AI</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">The research phase was a deep exploration across multiple domains: natural language understanding, contextual AI, proactive computing, and human-computer interaction. Each domain offered pieces of a puzzle that hadn't been assembled before.</p>
+    <div class="framework-grid reveal" style="transition-delay:.2s">
+      <div class="fw-card"><h4>Contextual Awareness</h4><p>Understanding not just words, but the world behind them — time, location, history, intent.</p></div>
+      <div class="fw-card"><h4>Proactive Autonomy</h4><p>Acting on behalf of users with graduated independence, calibrated by trust and transparency.</p></div>
+      <div class="fw-card"><h4>Natural Interactivity</h4><p>Voice as the primary modality — fluid, conversational, context-rich, and emotionally aware.</p></div>
+    </div>
+    <p class="reveal" style="transition-delay:.3s">The key insight emerged from the intersection: the most powerful AI experiences aren't those that answer questions, but those that understand the questions that haven't been asked yet.</p>
+    <div class="research-viz reveal-scale" id="research-viz-2"></div>
+    <div class="media-placeholder reveal"></div>
+  </div>
+</section>
+
+<!-- SCENE 5: THE FRAMEWORK -->
+<section class="scene scene-warm" data-scene="framework">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 04</div><h2>The Framework</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-right">Designing the architecture<br>of proactive intelligence</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">From research to architecture — the framework needed to balance three forces: the intelligence to act proactively, the wisdom to stay within bounds, and the empathy to communicate naturally.</p>
+    <div class="constellation reveal-scale" id="constellation-diagram"><canvas id="constellation-canvas"></canvas></div>
+    <div class="quote-float reveal-float">"A framework isn't just structure — it's a set of principles that guide every decision, from the architecture to the smallest interaction detail."</div>
+    <div class="framework-grid reveal" style="transition-delay:.2s">
+      <div class="fw-card"><h4>Perception Layer</h4><p>Multi-modal context gathering — voice, environment, usage patterns, temporal context.</p></div>
+      <div class="fw-card"><h4>Decision Engine</h4><p>Graduated autonomy with confidence scoring and user preference learning.</p></div>
+      <div class="fw-card"><h4>Expression Interface</h4><p>Natural voice output with personality, tone adaptation, and contextual phrasing.</p></div>
+    </div>
+    <div class="media-placeholder reveal"></div>
+  </div>
+</section>
+
+<!-- SCENE 6: THE PRODUCT -->
+<section class="scene scene-warm" data-scene="product">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 05</div><h2>The Product</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-left">Voice Helper<br><span style="font-size:.65em;color:var(--text-dim);font-weight:300">语音助手</span></h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">Voice Helper is the embodiment of these ideas — a voice-first AI assistant that combines proactive autonomy with natural, context-aware interactivity. It doesn't just respond. It understands, anticipates, and acts.</p>
+    <div class="demo-area reveal-scale">
+      <div class="sound-wave" id="demo-wave"></div>
+      <p>Interactive Demo — Voice Helper in Action</p>
+    </div>
+    <div class="framework-grid reveal" style="transition-delay:.2s">
+      <div class="fw-card"><h4>Proactive Suggestions</h4><p>Offers help before you ask, based on learned patterns and contextual signals.</p></div>
+      <div class="fw-card"><h4>Natural Conversations</h4><p>Fluid multi-turn dialogue that maintains context and adapts to your communication style.</p></div>
+      <div class="fw-card"><h4>Adaptive Autonomy</h4><p>Gradually earns trust through transparent actions, adjustable autonomy levels, and clear reasoning.</p></div>
+    </div>
+    <div class="media-placeholder reveal"></div>
+    <div class="media-placeholder reveal" style="max-width:480px;aspect-ratio:9/16"></div>
+  </div>
+</section>
+
+<!-- SCENE 7: THE VISION -->
+<section class="scene scene-warm" data-scene="vision">
+  <div class="chapter-card" data-chapter><div class="ch-num">Chapter 06</div><h2>The Vision</h2></div>
+  <div class="scene-content">
+    <h2 class="reveal-right">Redefining the human-AI<br>relationship</h2>
+    <div class="section-divider reveal"></div>
+    <p class="reveal">Voice Helper is not just a product — it's a thesis about the future of human-computer interaction. As AI capabilities grow, the interface between human intent and machine execution must become more natural, more anticipatory, and more respectful of human agency.</p>
+    <p class="reveal" style="transition-delay:.15s">The vision extends beyond voice assistants. This framework for proactive, context-aware autonomy can reshape how we interact with all intelligent systems — from personal productivity tools to enterprise platforms.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:32px 0" class="reveal">
+      <span class="vision-tag">Proactive AI</span><span class="vision-tag">Voice-First Design</span><span class="vision-tag">Contextual Intelligence</span>
+      <span class="vision-tag">Adaptive Autonomy</span><span class="vision-tag">Human-Centered</span><span class="vision-tag">Natural Interaction</span><span class="vision-tag">Trust &amp; Transparency</span>
+    </div>
+    <div class="quote-float reveal-float">"The future of AI isn't about replacing human judgment — it's about amplifying it through understanding."</div>
+    <div class="research-viz reveal-scale" id="research-viz-3"></div>
+  </div>
+</section>
+
+<!-- SCENE 8: EPILOGUE -->
+<section class="scene scene-epilogue scene-warm" data-scene="epilogue">
+  <div class="scene-content" style="text-align:center">
+    <p class="reveal" style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber-light);margin-bottom:20px">End of Voyage</p>
+    <h2 class="reveal" style="transition-delay:.1s">Let's build the future<br>of intelligent interaction.</h2>
+    <p class="reveal" style="transition-delay:.25s;margin:20px auto 40px;max-width:460px;color:var(--text-dim)">Interested in exploring proactive AI, voice interfaces, or the intersection of autonomy and user experience? I'd love to connect.</p>
+    <div class="epilogue-links reveal" style="transition-delay:.4s">
+      <a href="mailto:rock@example.com" class="btn-outline btn-warm">Get in Touch</a>
+      <a href="#" class="btn-outline btn-warm">GitHub</a>
+      <a href="#" class="btn-outline btn-warm">LinkedIn</a>
+    </div>
+    <div class="sound-wave reveal" style="justify-content:center;margin-top:48px;transition-delay:.6s" id="outro-wave"></div>
+  </div>
+</section>
+
+<script>
+(function(){
+/* Sound waves */
+function mkWave(id,n){var w=document.getElementById(id);if(!w)return;for(var i=0;i<n;i++){var b=document.createElement('span');b.style.setProperty('--h',(12+Math.random()*36)+'px');b.style.animationDelay=(i*.04)+'s';b.style.animationDuration=(.8+Math.random()*.8)+'s';w.appendChild(b)}}
+mkWave('hero-wave',50);mkWave('voice-wave-1',35);mkWave('demo-wave',30);mkWave('outro-wave',20);
+
+/* Scroll reveal */
+var rObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rObs.unobserve(e.target)}})},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-float').forEach(function(el){rObs.observe(el)});
+
+/* Chapter cards */
+var cObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('slide-in');else e.target.classList.remove('slide-in')})},{threshold:.3});
+document.querySelectorAll('[data-chapter]').forEach(function(el){cObs.observe(el)});
+
+/* Timeline */
+var scenes=document.querySelectorAll('[data-scene]'),dotsC=document.getElementById('timeline-dots'),prog=document.getElementById('timeline-progress'),dots=[];
+scenes.forEach(function(s){var d=document.createElement('div');d.className='tl-dot';d.style.top=(s.offsetTop+s.offsetHeight/2)+'px';d._warm=s.classList.contains('scene-warm');dotsC.appendChild(d);dots.push(d)});
+
+/* Scroll handler */
+var ambient=document.getElementById('ambient-bg');
+var navy={r:10,g:22,b:40},tealC={r:13,g:148,b:136},amberC={r:245,g:158,b:11};
+function lerp(a,b,t){return a+(b-a)*t}
+function lerpC(c1,c2,t){return'rgb('+Math.round(lerp(c1.r,c2.r,t))+','+Math.round(lerp(c1.g,c2.g,t))+','+Math.round(lerp(c1.b,c2.b,t))+')'}
+var ticking=false;
+window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){
+  var sy=window.scrollY,ms=document.documentElement.scrollHeight-window.innerHeight,p=Math.min(sy/Math.max(ms,1),1);
+  prog.style.height=(p*100)+'%';
+  dots.forEach(function(d,i){var sT=scenes[i].offsetTop,sH=scenes[i].offsetHeight;if(sy>=sT-200&&sy<sT+sH-200){d.classList.add('active');if(d._warm)d.classList.add('warm')}else{d.classList.remove('active','warm')}});
+  var c;if(p<.5)c=lerpC(navy,tealC,p*2);else c=lerpC(tealC,amberC,(p-.5)*2);
+  ambient.style.background='radial-gradient(ellipse 120% 80% at 50% 50%,'+c+',#0A1628)';ticking=false})},{passive:true});
+
+/* Mouse parallax */
+document.addEventListener('mousemove',function(e){ambient.style.setProperty('--mx',(e.clientX/window.innerWidth*100)+'%');ambient.style.setProperty('--my',(e.clientY/window.innerHeight*100)+'%')});
+
+/* Constellation canvas */
+var cc=document.getElementById('constellation-canvas');
+if(cc){
+  var cx=cc.getContext('2d');
+  var nd=[{label:'Proactive\nAutonomy',x:.18,y:.3},{label:'Natural\nInteractivity',x:.82,y:.25},{label:'User\nExperience',x:.5,y:.8},{label:'Context\nAwareness',x:.2,y:.72},{label:'Trust &\nTransparency',x:.78,y:.75},{label:'Voice\nInterface',x:.5,y:.15}];
+  var ed=[[0,5],[5,1],[0,2],[1,2],[2,3],[2,4],[0,3],[1,4],[3,5],[4,5]];
+  function rsz(){var r=cc.parentElement.getBoundingClientRect(),dp=window.devicePixelRatio||1;cc.width=r.width*dp;cc.height=r.height*dp;cx.setTransform(dp,0,0,dp,0,0);cc.style.width=r.width+'px';cc.style.height=r.height+'px'}
+  rsz();window.addEventListener('resize',rsz);
+  var tm=0;
+  function drawC(){
+    var w=cc.width/(window.devicePixelRatio||1),h=cc.height/(window.devicePixelRatio||1);
+    cx.clearRect(0,0,w,h);tm+=.008;
+    ed.forEach(function(e,i){var a=nd[e[0]],b=nd[e[1]];var ax=a.x*w+Math.sin(tm+i)*3,ay=a.y*h+Math.cos(tm+i*.7)*3,bx=b.x*w+Math.sin(tm+i*1.3)*3,by=b.y*h+Math.cos(tm+i*.9)*3;
+    cx.beginPath();cx.moveTo(ax,ay);cx.lineTo(bx,by);cx.strokeStyle='rgba(245,158,11,'+(0.15+Math.sin(tm+i)*.08)+')';cx.lineWidth=1;cx.stroke();
+    var t=(Math.sin(tm*.5+i*1.7)+1)/2;cx.beginPath();cx.arc(ax+(bx-ax)*t,ay+(by-ay)*t,2,0,Math.PI*2);cx.fillStyle='rgba(251,191,36,0.7)';cx.fill()});
+    nd.forEach(function(n,i){var nx=n.x*w+Math.sin(tm+i*.5)*4,ny=n.y*h+Math.cos(tm+i*.3)*4;cx.beginPath();cx.arc(nx,ny,6,0,Math.PI*2);cx.fillStyle='rgba(245,158,11,0.2)';cx.fill();cx.beginPath();cx.arc(nx,ny,3,0,Math.PI*2);cx.fillStyle='rgba(251,191,36,0.9)';cx.fill();
+    cx.font='11px Inter';cx.fillStyle='rgba(255,255,255,0.7)';cx.textAlign='center';var lines=n.label.split('\n');lines.forEach(function(l,li){cx.fillText(l,nx,ny+22+li*14)})});
+    requestAnimationFrame(drawC)}drawC()}
+
+/* Research viz canvases */
+['research-viz-1','research-viz-2','research-viz-3'].forEach(function(id){
+  var el=document.getElementById(id);if(!el)return;var cv=document.createElement('canvas');el.appendChild(cv);var ctx=cv.getContext('2d');
+  var particles=[];for(var i=0;i<60;i++){particles.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0008,vy:(Math.random()-.5)*.0008,r:Math.random()*2+1})}
+  function rsz2(){var r=el.getBoundingClientRect(),dp=window.devicePixelRatio||1;cv.width=r.width*dp;cv.height=r.height*dp;ctx.setTransform(dp,0,0,dp,0,0);cv.style.width=r.width+'px';cv.style.height=r.height+'px'}
+  rsz2();window.addEventListener('resize',rsz2);
+  function draw(){var w=cv.width/(window.devicePixelRatio||1),h=cv.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,w,h);
+  particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1});
+  particles.forEach(function(a,i){particles.slice(i+1).forEach(function(b){var dx=(a.x-b.x)*w,dy=(a.y-b.y)*h,d=Math.sqrt(dx*dx+dy*dy);if(d<80){ctx.beginPath();ctx.moveTo(a.x*w,a.y*h);ctx.lineTo(b.x*w,b.y*h);ctx.strokeStyle='rgba(20,184,166,'+(0.12*(1-d/80))+')';ctx.lineWidth=.5;ctx.stroke()}});
+  ctx.beginPath();ctx.arc(a.x*w,a.y*h,a.r,0,Math.PI*2);ctx.fillStyle='rgba(20,184,166,0.5)';ctx.fill()});requestAnimationFrame(draw)}draw()});
+
+/* Parallax on scroll */
+window.addEventListener('scroll',function(){var sy=window.scrollY;document.querySelectorAll('.parallax-layer[data-speed]').forEach(function(el){var speed=parseFloat(el.getAttribute('data-speed'));el.style.transform='translateY('+(sy*speed)+'px)'})},{passive:true});
+})();
+</script>
+</body>
+</html>

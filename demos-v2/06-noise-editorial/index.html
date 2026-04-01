@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Noise Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #000;
+  --white: #FFF;
+  --red: #FF0000;
+  --gray: #888;
+  --light-gray: #E0E0E0;
+  --grotesk: 'Space Grotesk', sans-serif;
+  --serif: 'Times New Roman', Times, Georgia, serif;
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.6;
+  cursor: default;
+  overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* SCROLL ANIMATIONS */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.delay-1 { transition-delay: 0.15s; }
+.reveal.delay-2 { transition-delay: 0.3s; }
+.reveal.delay-3 { transition-delay: 0.45s; }
+.reveal.delay-4 { transition-delay: 0.6s; }
+.reveal.delay-5 { transition-delay: 0.75s; }
+
+/* MARQUEE */
+.marquee-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid var(--black);
+  border-bottom: 1px solid var(--black);
+  padding: 12px 0;
+  background: var(--black);
+  color: var(--white);
+}
+.marquee-track {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+.marquee-track span {
+  font-family: var(--grotesk);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0 40px;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-wrap.reverse .marquee-track {
+  animation-direction: reverse;
+  animation-duration: 25s;
+}
+
+/* IMAGE CONTAINERS */
+.img-container {
+  position: relative;
+  overflow: hidden;
+  background: var(--light-gray);
+}
+.img-container img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.6s ease;
+}
+.img-container:hover img { transform: scale(1.03); }
+.img-container .caption {
+  position: absolute; bottom: 0; left: 0; width: 100%;
+  background: rgba(0,0,0,0.85); color: var(--white);
+  padding: 20px; transform: translateY(100%);
+  transition: transform 0.5s ease;
+}
+.img-container:hover .caption { transform: translateY(0); }
+.img-container .caption p {
+  font-family: var(--grotesk); font-size: 13px;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.img-container .caption span {
+  font-family: var(--serif); font-style: italic;
+  font-size: 12px; color: var(--gray);
+  display: block; margin-top: 4px;
+}
+
+/* ═══ COVER SPREAD ═══ */
+.cover-spread {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+.cover-left {
+  display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 80px;
+}
+.cover-left .issue-number {
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 40px;
+}
+.cover-left h1 {
+  font-family: var(--grotesk);
+  font-size: clamp(60px, 8vw, 120px);
+  font-weight: 700; line-height: 0.9;
+  letter-spacing: -3px; margin-bottom: 24px;
+}
+.cover-left h1 .outline-text {
+  -webkit-text-stroke: 2px var(--black); color: transparent;
+}
+.cover-left h1 .red-text { color: var(--red); }
+.cover-left .subtitle {
+  font-family: var(--grotesk); font-size: 14px;
+  font-weight: 400; letter-spacing: 6px;
+  text-transform: uppercase; color: var(--black); opacity: 0.6;
+}
+.cover-right {
+  position: relative; overflow: hidden; background: var(--light-gray);
+}
+.cover-right .img-container { position: absolute; inset: 40px; }
+.cover-right .floating-text {
+  position: absolute; bottom: 60px; right: 60px;
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--white); background: var(--black);
+  padding: 8px 16px; z-index: 10;
+}
+.cover-spine {
+  position: absolute; left: 50%; top: 0;
+  transform: translateX(-50%);
+  width: 1px; height: 100%;
+  background: var(--black); opacity: 0.1;
+}
+
+/* ═══ EDITORIAL STATEMENT ═══ */
+.editorial-statement {
+  padding: 160px 80px;
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 80px; max-width: 1400px; margin: 0 auto;
+}
+.statement-label {
+  font-family: var(--grotesk); font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  writing-mode: vertical-lr; transform: rotate(180deg);
+  justify-self: end; color: var(--gray); align-self: start;
+}
+.statement-content h2 {
+  font-family: var(--grotesk);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -2px; margin-bottom: 40px; max-width: 700px;
+}
+.statement-content p {
+  font-size: 20px; line-height: 1.8;
+  max-width: 550px; color: #333; margin-bottom: 20px;
+}
+.statement-content .red-line {
+  width: 60px; height: 3px;
+  background: var(--red); margin: 40px 0;
+}
+.statement-content .meta-info {
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gray); margin-top: 60px;
+}
+
+/* ═══ PROBLEM ANALYSIS ═══ */
+.problem-analysis {
+  background: var(--black); color: var(--white);
+  padding: 160px 0; position: relative; overflow: hidden;
+}
+.problem-analysis .section-title {
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gray); padding: 0 80px; margin-bottom: 80px;
+}
+.problem-grid {
+  display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 80vh;
+}
+.problem-text {
+  padding: 0 80px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.problem-text h3 {
+  font-family: var(--grotesk);
+  font-size: clamp(28px, 4vw, 56px);
+  font-weight: 600; line-height: 1.15;
+  letter-spacing: -1px; margin-bottom: 40px;
+}
+.problem-text h3 em { color: var(--red); font-style: normal; }
+.problem-text p {
+  font-size: 17px; line-height: 1.8;
+  color: rgba(255,255,255,0.65); max-width: 480px;
+}
+.problem-images {
+  display: grid; grid-template-rows: 1fr 1fr;
+  gap: 4px; padding: 40px 40px 40px 0;
+}
+.problem-images .img-container {
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.stats-row {
+  display: flex; gap: 60px;
+  padding: 60px 80px;
+  border-top: 1px solid rgba(255,255,255,0.1); margin-top: 80px;
+}
+.stat-item .stat-number {
+  font-family: var(--grotesk); font-size: 48px;
+  font-weight: 700; color: var(--red);
+}
+.stat-item .stat-label {
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gray); margin-top: 8px;
+}
+
+/* ═══ VOICE HELPER SPREAD ═══ */
+.spread-layout {
+  display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.spread-left {
+  padding: 120px 60px 120px 80px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.spread-left .chapter-num {
+  font-family: var(--grotesk);
+  font-size: clamp(80px, 12vw, 180px);
+  font-weight: 700; color: var(--light-gray);
+  position: absolute; top: 40px; left: 80px;
+  line-height: 1; letter-spacing: -5px; z-index: 0;
+}
+.spread-left h2 {
+  font-family: var(--grotesk);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -1px; margin-bottom: 30px;
+  position: relative; z-index: 1;
+}
+.spread-left .features { list-style: none; position: relative; z-index: 1; }
+.spread-left .features li {
+  font-family: var(--grotesk); font-size: 15px;
+  padding: 14px 0; border-bottom: 1px solid var(--light-gray);
+  display: flex; align-items: center; gap: 12px;
+}
+.spread-left .features li .marker {
+  width: 6px; height: 6px; background: var(--red); flex-shrink: 0;
+}
+.spread-right {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: #F5F5F5;
+}
+.spread-right .img-container { width: 85%; height: 75%; }
+.spread-right .overlap-text {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--grotesk);
+  font-size: clamp(18px, 2.5vw, 32px);
+  font-weight: 700; color: var(--white);
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  letter-spacing: -1px; z-index: 5; pointer-events: none;
+}
+.spread-right .overlap-text small {
+  display: block; font-size: 12px; font-weight: 400;
+  letter-spacing: 4px; text-transform: uppercase;
+  margin-top: 8px; opacity: 0.8;
+}
+
+/* ═══ RESEARCH INSIGHTS ═══ */
+.research { padding: 160px 80px; }
+.research .section-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; margin-bottom: 100px;
+  border-bottom: 1px solid var(--black); padding-bottom: 30px;
+}
+.research .section-header h2 {
+  font-family: var(--grotesk);
+  font-size: clamp(40px, 5vw, 80px);
+  font-weight: 700; letter-spacing: -3px; line-height: 1;
+}
+.research .section-header p {
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gray);
+}
+.research-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+}
+.research-card {
+  padding: 40px 30px; border: 1px solid var(--light-gray);
+  position: relative; transition: all 0.3s ease;
+}
+.research-card:hover {
+  background: var(--black); color: var(--white); border-color: var(--black);
+}
+.research-card .card-number {
+  font-family: var(--grotesk); font-size: 48px;
+  font-weight: 700; opacity: 0.15; margin-bottom: 20px;
+}
+.research-card h4 {
+  font-family: var(--grotesk); font-size: 18px;
+  font-weight: 600; letter-spacing: -0.5px; margin-bottom: 16px;
+}
+.research-card p { font-size: 15px; line-height: 1.7; color: #555; }
+.research-card:hover p { color: rgba(255,255,255,0.6); }
+
+/* ═══ DEMO SPACE ═══ */
+.demo-space {
+  background: var(--black); color: var(--white);
+  padding: 160px 80px; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.demo-space .demo-label {
+  font-family: var(--grotesk); font-size: 10px;
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 40px;
+}
+.demo-space h2 {
+  font-family: var(--grotesk);
+  font-size: clamp(48px, 7vw, 110px);
+  font-weight: 700; letter-spacing: -4px;
+  line-height: 0.95; margin-bottom: 60px;
+}
+.demo-space h2 .accent { color: var(--red); }
+.demo-content {
+  display: grid; grid-template-columns: 2fr 1fr;
+  gap: 60px; align-items: center;
+}
+.demo-preview {
+  border: 1px solid rgba(255,255,255,0.15);
+  aspect-ratio: 16/10; background: #111;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.demo-preview .placeholder-icon {
+  font-family: var(--grotesk); font-size: 14px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gray);
+}
+.demo-preview .play-btn {
+  width: 80px; height: 80px;
+  border: 2px solid var(--white); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.3s ease;
+  position: relative; z-index: 2;
+}
+.demo-preview .play-btn::after {
+  content: ''; width: 0; height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent var(--white);
+  margin-left: 4px;
+}
+.demo-preview .play-btn:hover {
+  background: var(--red); border-color: var(--red); transform: scale(1.1);
+}
+.demo-info { padding: 20px 0; }
+.demo-info p {
+  font-size: 16px; line-height: 1.8;
+  color: rgba(255,255,255,0.55); margin-bottom: 30px;
+}
+.demo-info .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.demo-info .tech-tags span {
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 14px; color: var(--gray);
+}
+
+/* ═══ COLOPHON ═══ */
+.colophon {
+  padding: 160px 80px 100px;
+  border-top: 2px solid var(--black);
+}
+.colophon .colophon-header {
+  font-family: var(--grotesk); font-size: 10px;
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 80px;
+}
+.colophon-content {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 80px;
+}
+.colophon-block h3 {
+  font-family: var(--grotesk); font-size: 13px;
+  font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 20px;
+}
+.colophon-block p { font-size: 15px; line-height: 1.8; color: #555; }
+.colophon-block a {
+  color: var(--black); text-decoration: none;
+  border-bottom: 1px solid var(--black); transition: color 0.2s;
+}
+.colophon-block a:hover { color: var(--red); border-color: var(--red); }
+.colophon-footer {
+  margin-top: 120px; padding-top: 30px;
+  border-top: 1px solid var(--light-gray);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.colophon-footer p {
+  font-family: var(--grotesk); font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gray);
+}
+.colophon-footer .red-dot {
+  display: inline-block; width: 6px; height: 6px;
+  background: var(--red); border-radius: 50%;
+  margin-left: 8px; vertical-align: middle;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .cover-spread, .spread-layout, .problem-grid, .demo-content {
+    grid-template-columns: 1fr;
+  }
+  .cover-left, .cover-right, .spread-left, .spread-right { padding: 40px 24px; }
+  .cover-right { min-height: 60vh; }
+  .editorial-statement { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
+  .statement-label { writing-mode: horizontal-tb; transform: none; }
+  .problem-analysis, .research, .demo-space, .colophon { padding: 80px 24px; }
+  .research-grid { grid-template-columns: 1fr; }
+  .colophon-content { grid-template-columns: 1fr; gap: 40px; }
+  .stats-row { flex-direction: column; gap: 30px; padding: 40px 24px; }
+  .problem-images { display: none; }
+}
+
+::selection { background: var(--red); color: var(--white); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--white); }
+::-webkit-scrollbar-thumb { background: var(--black); }
+
+/* Placeholder images */
+.img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #ddd 25%, #ccc 50%, #ddd 75%);
+  background-size: 200% 200%;
+  animation: shimmer 3s ease infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.img-placeholder.dark {
+  background: linear-gradient(135deg, #222 25%, #333 50%, #222 75%);
+  background-size: 200% 200%;
+}
+
+/* Page number */
+.page-num {
+  position: fixed; bottom: 30px; right: 40px;
+  font-family: var(--grotesk); font-size: 11px;
+  letter-spacing: 2px; z-index: 100;
+  mix-blend-mode: difference; color: var(--white);
+}
+</style>
+</head>
+<body>
+
+<!-- COVER SPREAD -->
+<section class="cover-spread">
+  <div class="cover-spine"></div>
+  <div class="cover-left reveal">
+    <p class="issue-number">Vol. 01 — 2026</p>
+    <h1>ROCK<br><span class="outline-text">CHEN</span><br><span class="red-text">↓</span></h1>
+    <p class="subtitle">Software Engineer &amp; Product Thinker</p>
+  </div>
+  <div class="cover-right">
+    <div class="img-container">
+      <div class="img-placeholder"></div>
+      <div class="caption">
+        <p>Voice Helper — AI Voice Assistant</p>
+        <span>Autonomy meets interactivity</span>
+      </div>
+    </div>
+    <div class="floating-text">Featured Project</div>
+  </div>
+</section>
+
+<!-- MARQUEE 1 -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Voice Helper — AI语音助手 — Autonomous Interaction — Software Engineering — Product Design — Voice Helper — AI语音助手 — Autonomous Interaction — Software Engineering — Product Design —</span>
+    <span>Voice Helper — AI语音助手 — Autonomous Interaction — Software Engineering — Product Design — Voice Helper — AI语音助手 — Autonomous Interaction — Software Engineering — Product Design —</span>
+  </div>
+</div>
+
+<!-- EDITORIAL STATEMENT -->
+<section class="editorial-statement">
+  <div class="statement-label reveal">002 — Editorial</div>
+  <div class="statement-content">
+    <h2 class="reveal delay-1">Building systems that think, speak, and act on your behalf.</h2>
+    <div class="red-line reveal delay-2"></div>
+    <p class="reveal delay-2">
+      I believe the next generation of software isn't built around screens — it's built around conversations. Voice Helper is my exploration into how AI can move beyond passive responses and become a truly autonomous partner in daily life.
+    </p>
+    <p class="reveal delay-3">
+      Every product begins with a question: <em>What if technology could anticipate what you need before you ask?</em> That question drives everything I build.
+    </p>
+    <p class="meta-info reveal delay-4">Rock Chen — Software Engineer &amp; Product Thinker — Based in China</p>
+  </div>
+</section>
+
+<!-- MARQUEE 2 -->
+<div class="marquee-wrap reverse">
+  <div class="marquee-track">
+    <span>Problem Analysis — 用户洞察 — Pain Points — Market Research — Problem Analysis — 用户洞察 — Pain Points — Market Research — Problem Analysis — 用户洞察 — Pain Points — Market Research —</span>
+    <span>Problem Analysis — 用户洞察 — Pain Points — Market Research — Problem Analysis — 用户洞察 — Pain Points — Market Research — Problem Analysis — 用户洞察 — Pain Points — Market Research —</span>
+  </div>
+</div>
+
+<!-- PROBLEM ANALYSIS -->
+<section class="problem-analysis">
+  <p class="section-title reveal">004 — Problem Analysis</p>
+  <div class="problem-grid">
+    <div class="problem-text">
+      <h3 class="reveal delay-1">Current voice assistants are <em>reactive</em>. We need them to be <em>proactive</em>.</h3>
+      <p class="reveal delay-2">Existing solutions wait for commands. They don't anticipate needs, learn preferences over time, or take meaningful action without explicit instruction. The gap between what users expect and what's delivered is massive.</p>
+      <p class="reveal delay-3">Voice Helper bridges that gap through autonomous decision-making combined with natural, intuitive voice interaction.</p>
+    </div>
+    <div class="problem-images">
+      <div class="img-container reveal delay-2">
+        <div class="img-placeholder dark"></div>
+        <div class="caption">
+          <p>Current State</p>
+          <span>Reactive, command-driven interfaces</span>
+        </div>
+      </div>
+      <div class="img-container reveal delay-3">
+        <div class="img-placeholder dark"></div>
+        <div class="caption">
+          <p>Future Vision</p>
+          <span>Autonomous, context-aware assistants</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item reveal delay-1">
+      <div class="stat-number">73%</div>
+      <div class="stat-label">Users frustrated with<br>current voice assistants</div>
+    </div>
+    <div class="stat-item reveal delay-2">
+      <div class="stat-number">4.2B</div>
+      <div class="stat-label">Voice assistant devices<br>in use globally</div>
+    </div>
+    <div class="stat-item reveal delay-3">
+      <div class="stat-number">12x</div>
+      <div class="stat-label">Faster task completion<br>with proactive AI</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 3 -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Voice Helper — The Story — 核心功能 — Architecture — Autonomous AI — Voice Helper — The Story — 核心功能 — Architecture — Autonomous AI — Voice Helper — The Story — 核心功能 — Architecture — Autonomous AI —</span>
+    <span>Voice Helper — The Story — 核心功能 — Architecture — Autonomous AI — Voice Helper — The Story — 核心功能 — Architecture — Autonomous AI — Voice Helper — The Story — 核心功能 — Architecture — Autonomous AI —</span>
+  </div>
+</div>
+
+<!-- VOICE HELPER STORY (MAGAZINE SPREAD) -->
+<section>
+  <div class="spread-layout">
+    <div class="spread-left">
+      <div class="chapter-num reveal">01</div>
+      <h2 class="reveal delay-1">Voice<br>Helper</h2>
+      <ul class="features">
+        <li class="reveal delay-2"><span class="marker"></span>Autonomous task execution — acts without constant prompting</li>
+        <li class="reveal delay-3"><span class="marker"></span>Context-aware conversations — understands the situation</li>
+        <li class="reveal delay-4"><span class="marker"></span>Natural voice interaction — speaks like a human partner</li>
+        <li class="reveal delay-5"><span class="marker"></span>Adaptive learning — gets better with every interaction</li>
+        <li class="reveal delay-5"><span class="marker"></span>Multi-domain intelligence — handles complex, multi-step tasks</li>
+      </ul>
+    </div>
+    <div class="spread-right">
+      <div class="img-container reveal delay-2">
+        <div class="img-placeholder"></div>
+      </div>
+      <div class="overlap-text reveal delay-3">
+        Think. Speak. Act.
+        <small>Voice Helper Architecture</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH INSIGHTS -->
+<section class="research">
+  <div class="section-header">
+    <h2 class="reveal">Research<br>&amp; Insights</h2>
+    <p class="reveal delay-1">006 — Deep Dive</p>
+  </div>
+  <div class="research-grid">
+    <div class="research-card reveal delay-1">
+      <div class="card-number">01</div>
+      <h4>Autonomy in AI Systems</h4>
+      <p>Exploring how AI agents can make independent decisions while maintaining user trust and safety boundaries.</p>
+    </div>
+    <div class="research-card reveal delay-2">
+      <div class="card-number">02</div>
+      <h4>Voice UX Patterns</h4>
+      <p>Analyzing conversational design patterns that reduce cognitive load and feel natural rather than mechanical.</p>
+    </div>
+    <div class="research-card reveal delay-3">
+      <div class="card-number">03</div>
+      <h4>Contextual Intelligence</h4>
+      <p>How AI systems maintain contextual awareness across multi-turn conversations and long-term relationships.</p>
+    </div>
+    <div class="research-card reveal delay-4">
+      <div class="card-number">04</div>
+      <h4>Proactive Assistance</h4>
+      <p>The design space for AI that anticipates needs — the fine line between helpful and intrusive.</p>
+    </div>
+    <div class="research-card reveal delay-4">
+      <div class="card-number">05</div>
+      <h4>Multimodal Interaction</h4>
+      <p>Combining voice, text, and visual cues to create richer, more efficient AI-assisted workflows.</p>
+    </div>
+    <div class="research-card reveal delay-5">
+      <div class="card-number">06</div>
+      <h4>Trust &amp; Transparency</h4>
+      <p>Building user trust in autonomous systems through explainable decisions and clear feedback loops.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 4 -->
+<div class="marquee-wrap reverse">
+  <div class="marquee-track">
+    <span>Demo — Live Preview — 交互演示 — See It In Action — Demo — Live Preview — 交互演示 — See It In Action — Demo — Live Preview — 交互演示 — See It In Action —</span>
+    <span>Demo — Live Preview — 交互演示 — See It In Action — Demo — Live Preview — 交互演示 — See It In Action — Demo — Live Preview — 交互演示 — See It In Action —</span>
+  </div>
+</div>
+
+<!-- DEMO SPACE -->
+<section class="demo-space">
+  <p class="demo-label reveal">008 — Demo Space</p>
+  <h2 class="reveal delay-1">See It<br><span class="accent">Live.</span></h2>
+  <div class="demo-content">
+    <div class="demo-preview reveal delay-2">
+      <div class="play-btn"></div>
+      <p class="placeholder-icon">Voice Helper Demo</p>
+    </div>
+    <div class="demo-info">
+      <p class="reveal delay-3">Experience Voice Helper in action. Watch how it autonomously handles tasks, maintains context, and adapts to user needs in real-time.</p>
+      <div class="tech-tags reveal delay-4">
+        <span>NLP</span>
+        <span>Speech Synthesis</span>
+        <span>Context Engine</span>
+        <span>Autonomous Agent</span>
+        <span>Multi-modal AI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLOPHON -->
+<section class="colophon">
+  <p class="colophon-header reveal">010 — Colophon</p>
+  <div class="colophon-content">
+    <div class="colophon-block reveal delay-1">
+      <h3>About</h3>
+      <p>Rock Chen is a software engineer and product thinker building the next generation of AI-powered interfaces. Focused on voice-first, autonomous systems that reshape how humans interact with technology.</p>
+    </div>
+    <div class="colophon-block reveal delay-2">
+      <h3>Contact</h3>
+      <p>
+        <a href="mailto:rock@example.com">rock@example.com</a><br><br>
+        <a href="#">GitHub</a><br>
+        <a href="#">LinkedIn</a><br>
+        <a href="#">Twitter / X</a>
+      </p>
+    </div>
+    <div class="colophon-block reveal delay-3">
+      <h3>This Issue</h3>
+      <p>Vol. 01 — 2026<br>
+      Design: Noise Editorial<br>
+      Core Project: Voice Helper<br>
+      Typefaces: Space Grotesk, Times New Roman<br>
+      Built with pure HTML, CSS &amp; vanilla JS</p>
+    </div>
+  </div>
+  <div class="colophon-footer">
+    <p>© 2026 Rock Chen. All rights reserved.</p>
+    <p>Available for collaboration<span class="red-dot"></span></p>
+  </div>
+</section>
+
+<!-- PAGE NUMBER -->
+<div class="page-num" id="pageNum">001</div>
+
+<script>
+// Scroll reveal with IntersectionObserver
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Dynamic page number based on scroll
+const sections = document.querySelectorAll('section');
+const pageNum = document.getElementById('pageNum');
+
+function updatePageNum() {
+  const scrollY = window.scrollY + window.innerHeight / 2;
+  let currentSection = 0;
+  sections.forEach((section, i) => {
+    if (scrollY >= section.offsetTop) currentSection = i + 1;
+  });
+  const page = String(currentSection).padStart(3, '0');
+  pageNum.textContent = page;
+}
+
+window.addEventListener('scroll', updatePageNum, { passive: true });
+updatePageNum();
+
+// Parallax effect for chapter numbers
+const chapterNums = document.querySelectorAll('.chapter-num');
+window.addEventListener('scroll', () => {
+  chapterNums.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const speed = 0.15;
+    el.style.transform = `translateY(${rect.top * speed}px)`;
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

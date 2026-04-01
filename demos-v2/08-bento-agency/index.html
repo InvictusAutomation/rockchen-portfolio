@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Software Engineer & Product Thinker</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0C0C0C;--dark:#111111;--card:#1A1A1A;--gray:#2A2A2A;--gray-mid:#444;
+  --gold:#C8A97E;--gold-light:#D4BC96;--gold-dark:#A8895E;
+  --white:#F5F5F0;--off-white:#E8E4DD;--muted:#8A8A8A;
+  --font-h:'Sora',sans-serif;--font-b:'DM Sans',sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);--ease-out:cubic-bezier(.16,1,.3,1);
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--black);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:var(--black)}
+a{color:inherit;text-decoration:none}
+
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-name{font-family:var(--font-h);font-size:.85rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem}
+.loader-bar{width:200px;height:2px;background:var(--gray);border-radius:2px;overflow:hidden}
+.loader-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold-dark),var(--gold),var(--gold-light));border-radius:2px;transition:width .4s var(--ease-out)}
+.loader-percent{font-family:var(--font-h);font-size:.7rem;letter-spacing:.2em;color:var(--muted);margin-top:1rem}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference;transition:padding .3s ease}
+.nav-logo{font-family:var(--font-h);font-weight:700;font-size:1rem;letter-spacing:.05em}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{font-family:var(--font-h);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--off-white);position:relative;transition:color .3s ease}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s var(--ease)}
+.nav-links a:hover::after{width:100%}
+
+/* HERO */
+#hero{height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 3rem;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;top:20%;right:5%;width:40vw;height:40vw;background:radial-gradient(circle,rgba(200,169,126,.06) 0%,transparent 70%);pointer-events:none}
+.hero-label{font-family:var(--font-h);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;transform:translateY(20px);animation:fadeUp .8s var(--ease-out) .8s forwards}
+.hero-title{font-family:var(--font-h);font-weight:700;line-height:1.05;margin-bottom:2rem}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line-inner{display:block;font-size:clamp(3rem,8vw,7.5rem);opacity:0;transform:translateY(100%);animation:revealLine 1s var(--ease-out) forwards}
+.hero-title .line:nth-child(1) .line-inner{animation-delay:1s}
+.hero-title .line:nth-child(2) .line-inner{animation-delay:1.15s}
+.hero-title .line:nth-child(3) .line-inner{animation-delay:1.3s}
+.typewriter{color:var(--gold);display:inline;border-right:2px solid var(--gold);animation:blink .7s infinite}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:500px;line-height:1.7;opacity:0;animation:fadeUp .8s var(--ease-out) 1.8s forwards}
+.hero-scroll{position:absolute;bottom:3rem;left:3rem;display:flex;align-items:center;gap:.75rem;opacity:0;animation:fadeUp .8s var(--ease-out) 2.2s forwards}
+.hero-scroll span{font-family:var(--font-h);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:40px;height:1px;background:var(--gold);animation:scrollPulse 2s ease infinite}
+@keyframes revealLine{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes blink{50%{border-color:transparent}}
+@keyframes scrollPulse{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.4);opacity:.4}}
+
+/* MARQUEE */
+#marquee{padding:2rem 0;border-top:1px solid var(--gray);border-bottom:1px solid var(--gray);overflow:hidden;white-space:nowrap}
+.marquee-track{display:inline-flex;animation:marquee 25s linear infinite}
+.marquee-track span{font-family:var(--font-h);font-size:clamp(.9rem,2vw,1.4rem);font-weight:300;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 2rem}
+.marquee-track .dot{color:var(--gold);font-size:.5rem;padding:0 1rem}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* PROJECTS HORIZONTAL */
+.project-section-label{padding:5rem 3rem 2rem;font-family:var(--font-h);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.project-section-title{padding:0 3rem 3rem;font-family:var(--font-h);font-size:clamp(2rem,5vw,4rem);font-weight:700}
+.horizontal-wrapper{overflow-x:auto;overflow-y:hidden;padding:0 3rem 5rem;cursor:grab;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x mandatory}
+.horizontal-wrapper::-webkit-scrollbar{display:none}
+.horizontal-wrapper:active{cursor:grabbing}
+.horizontal-track{display:flex;gap:2rem;will-change:transform}
+.project-card{min-width:70vw;max-width:70vw;height:65vh;background:var(--card);border-radius:12px;overflow:hidden;position:relative;display:flex;flex-shrink:0;scroll-snap-align:start;transition:transform .4s var(--ease),box-shadow .4s ease}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.card-image{width:55%;height:100%;background:var(--gray);position:relative;overflow:hidden}
+.card-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,169,126,.1),transparent 60%)}
+.card-image-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem}
+.card-image-inner span{font-family:var(--font-h);font-size:.7rem;letter-spacing:.2em;color:var(--gold)}
+.card-content{width:45%;padding:3rem;display:flex;flex-direction:column;justify-content:center}
+.card-num{font-family:var(--font-h);font-size:.7rem;letter-spacing:.2em;color:var(--gold);margin-bottom:1rem}
+.card-title{font-family:var(--font-h);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700;margin-bottom:1rem;line-height:1.2}
+.card-desc{color:var(--muted);line-height:1.7;margin-bottom:1.5rem;font-size:.95rem}
+.card-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.card-tags span{font-family:var(--font-h);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .8rem;border:1px solid var(--gray);border-radius:100px;color:var(--muted);transition:all .3s ease}
+.card-tags span:hover{border-color:var(--gold);color:var(--gold)}
+.card-arrow{position:absolute;bottom:2rem;right:2rem;width:40px;height:40px;border-radius:50%;border:1px solid var(--gray);display:flex;align-items:center;justify-content:center;transition:all .4s var(--ease);cursor:pointer}
+.card-arrow:hover{background:var(--gold);border-color:var(--gold);transform:translate(-5px,5px)}
+.card-arrow svg{width:16px;height:16px;stroke:var(--white);transition:stroke .3s ease}
+.card-arrow:hover svg{stroke:var(--black)}
+
+/* VISION BENTO */
+#vision{padding:8rem 3rem}
+.vision-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1.5rem;max-width:1400px;margin:0 auto}
+.vision-header{grid-column:1/-1;margin-bottom:2rem}
+.vision-header h2{font-family:var(--font-h);font-size:clamp(2rem,4vw,3.5rem);font-weight:700;margin-bottom:1rem}
+.vision-header h2 em{color:var(--gold);font-style:normal}
+.vision-header p{color:var(--muted);max-width:600px;line-height:1.7}
+.bento-card{background:var(--card);border-radius:12px;padding:2.5rem;position:relative;overflow:hidden;transition:transform .4s var(--ease),border-color .4s ease;border:1px solid transparent}
+.bento-card:hover{transform:translateY(-4px);border-color:var(--gray)}
+.bento-card.bc-wide{grid-column:span 7}
+.bento-card.bc-narrow{grid-column:span 5}
+.bento-card.bc-third{grid-column:span 4}
+.bento-icon{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+.bento-icon svg{width:24px;height:24px;stroke:var(--black);stroke-width:2;fill:none}
+.bento-card h3{font-family:var(--font-h);font-size:1.2rem;font-weight:600;margin-bottom:.75rem}
+.bento-card p{color:var(--muted);font-size:.9rem;line-height:1.7}
+.bento-glow{position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(200,169,126,.04),transparent 70%);pointer-events:none}
+
+/* RESEARCH */
+#research{padding:6rem 3rem;background:var(--dark)}
+.research-inner{max-width:1200px;margin:0 auto}
+.research-label{font-family:var(--font-h);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.research-title{font-family:var(--font-h);font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:4rem}
+.research-title em{color:var(--gold);font-style:normal}
+.framework-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.framework-item{padding:2.5rem;border-left:2px solid var(--gray);position:relative;transition:border-color .3s ease}
+.framework-item:hover{border-color:var(--gold)}
+.fw-num{font-family:var(--font-h);font-size:.65rem;letter-spacing:.2em;color:var(--gold);margin-bottom:1rem}
+.framework-item h3{font-family:var(--font-h);font-size:1.3rem;font-weight:600;margin-bottom:.75rem}
+.framework-item p{color:var(--muted);line-height:1.7;font-size:.9rem}
+.fw-bar{margin-top:1.5rem;height:4px;background:var(--gray);border-radius:2px;overflow:hidden}
+.fw-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:2px;transition:width 1.5s var(--ease-out)}
+.framework-item.vis .fw-fill{width:var(--p)}
+
+/* CINEMA */
+#cinema{padding:8rem 3rem;display:flex;flex-direction:column;align-items:center}
+.cinema-label{font-family:var(--font-h);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.cinema-title{font-family:var(--font-h);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:700;margin-bottom:3rem;text-align:center}
+.cinema-frame{width:100%;max-width:1100px;aspect-ratio:21/9;background:var(--card);border-radius:16px;position:relative;overflow:hidden;border:1px solid var(--gray);display:flex;align-items:center;justify-content:center;transition:border-color .4s ease}
+.cinema-frame:hover{border-color:var(--gold)}
+.cinema-frame::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(200,169,126,.05),transparent 70%);pointer-events:none}
+.cinema-play{width:80px;height:80px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .4s var(--ease);position:relative;z-index:1}
+.cinema-play:hover{background:var(--gold);transform:scale(1.1)}
+.cinema-play::after{content:'';width:0;height:0;border-left:18px solid var(--gold);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:4px;transition:border-color .3s ease}
+.cinema-play:hover::after{border-left-color:var(--black)}
+.cinema-subtitle{text-align:center;margin-top:1.5rem;color:var(--muted);font-size:.9rem}
+.corner{position:absolute;width:20px;height:20px;border:1px solid var(--gray);opacity:.5}
+.corner.tl{top:12px;left:12px;border-right:none;border-bottom:none}
+.corner.tr{top:12px;right:12px;border-left:none;border-bottom:none}
+.corner.bl{bottom:12px;left:12px;border-right:none;border-top:none}
+.corner.br{bottom:12px;right:12px;border-left:none;border-top:none}
+
+/* STATS */
+#stats{padding:6rem 3rem;border-top:1px solid var(--gray)}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.stat-item{text-align:center;padding:2rem}
+.stat-number{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,4rem);font-weight:800;color:var(--gold);line-height:1}
+.stat-label{font-family:var(--font-h);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.75rem}
+
+/* QUOTE */
+#quote{padding:8rem 3rem;text-align:center;position:relative}
+#quote::before{content:'\201C';position:absolute;top:0;left:50%;transform:translateX(-50%);font-family:var(--font-h);font-size:20rem;color:var(--gray);line-height:1;opacity:.3;pointer-events:none}
+.quote-text{font-family:var(--font-h);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;line-height:1.6;max-width:900px;margin:0 auto;position:relative;z-index:1}
+.quote-text em{color:var(--gold);font-weight:500;font-style:normal}
+.quote-author{margin-top:2rem;font-size:.85rem;color:var(--muted);letter-spacing:.1em}
+
+/* CONTACT */
+#contact{padding:8rem 3rem;border-top:1px solid var(--gray)}
+.contact-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:end}
+.contact-left h2{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem}
+.contact-left h2 em{color:var(--gold);font-style:normal}
+.contact-left p{color:var(--muted);max-width:400px;line-height:1.7;margin-bottom:2rem}
+.contact-btn{display:inline-flex;align-items:center;gap:.75rem;font-family:var(--font-h);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid var(--gold);border-radius:100px;color:var(--gold);cursor:pointer;transition:all .4s var(--ease);background:transparent}
+.contact-btn:hover{background:var(--gold);color:var(--black);transform:translateY(-2px)}
+.contact-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+.contact-right{text-align:right}
+.contact-email{font-family:var(--font-h);font-size:1.2rem;color:var(--off-white);margin-bottom:.5rem}
+.socials{display:flex;gap:1rem;justify-content:flex-end;margin-top:1.5rem}
+.socials a{width:36px;height:36px;border-radius:50%;border:1px solid var(--gray);display:flex;align-items:center;justify-content:center;transition:all .3s ease;font-size:.8rem;color:var(--muted)}
+.socials a:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+
+/* FOOTER */
+footer{padding:2rem 3rem;border-top:1px solid var(--gray);display:flex;justify-content:space-between;align-items:center}
+footer span{font-size:.7rem;color:var(--muted);letter-spacing:.05em}
+.back-top{font-family:var(--font-h);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);cursor:pointer;transition:opacity .3s ease}
+.back-top:hover{opacity:.6}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}.nav-links{display:none}
+  #hero{padding:0 1.5rem}
+  .hero-title .line-inner{font-size:clamp(2.5rem,12vw,4rem)}
+  .project-card{min-width:90vw;max-width:90vw;flex-direction:column;height:auto}
+  .card-image{width:100%;height:45vw}
+  .card-content{width:100%;padding:2rem}
+  #vision{padding:4rem 1.5rem}
+  .vision-grid{grid-template-columns:1fr}
+  .bento-card.bc-wide,.bento-card.bc-narrow,.bento-card.bc-third{grid-column:span 1}
+  .framework-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .contact-inner{flex-direction:column;align-items:flex-start}
+  .contact-right{text-align:left;margin-top:2rem}
+  .socials{justify-content:flex-start}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name">Rock Chen</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-percent">0%</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Rock<span>.</span></div>
+  <div class="nav-links">
+    <a href="#projects">Work</a>
+    <a href="#vision">Vision</a>
+    <a href="#research">Research</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-label">Software Engineer &amp; Product Thinker</div>
+  <h1 class="hero-title">
+    <span class="line"><span class="line-inner">Building <span class="typewriter" id="tw"></span></span></span>
+    <span class="line"><span class="line-inner">With Purpose</span></span>
+    <span class="line"><span class="line-inner">&amp; Precision.</span></span>
+  </h1>
+  <p class="hero-sub">Crafting AI experiences that amplify human agency &mdash; starting with Voice Helper, an autonomous voice assistant that thinks ahead.</p>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<section id="marquee">
+  <div class="marquee-track">
+    <span>Product Thinking</span><span class="dot">&bull;</span>
+    <span>AI Agency</span><span class="dot">&bull;</span>
+    <span>Voice UX</span><span class="dot">&bull;</span>
+    <span>User Research</span><span class="dot">&bull;</span>
+    <span>Autonomous Systems</span><span class="dot">&bull;</span>
+    <span>Interaction Design</span><span class="dot">&bull;</span>
+    <span>Human-Centered AI</span><span class="dot">&bull;</span>
+    <span>Voice Interface</span><span class="dot">&bull;</span>
+    <span>Product Thinking</span><span class="dot">&bull;</span>
+    <span>AI Agency</span><span class="dot">&bull;</span>
+    <span>Voice UX</span><span class="dot">&bull;</span>
+    <span>User Research</span><span class="dot">&bull;</span>
+    <span>Autonomous Systems</span><span class="dot">&bull;</span>
+    <span>Interaction Design</span><span class="dot">&bull;</span>
+    <span>Human-Centered AI</span><span class="dot">&bull;</span>
+    <span>Voice Interface</span><span class="dot">&bull;</span>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="project-section-label reveal">Selected Work</div>
+  <div class="project-section-title reveal">Projects That Matter.</div>
+  <div class="horizontal-wrapper" id="hw">
+    <div class="horizontal-track">
+      <div class="project-card">
+        <div class="card-image" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)">
+          <div class="card-image-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C8A97E" stroke-width="1.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+            <span>VOICE HELPER</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-num">01 / 03</div>
+          <div class="card-title">Voice Helper<br>&#35821;&#38899;&#21161;&#25163;</div>
+          <div class="card-desc">An AI voice assistant with proactive autonomy &mdash; it anticipates needs, makes smart suggestions, and acts on your behalf before you ask. Redefining human-AI collaboration.</div>
+          <div class="card-tags"><span>AI</span><span>Voice</span><span>Autonomy</span><span>UX</span></div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+      </div>
+      <div class="project-card">
+        <div class="card-image" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a,#1f1f1f)">
+          <div class="card-image-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C8A97E" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span>RESEARCH</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-num">02 / 03</div>
+          <div class="card-title">Agency &amp;<br>Autonomy Research</div>
+          <div class="card-desc">Exploring the intersection of human agency and AI capabilities. How do we design systems that empower users while automating complexity? A deep dive into trust, control, and collaboration.</div>
+          <div class="card-tags"><span>Research</span><span>Agency</span><span>Framework</span><span>UX</span></div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+      </div>
+      <div class="project-card">
+        <div class="card-image" style="background:linear-gradient(135deg,#0d0d0d,#1a1510,#2a2015)">
+          <div class="card-image-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C8A97E" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span>EXPERIENCE</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="card-num">03 / 03</div>
+          <div class="card-title">Voice UX<br>Design System</div>
+          <div class="card-desc">A comprehensive design framework for voice-first interfaces. Patterns, principles, and interaction models for building trustworthy and delightful conversational experiences.</div>
+          <div class="card-tags"><span>Design</span><span>Voice</span><span>System</span><span>Patterns</span></div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION BENTO -->
+<section id="vision">
+  <div class="vision-grid">
+    <div class="vision-header reveal">
+      <h2>The <em>Problem</em> &amp; Vision</h2>
+      <p>Current AI assistants are reactive &mdash; they wait for commands. But the future of AI is proactive: understanding context, anticipating needs, and acting autonomously.</p>
+    </div>
+    <div class="bento-card bc-wide reveal d1">
+      <div class="bento-glow"></div>
+      <div class="bento-icon"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div>
+      <h3>Voice as Primary Interface</h3>
+      <p>Voice is the most natural human interface. Yet today's voice assistants are limited to simple commands. We're building systems that understand nuance, context, and intent &mdash; enabling truly conversational collaboration.</p>
+    </div>
+    <div class="bento-card bc-narrow reveal d2">
+      <div class="bento-glow"></div>
+      <div class="bento-icon"><svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <h3>Proactive Autonomy</h3>
+      <p>The shift from reactive to proactive AI is fundamental. Instead of answering questions, the AI should anticipate them. Instead of executing commands, it should suggest actions before they're needed.</p>
+    </div>
+    <div class="bento-card bc-third reveal d1">
+      <div class="bento-glow"></div>
+      <div class="bento-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+      <h3>User Trust</h3>
+      <p>Autonomy without trust is danger. Every proactive action must be transparent, explainable, and overridable. The user remains the final decision-maker.</p>
+    </div>
+    <div class="bento-card bc-third reveal d2">
+      <div class="bento-glow"></div>
+      <div class="bento-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <h3>Human-AI Partnership</h3>
+      <p>The goal isn't replacement &mdash; it's augmentation. AI handles the mundane while humans focus on creative and strategic work.</p>
+    </div>
+    <div class="bento-card bc-third reveal d3">
+      <div class="bento-glow"></div>
+      <div class="bento-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></div>
+      <h3>Iterative Craft</h3>
+      <p>Great products emerge from deep iteration. Every interaction is tested, refined, and polished. Ship fast, learn faster.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="research-inner">
+    <div class="research-label reveal">Methodology</div>
+    <h2 class="research-title reveal">Research <em>Framework</em></h2>
+    <div class="framework-grid">
+      <div class="framework-item reveal d1" style="--p:85%">
+        <div class="fw-num">01</div>
+        <h3>Discover</h3>
+        <p>Deep user research to understand pain points, workflows, and unspoken needs. Ethnographic studies, interviews, and behavioral analysis form the foundation.</p>
+        <div class="fw-bar"><div class="fw-fill"></div></div>
+      </div>
+      <div class="framework-item reveal d2" style="--p:72%">
+        <div class="fw-num">02</div>
+        <h3>Define</h3>
+        <p>Synthesize insights into clear problem statements and opportunity maps. Frame the challenge through the lens of user agency, capability, and control.</p>
+        <div class="fw-bar"><div class="fw-fill"></div></div>
+      </div>
+      <div class="framework-item reveal d3" style="--p:60%">
+        <div class="fw-num">03</div>
+        <h3>Design &amp; Validate</h3>
+        <p>Rapid prototyping with real users. Test voice interactions, measure trust metrics, and iterate on the balance between automation and user control.</p>
+        <div class="fw-bar"><div class="fw-fill"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CINEMA -->
+<section id="cinema">
+  <div class="cinema-label reveal">Live Demo</div>
+  <h2 class="cinema-title reveal">Experience Voice Helper</h2>
+  <div class="cinema-frame reveal">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="cinema-play"></div>
+  </div>
+  <p class="cinema-subtitle reveal">Cinematic demo &mdash; full interactive experience coming soon</p>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="stat-item reveal"><div class="stat-number" data-target="3">0</div><div class="stat-label">Core Projects</div></div>
+    <div class="stat-item reveal d1"><div class="stat-number" data-target="12">0</div><div class="stat-label">Research Papers</div></div>
+    <div class="stat-item reveal d2"><div class="stat-number" data-target="847">0</div><div class="stat-label">Interactions Studied</div></div>
+    <div class="stat-item reveal d3"><div class="stat-number" data-target="99">0</div><div class="stat-label">Percent of Craft</div></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote">
+  <div class="reveal">
+    <div class="quote-text">"The best AI doesn't make you <em>think less</em> &mdash; it makes you <em>think better</em>, freeing your mind for what truly matters."</div>
+    <div class="quote-author">&mdash; Rock Chen, on designing for human agency</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <h2>Let's Build<br><em>Together.</em></h2>
+      <p>Interested in the intersection of AI, voice, and human agency? Let's connect and explore what we can create.</p>
+      <a href="mailto:hello@rockchen.dev" class="contact-btn">Get In Touch <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+    </div>
+    <div class="contact-right reveal d2">
+      <div class="contact-email">hello@rockchen.dev</div>
+      <div class="socials">
+        <a href="#" aria-label="GitHub">GH</a>
+        <a href="#" aria-label="LinkedIn">LI</a>
+        <a href="#" aria-label="Twitter">TW</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>&copy; 2026 Rock Chen. Crafted with care.</span>
+  <span class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top &uarr;</span>
+</footer>
+
+<script>
+(function(){
+
+/* ===== LOADER ===== */
+var fill=document.querySelector('.loader-fill'),
+    pct=document.querySelector('.loader-percent'),
+    steps=[5,12,20,30,42,55,68,78,85,90,94,97,100],
+    i=0;
+var li=setInterval(function(){
+  if(i>=steps.length){clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},400);return}
+  fill.style.width=steps[i]+'%';pct.textContent=steps[i]+'%';i++;
+},150);
+
+/* ===== TYPEWRITER ===== */
+var tw=document.getElementById('tw'),
+    words=['Intelligence.','Autonomy.','Agency.','Trust.','Purpose.'],
+    wi=0,ci=0,del=false;
+function type(){
+  var w=words[wi];
+  if(del){tw.textContent=w.substring(0,ci-1);ci--}
+  else{tw.textContent=w.substring(0,ci+1);ci++}
+  var d=del?40:80;
+  if(!del&&ci===w.length){d=2000;del=true}
+  else if(del&&ci===0){del=false;wi=(wi+1)%words.length;d=300}
+  setTimeout(type,d);
+}
+setTimeout(type,2000);
+
+/* ===== HORIZONTAL SCROLL DRAG ===== */
+var hw=document.getElementById('hw'),
+    isDrag=false,startX=0,scrollL=0;
+hw.addEventListener('mousedown',function(e){isDrag=true;startX=e.pageX-hw.offsetLeft;scrollL=hw.scrollLeft;hw.style.cursor='grabbing'});
+hw.addEventListener('mouseleave',function(){isDrag=false;hw.style.cursor='grab'});
+hw.addEventListener('mouseup',function(){isDrag=false;hw.style.cursor='grab'});
+hw.addEventListener('mousemove',function(e){if(!isDrag)return;e.preventDefault();var x=e.pageX-hw.offsetLeft;hw.scrollLeft=scrollL-(x-startX)});
+
+/* ===== SCROLL REVEAL ===== */
+var reveals=document.querySelectorAll('.reveal'),
+    frameworks=document.querySelectorAll('.framework-item');
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');if(e.target.classList.contains('framework-item'))e.target.classList.add('vis');}});
+},{threshold:0.15});
+reveals.forEach(function(el){io.observe(el)});
+frameworks.forEach(function(el){io.observe(el)});
+
+/* ===== COUNTER ANIMATION ===== */
+var counters=document.querySelectorAll('.stat-number'),
+    counted=new Set();
+var cio=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting&&!counted.has(e.target)){
+      counted.add(e.target);
+      var target=parseInt(e.target.getAttribute('data-target')),
+          current=0,
+          step=Math.max(1,Math.floor(target/60)),
+          duration=1500,
+          inc=duration/target;
+      var timer=setInterval(function(){
+        current+=step;
+        if(current>=target){current=target;clearInterval(timer)}
+        e.target.textContent=current+(target===99?'%':target===847?'+':'');
+      },inc);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(function(c){cio.observe(c)});
+
+/* ===== SMOOTH SCROLL NAV ===== */
+document.querySelectorAll('nav a').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    var t=document.querySelector(this.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+})();
+</script>
+</body>
+</html>

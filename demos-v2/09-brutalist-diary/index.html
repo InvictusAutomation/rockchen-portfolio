@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROCK.CHEN // PORTFOLIO.exe</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bk:#000;--wh:#FFF;--yw:#FFE500;--bl:#0055FF;--gr:#333;--lt:#AAA;--br:3px;--mono:'Space Mono','Courier New',monospace}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--mono);background:var(--bk);color:var(--wh);line-height:1.6;overflow-x:hidden}
+::selection{background:var(--yw);color:var(--bk)}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bk)}::-webkit-scrollbar-thumb{background:var(--yw)}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+.sl{display:inline-block;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--lt);border:1px solid var(--gr);padding:4px 12px;margin-bottom:24px;background:var(--bk)}
+.st{font-size:clamp(36px,7vw,72px);font-weight:700;line-height:.95;margin-bottom:32px;text-transform:uppercase}
+.ty{color:var(--yw)}.tb{color:var(--bl)}.tg{color:var(--lt)}
+.marquee-w{width:100%;overflow:hidden;background:var(--yw);color:var(--bk);border-top:var(--br) solid var(--wh);border-bottom:var(--br) solid var(--wh);padding:10px 0;white-space:nowrap}
+.marquee-t{display:inline-block;animation:ms 22s linear infinite;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+@keyframes ms{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.cb::after{content:'\2588';animation:bl 1s step-end infinite;color:var(--yw)}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+.header{padding:60px 0 40px;border-bottom:var(--br) solid var(--wh);position:relative}
+.hg{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start}
+.logo{font-size:clamp(48px,10vw,96px);font-weight:700;line-height:.9;text-transform:uppercase;color:var(--yw);text-decoration:none;display:block}
+.logo:hover{color:var(--wh)}
+.logosub{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--lt);margin-top:12px}
+.nav{display:flex;flex-direction:column;gap:8px}
+.na{color:var(--wh);text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;border:1px solid transparent;transition:all .15s;display:block;text-align:right}
+.na:hover{border-color:var(--yw);color:var(--yw);background:rgba(255,229,0,.05)}
+.ts{position:absolute;bottom:-14px;right:24px;font-size:10px;color:var(--gr);letter-spacing:1px;background:var(--bk);padding:0 8px}
+.about{padding:80px 0}
+.ag{display:grid;grid-template-columns:2fr 1fr;gap:40px}
+.at{font-size:18px;line-height:1.7}
+.at .hl{background:var(--yw);color:var(--bk);padding:0 6px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;align-content:start}
+.tag{display:inline-block;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border:2px solid;font-weight:700}
+.ty-b{border-color:var(--yw);color:var(--yw)}.tb-b{border-color:var(--bl);color:var(--bl)}.tw-b{border-color:var(--wh);color:var(--wh)}.tf{background:var(--yw);color:var(--bk);border-color:var(--yw)}
+.ot{font-size:clamp(80px,15vw,160px);font-weight:700;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px var(--gr);line-height:.8;position:absolute;top:60px;right:0;z-index:0;opacity:.4;pointer-events:none}
+.bw{border:var(--br) solid var(--wh);margin:60px 0;background:var(--bk)}
+.bb{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--gr);border-bottom:var(--br) solid var(--wh);flex-wrap:wrap}
+.bd{width:12px;height:12px;border:2px solid var(--wh);flex-shrink:0}
+.bd-r{background:#FF3B30}.bd-y{background:#FFCC00}.bd-g{background:#34C759}
+.btabs{display:flex;gap:0;margin-left:16px}
+.btab{padding:8px 16px;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--lt);border:1px solid var(--gr);border-bottom:none;cursor:pointer;background:var(--gr);transition:all .15s;font-family:var(--mono)}
+.btab.on{background:var(--bk);color:var(--yw);border-color:var(--wh);border-bottom:1px solid var(--bk);margin-bottom:-1px;position:relative;z-index:1}
+.burl{margin-left:auto;font-size:11px;color:var(--lt);letter-spacing:1px;border:1px solid var(--gr);padding:4px 12px;background:transparent}
+.bcon{padding:40px}
+.ph{padding:80px 0}
+.pl{display:inline-block;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--bl);border:1px solid var(--bl);padding:4px 16px;margin-bottom:32px;background:rgba(0,85,255,.08)}
+.pt{font-size:clamp(48px,9vw,100px);font-weight:700;line-height:.9;text-transform:uppercase;margin-bottom:32px}
+.pd{font-size:16px;line-height:1.8;color:var(--lt);max-width:680px;margin-bottom:40px}
+.ps{display:grid;grid-template-columns:repeat(3,1fr);border:var(--br) solid var(--wh)}
+.si{padding:24px;border-right:var(--br) solid var(--wh)}
+.si:last-child{border-right:none}
+.sv{font-size:32px;font-weight:700;color:var(--yw);display:block}
+.slb{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--lt);margin-top:8px}
+.err{padding:80px 0}
+.eb{border:4px solid #FF3B30;padding:40px;background:rgba(255,59,48,.03);margin:40px 0}
+.eh{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.ei{font-size:14px;font-weight:700;color:#FF3B30;background:var(--bk);border:2px solid #FF3B30;padding:8px 16px;letter-spacing:2px}
+.et{font-size:14px;font-weight:700;color:#FF3B30;letter-spacing:2px;text-transform:uppercase}
+.em{font-size:14px;color:var(--lt);line-height:1.8;margin-bottom:16px}
+.es{font-size:12px;color:var(--gr);padding:16px;border:1px solid var(--gr);background:rgba(0,0,0,.3);line-height:1.6;white-space:pre-wrap;overflow-x:auto}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:40px}
+.pcc{padding:32px;border:var(--br) solid var(--wh);cursor:pointer;transition:all .2s;position:relative}
+.pcc:first-child{border-right:none}
+.pcc:hover{background:rgba(255,229,0,.03)}
+.pcn{font-size:64px;font-weight:700;color:var(--yw);opacity:.15;position:absolute;top:12px;right:16px;line-height:1}
+.pcc h4{font-size:16px;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;color:var(--yw)}
+.pcc p{font-size:13px;color:var(--lt);line-height:1.7}
+.pcc .hd{max-height:0;overflow:hidden;transition:max-height .4s ease;font-size:12px;color:var(--gr);line-height:1.6}
+.pcc.ex .hd{max-height:300px;margin-top:16px}
+.res{padding:80px 0;border-top:var(--br) solid var(--wh)}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:40px}
+.ri{padding:32px;border:var(--br) solid var(--gr);transition:border-color .2s}
+.ri:hover{border-color:var(--yw)}
+.rii{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--bl);margin-bottom:20px;display:block}
+.ri h4{font-size:18px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;line-height:1.3}
+.ri p{font-size:13px;color:var(--lt);line-height:1.7}
+.rb{display:inline-block;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border:1px solid var(--gr);color:var(--gr);margin-top:16px}
+.stk{display:inline-block;padding:6px 14px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transform:rotate(-2deg);border:2px solid}
+.stk-r{transform:rotate(2deg)}.stk-l{transform:rotate(-3deg)}
+.vis{padding:80px 0;border-top:var(--br) solid var(--wh)}
+.cblk{border:var(--br) solid var(--gr);margin-top:40px;background:rgba(255,255,255,.01);overflow:hidden}
+.chd{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--gr);border-bottom:var(--br) solid var(--wh)}
+.cfn{font-size:11px;color:var(--lt);letter-spacing:1px}
+.clg{font-size:10px;color:var(--yw);letter-spacing:2px;text-transform:uppercase;padding:2px 10px;border:1px solid var(--yw)}
+.cbod{padding:24px;font-size:13px;line-height:1.8;overflow-x:auto;color:var(--lt)}
+.cbod .kw{color:var(--bl)}.cbod .str{color:#34C759}.cbod .cmt{color:var(--gr);font-style:italic}.cbod .fn{color:var(--yw)}.cbod .vr{color:var(--wh)}.cbod .br{color:var(--lt)}
+.ln{color:var(--gr);user-select:none;display:inline-block;width:30px;text-align:right;margin-right:20px;border-right:1px solid var(--gr);padding-right:12px;font-size:11px}
+.dmo{padding:80px 0;border-top:var(--br) solid var(--wh)}
+.dp{border:4px dashed var(--gr);padding:80px 40px;text-align:center;cursor:pointer;transition:border-color .3s}
+.dp:hover{border-color:var(--yw)}
+.dpi{font-size:48px;margin-bottom:24px;color:var(--gr);display:block}
+.dpt{font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--gr)}
+.dp:hover .dpt{color:var(--yw)}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.di{border:var(--br) solid var(--gr);padding:32px 16px;text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gr);cursor:pointer;transition:all .2s}
+.di:hover{border-color:var(--bl);color:var(--bl);background:rgba(0,85,255,.03)}
+.di .dt{display:block;font-size:24px;margin-bottom:12px}
+.ct{padding:80px 0;border-top:var(--br) solid var(--wh)}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.cleft{padding:40px;border:var(--br) solid var(--wh);border-right:none}
+.cright{padding:40px;border:var(--br) solid var(--wh)}
+.cml{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gr);margin-bottom:8px;margin-top:24px}
+.cml:first-child{margin-top:0}
+.cmv{font-size:18px;color:var(--yw);text-decoration:none;display:inline-block;border-bottom:1px solid transparent;transition:border-color .2s}
+.cmv:hover{border-bottom-color:var(--yw)}
+.ti{width:100%;background:transparent;border:none;border-bottom:2px solid var(--gr);padding:16px 0;font-family:var(--mono);font-size:14px;color:var(--wh);outline:none;transition:border-color .2s}
+.ti:focus{border-color:var(--yw)}
+.ti::placeholder{color:var(--gr)}
+.sbtn{margin-top:24px;padding:14px 40px;background:var(--yw);color:var(--bk);border:none;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.sbtn:hover{background:var(--wh)}
+.foot{border-top:var(--br) solid var(--wh);padding:32px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gr)}
+.gov{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:.03;background-image:linear-gradient(var(--wh) 1px,transparent 1px),linear-gradient(90deg,var(--wh) 1px,transparent 1px);background-size:80px 80px}
+.drag{cursor:grab;user-select:none;position:relative;z-index:10;transition:transform .1s,box-shadow .1s}
+.drag:active{cursor:grabbing;z-index:100;box-shadow:0 0 20px var(--yw)}
+.dh{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gr);position:absolute;bottom:-16px;left:0;pointer-events:none}
+@media(max-width:768px){
+.hg{grid-template-columns:1fr}.nav{flex-direction:row;flex-wrap:wrap;margin-top:20px}.na{text-align:left}
+.ag,.rg,.pc,.ps,.cg,.dg{grid-template-columns:1fr}
+.pcc:first-child{border-right:var(--br) solid var(--wh);border-bottom:none}
+.si{border-right:none;border-bottom:var(--br) solid var(--wh)}.si:last-child{border-bottom:none}
+.cleft{border-right:var(--br) solid var(--wh)}.ot{display:none}.burl{display:none}.bcon{padding:24px}
+}</style>
+</head>
+<body>
+
+<div class="gov"></div>
+<div class="marquee-w"><div class="marquee-t">&#9733; SOFTWARE ENGINEER &#9733; PRODUCT THINKER &#9733; AI RESEARCHER &#9733; VOICE INTERFACE DESIGNER &#9733; AUTONOMOUS SYSTEMS &#9733; USER EXPERIENCE &#9733; PROACTIVE AI &#9733; AGENT CONCEPT &#9733;&nbsp;&nbsp;&nbsp;&#9733; SOFTWARE ENGINEER &#9733; PRODUCT THINKER &#9733; AI RESEARCHER &#9733; VOICE INTERFACE DESIGNER &#9733; AUTONOMOUS SYSTEMS &#9733; USER EXPERIENCE &#9733; PROACTIVE AI &#9733; AGENT CONCEPT &#9733;</div></div>
+
+<header class="header"><div class="container"><div class="hg">
+<div><span class="sl">RAW_INDEX</span><a href="#" class="logo">ROCK<br>CHEN</a><div class="logosub cb">Software Engineer &amp; Product Thinker</div></div>
+<nav class="nav">
+<a href="#about" class="na">[01] ABOUT_RAW</a>
+<a href="#voice-helper" class="na">[02] VOICE_HELPER.exe</a>
+<a href="#problem" class="na">[03] PROBLEM.error</a>
+<a href="#research" class="na">[04] RESEARCH.log</a>
+<a href="#vision" class="na">[05] VISION.brain</a>
+<a href="#demo" class="na">[06] DEMO.play</a>
+<a href="#contact" class="na">[07] CONTACT.send</a>
+</nav>
+</div></div><div class="ts">// LAST_MODIFIED: 2026.04.01 // SESSION: ACTIVE</div></header>
+
+<section id="about" class="about"><div class="container" style="position:relative">
+<div class="ot">ABOUT</div>
+<span class="sl">// ABOUT_RAW</span>
+<h2 class="st ty">Building AI that<br><span class="tb">thinks ahead</span></h2>
+<div class="ag">
+<div class="at">
+<p>I'm Rock Chen &#8212; a <span class="hl">software engineer</span> and <span class="hl">product thinker</span> obsessed with the gap between what AI <em>can</em> do and what it <em>should</em> do for people.</p><br>
+<p>My core project, <span class="hl">Voice Helper</span>, is an AI voice assistant designed around <strong>autonomy</strong> and <strong>proactive interaction</strong> &#8212; filling the space where current voice assistants fall silent.</p><br>
+<p style="color:var(--gr);font-size:14px">&gt; Research focus: Agency concept, proactive AI behavior, UX evaluation frameworks for intelligent systems.</p>
+</div>
+<div class="tags">
+<span class="tag ty-b">AI Systems</span>
+<span class="tag tb-b">Voice UI</span>
+<span class="tag tw-b">Product</span>
+<span class="tag ty-b">Research</span>
+<span class="tag tf drag" id="drag1">Drag Me<span class="dh">[ drag ]</span></span>
+<span class="tag tb-b stk-r">Autonomy</span>
+<span class="tag tw-b stk-l">Proactive</span>
+</div>
+</div></div></section>
+
+<div class="container"><div class="bw">
+<div class="bb">
+<span class="bd bd-r"></span><span class="bd bd-y"></span><span class="bd bd-g"></span>
+<div class="btabs">
+<button class="btab on" onclick="stab(this,'tov')">overview.md</button>
+<button class="btab" onclick="stab(this,'tte')">tech_stack.json</button>
+<button class="btab" onclick="stab(this,'tnt')">scratch_notes.txt</button>
+</div>
+<span class="burl">~/rockchen/portfolio/voice-helper/</span>
+</div>
+<div class="bcon">
+<div id="tov">
+<h3 style="font-size:20px;margin-bottom:16px;text-transform:uppercase;letter-spacing:2px"># Voice Helper &#8212; Project Overview</h3>
+<p style="color:var(--lt);line-height:1.8;font-size:14px">Voice Helper is an AI-powered voice assistant that goes beyond simple command-response patterns. It explores the concept of <strong style="color:var(--yw)">agency</strong> in AI systems &#8212; the ability to act autonomously, anticipate user needs, and bridge the <strong style="color:var(--bl)">interactivity gap</strong> in current market offerings.</p><br>
+<p style="color:var(--gr);font-size:13px">// Status: Active Development<br>// Stage: Research -&gt; Prototype -&gt; Testing<br>// Focus: Autonomy + Proactive Interaction</p>
+</div>
+<div id="tte" style="display:none">
+<pre style="color:var(--lt);font-size:13px;line-height:1.6">{
+  "project": "voice-helper",
+  "domain": "ai-voice-assistant",
+  "research_areas": [
+    "agency-in-ai",
+    "proactive-behavior",
+    "ux-evaluation",
+    "voice-interface-design"
+  ],
+  "principles": {
+    "autonomy": "AI acts without explicit commands",
+    "anticipation": "Predict and fulfill user needs",
+    "transparency": "User understands AI decisions",
+    "control": "Human remains in the loop"
+  }
+}</pre>
+</div>
+<div id="tnt" style="display:none">
+<pre style="color:var(--gr);font-size:12px;line-height:1.6;white-space:pre-wrap">[2026.03.15] &#8212; Read: "Measuring Agency in AI Systems"
+  &gt; Key insight: Agency != Autonomy. Need both dimensions.
+  &gt; TODO: Define evaluation framework
+
+[2026.03.22] &#8212; Prototype: Voice Helper v0.2
+  &gt; Added proactive suggestion module
+  &gt; Users confused by unprompted actions
+  &gt; Fix: Add transparent reasoning display
+
+[2026.03.28] &#8212; Interview: 5 users tested prototype
+  &gt; 3/5 found proactive features "surprisingly useful"
+  &gt; 2/5 wanted more control over autonomy level
+  &gt; INSIGHT: Need adjustable agency dial
+
+[TODO]
+  - Write evaluation rubric for proactive UX
+  - Benchmark against Siri/Alexa/Google
+  - Design agency level indicator UI</pre>
+</div>
+</div></div></div>
+
+<section id="voice-helper" class="ph"><div class="container">
+<span class="pl">// EXECUTABLE &#8212; VOICE_HELPER.exe</span>
+<h1 class="pt">Voice<br><span class="ty">Helper</span></h1>
+<p class="pd">An AI voice assistant that doesn't wait to be asked. Built on the premise that the next generation of voice interfaces should be <strong style="color:var(--wh)">proactive</strong>, not merely reactive &#8212; closing the interactivity gap that leaves users managing technology instead of being empowered by it.</p>
+<div class="ps">
+<div class="si"><span class="sv">01</span><span class="slb">Core Product</span></div>
+<div class="si"><span class="sv">&infin;</span><span class="slb">Autonomy Level</span></div>
+<div class="si"><span class="sv">&Delta;</span><span class="slb">Interactivity Gap</span></div>
+</div>
+</div></section>
+
+<section id="problem" class="err"><div class="container">
+<span class="sl">// RUNTIME ERROR &#8212; PROBLEM.error</span>
+<h2 class="st" style="color:#FF3B30">Problems<br>We're Solving</h2>
+<div class="eb">
+<div class="eh"><span class="ei">ERR</span><span class="et">Runtime Exception: Voice Assistant Limitations</span></div>
+<div class="em">Current voice assistants operate in a <strong>request-response paradigm</strong> that fundamentally limits their usefulness. Users must formulate precise queries, navigate rigid command structures, and tolerate context loss between interactions.</div>
+<div class="es">at VoiceAssistant.processQuery (current_market.js:42)
+at InteractionLoop.execute (siri/alexa/google.js:128)
+at UserIntention.parse (natural_language.js:256)
+  &rarr; CAUSE: Reactive-only architecture
+  &rarr; IMPACT: Users spend more time managing the tool than benefiting from it
+  &rarr; SEVERITY: HIGH &#8212; Fundamental UX flaw</div>
+</div>
+<div class="pc">
+<div class="pcc" onclick="tcard(this)">
+<span class="pcn">01</span>
+<h4>The Autonomy Gap</h4>
+<p>Existing assistants never act unless explicitly commanded. They're powerful tools that refuse to take initiative.</p>
+<div class="hd">Research shows users expect intelligent systems to demonstrate understanding through proactive behavior. The absence of this creates a "dumb tool" perception regardless of actual capability. Voice Helper introduces adjustable agency levels &#8212; from passive listener to proactive collaborator.</div>
+</div>
+<div class="pcc" onclick="tcard(this)">
+<span class="pcn">02</span>
+<h4>Interactivity Gap</h4>
+<p>Complex tasks require multi-turn interactions with significant context tracking overhead placed on the user.</p>
+<div class="hd">When users attempt multi-step goals, current assistants lose context or require repetitive clarification. Voice Helper maintains a rich context model and chains actions autonomously &#8212; reducing 8-turn interactions to 2-turn outcomes.</div>
+</div>
+</div>
+</div></section>
+
+<section id="research" class="res"><div class="container">
+<span class="sl">// LOG OUTPUT &#8212; RESEARCH.log</span>
+<h2 class="st">Research<br><span class="tb">Areas</span></h2>
+<div class="rg">
+<div class="ri"><span class="rii">[R01] AGENCY</span><h4>Agency in AI Systems</h4><p>Defining and measuring the degree to which AI systems can act independently, make decisions, and execute multi-step plans on behalf of users.</p><span class="rb">theoretical framework</span></div>
+<div class="ri"><span class="rii">[R02] PROACTIVE AI</span><h4>Proactive AI Behavior</h4><p>Designing AI that anticipates user needs, suggests actions, and takes initiative &#8212; balanced with user control and transparency.</p><span class="rb">interaction design</span></div>
+<div class="ri"><span class="rii">[R03] UX EVAL</span><h4>UX Evaluation for AI</h4><p>Building rubrics and methodologies to evaluate user experience with intelligent, autonomous systems beyond traditional usability metrics.</p><span class="rb">methodology</span></div>
+<div class="ri"><span class="rii">[R04] VOICE UI</span><h4>Voice Interface Design</h4><p>Exploring the unique constraints and opportunities of voice-only interfaces &#8212; conversational patterns, feedback mechanisms, and error recovery.</p><span class="rb">interface design</span></div>
+</div>
+<div style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap">
+<span class="stk ty-b">&#9733; AGENCY THEORY</span>
+<span class="stk tb-b stk-r">&#9733; PROACTIVE UX</span>
+<span class="stk tw-b stk-l">&#9733; VOICE FIRST</span>
+<span class="stk tf">&#9733; USER RESEARCH</span>
+</div>
+</div></section>
+
+<section id="vision" class="vis"><div class="container">
+<span class="sl">// BRAIN OUTPUT &#8212; VISION.brain</span>
+<h2 class="st">Product<br><span class="ty">Vision</span></h2>
+<div class="cblk">
+<div class="chd"><span class="cfn">vision.config.js</span><span class="clg">javascript</span></div>
+<div class="cbod">
+<span class="ln"> 1</span><span class="cmt">/**
+ 2  * Voice Helper &#8212; The Vision
+ 3  * AI that acts as a true partner, not a tool.
+ 4  */</span><br>
+<span class="ln"> 5</span><br>
+<span class="ln"> 6</span><span class="kw">const</span> <span class="vr">VOICE_HELPER</span> <span class="br">=</span> <span class="br">{</span><br>
+<span class="ln"> 7</span>  <span class="vr">name</span>:      <span class="str">"Voice Helper"</span>,<br>
+<span class="ln"> 8</span>  <span class="vr">type</span>:      <span class="str">"AI Voice Assistant"</span>,<br>
+<span class="ln"> 9</span>  <span class="vr">version</span>:   <span class="str">"1.0.0-vision"</span>,<br>
+<span class="ln">10</span>  <span class="vr">status</span>:    <span class="str">"Bridging the Interactivity Gap"</span>,<br>
+<span class="ln">11</span><br>
+<span class="ln">12</span>  <span class="vr">principles</span>: <span class="br">{</span><br>
+<span class="ln">13</span>    <span class="vr">autonomy</span>:     <span class="kw">true</span>,   <span class="cmt">// Act without explicit commands</span><br>
+<span class="ln">14</span>    <span class="vr">proactive</span>:    <span class="kw">true</span>,   <span class="cmt">// Anticipate, don't just respond</span><br>
+<span class="ln">15</span>    <span class="vr">transparent</span>:  <span class="kw">true</span>,   <span class="cmt">// Always explain reasoning</span><br>
+<span class="ln">16</span>    <span class="vr">user_control</span>: <span class="kw">true</span>,   <span class="cmt">// Human stays in the loop</span><br>
+<span class="ln">17</span>  <span class="br">}</span>,<br>
+<span class="ln">18</span><br>
+<span class="ln">19</span>  <span class="kw">async</span> <span class="fn">fulfill</span><span class="br">(</span><span class="vr">user_intent</span><span class="br">)</span> <span class="br">{</span><br>
+<span class="ln">20</span>    <span class="kw">const</span> <span class="vr">plan</span> <span class="br">=</span> <span class="kw">await</span> <span class="kw">this</span>.<span class="fn">generateProactivePlan</span>(<span class="vr">user_intent</span>);<br>
+<span class="ln">21</span>    <span class="kw">const</span> <span class="vr">actions</span> <span class="br">=</span> <span class="kw">await</span> <span class="kw">this</span>.<span class="fn">executeChain</span>(<span class="vr">plan</span>);<br>
+<span class="ln">22</span>    <span class="kw">return</span> <span class="vr">actions</span>.<span class="fn">verify</span>(<span class="br">{</span> <span class="vr">human_approval</span>: <span class="kw">true</span> <span class="br">}</span>);<br>
+<span class="ln">23</span>  <span class="br">}</span>,<br>
+<span class="ln">24</span><br>
+<span class="ln">25</span>  <span class="vr">goal</span>: <span class="str">"Reduce 8-turn interactions to 2-turn outcomes.<br>
+<span class="ln">26</span>           Make AI an empowering partner, not a needy tool."</span><br>
+<span class="ln">27</span><span class="br">}</span>;</span>
+</div></div>
+</div></section>
+
+<section id="demo" class="dmo"><div class="container">
+<span class="sl">// MEDIA &#8212; DEMO.play</span>
+<h2 class="st">Demo &amp;<br><span class="tb">Media</span></h2>
+<div class="dp" onclick="this.style.borderColor='var(--yw)';this.querySelector('.dpt').textContent='COMING SOON // CHECK BACK LATER'">
+<span class="dpi">&#9654;</span>
+<span class="dpt cb">[ CLICK TO LOAD DEMO ]</span>
+<p style="color:var(--gr);font-size:11px;margin-top:16px;letter-spacing:2px">INTERACTIVE VOICE HELPER DEMONSTRATION</p>
+</div>
+<div class="dg">
+<div class="di"><span class="dt">&#127916;</span>Video Demo<br><span style="font-size:9px;color:var(--gr)">voice_helper_demo.mp4</span></div>
+<div class="di"><span class="dt">&#128202;</span>Research Slides<br><span style="font-size:9px;color:var(--gr)">agency_framework.pdf</span></div>
+<div class="di"><span class="dt">&#128221;</span>UX Report<br><span style="font-size:9px;color:var(--gr)">evaluation_rubric.docx</span></div>
+</div>
+</div></section>
+
+<section id="contact" class="ct"><div class="container">
+<span class="sl">// TRANSMIT &#8212; CONTACT.send</span>
+<h2 class="st">Get In<br><span class="ty">Touch</span></h2>
+<div class="cg">
+<div class="cleft">
+<div class="cml">// Email</div><a href="mailto:rock@example.com" class="cmv">rock@example.com</a>
+<div class="cml">// GitHub</div><a href="#" class="cmv">github.com/rockchen</a>
+<div class="cml">// LinkedIn</div><a href="#" class="cmv">linkedin.com/in/rockchen</a>
+</div>
+<div class="cright">
+<div style="margin-bottom:16px;font-size:12px;color:var(--gr);letter-spacing:2px;text-transform:uppercase">// Send a message</div>
+<input type="text" class="ti" placeholder="&gt; type your message here..." id="msgInput">
+<button class="sbtn" onclick="sendMsg()">&#9658; SEND</button>
+<div id="sc" style="margin-top:16px;font-size:12px;color:var(--gr);display:none">&#10003; message.sent()</div>
+</div>
+</div>
+</div></section>
+
+<footer class="foot"><div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+<span class="ft">// ROCK.CHEN &copy; 2026 &#8212; ALL RIGHTS RESERVED</span>
+<span class="ft">// BUILT WITH RAW HTML + CSS + VANILLA JS</span>
+</div></footer>
+
+<script>
+function stab(btn,id){
+  document.querySelectorAll('.btab').forEach(function(t){t.classList.remove('on')});
+  btn.classList.add('on');
+  document.querySelectorAll('.bcon>div').forEach(function(d){d.style.display='none'});
+  document.getElementById(id).style.display='block';
+}
+function tcard(el){el.classList.toggle('ex')}
+function sendMsg(){
+  var v=document.getElementById('msgInput').value;
+  if(v.trim()){
+    document.getElementById('sc').style.display='block';
+    document.getElementById('msgInput').value='';
+    document.getElementById('msgInput').placeholder='> message.delivered()';
+  }
+}
+(function(){
+  var d=document.getElementById('drag1');
+  if(!d)return;
+  var mx=0,my=0,dragging=false;
+  d.addEventListener('mousedown',start);
+  d.addEventListener('touchstart',start,{passive:false});
+  function start(e){
+    e.preventDefault();dragging=true;
+    var r=d.getBoundingClientRect();
+    var cx=e.type==='touchstart'?e.touches[0].clientX:e.clientX;
+    var cy=e.type==='touchstart'?e.touches[0].clientY:e.clientY;
+    mx=cx-r.left;my=cy-r.top;
+    d.style.position='fixed';d.style.left=r.left+'px';d.style.top=r.top+'px';d.style.zIndex='1000';
+    document.addEventListener('mousemove',move);document.addEventListener('mouseup',stop);
+    document.addEventListener('touchmove',move,{passive:false});document.addEventListener('touchend',stop);
+  }
+  function move(e){
+    if(!dragging)return;e.preventDefault();
+    var cx=e.type==='touchmove'?e.touches[0].clientX:e.clientX;
+    var cy=e.type==='touchmove'?e.touches[0].clientY:e.clientY;
+    d.style.left=(cx-mx)+'px';d.style.top=(cy-my)+'px';
+  }
+  function stop(){dragging=false;
+    document.removeEventListener('mousemove',move);document.removeEventListener('mouseup',stop);
+    document.removeEventListener('touchmove',move);document.removeEventListener('touchend',stop);
+  }
+})();
+</script>
+</body>
+</html>

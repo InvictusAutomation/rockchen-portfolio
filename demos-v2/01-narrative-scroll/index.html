@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Software Engineer & Product Thinker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ivory:#FAF5EF;--charcoal:#1A1A1A;--amber:#D4A574;
+  --amber-light:#E8C9A0;--amber-dark:#B8834A;
+  --gray-300:#C4C0BA;--gray-400:#9A9590;--gray-500:#6B6660;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'Inter','Noto Sans SC',system-ui,sans-serif;
+}
+html{scroll-behavior:auto;overflow-x:hidden}
+body{font-family:var(--font-body);color:var(--charcoal);background:var(--ivory);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--amber);color:var(--ivory)}
+
+/* Scroll Container */
+.scroll-container{height:100vh;overflow-y:auto;scroll-snap-type:y mandatory}
+.scroll-container::-webkit-scrollbar{width:0;display:none}
+
+/* Sections */
+.section{min-height:100vh;scroll-snap-align:start;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:4rem 2rem}
+@media(max-width:768px){.section{padding:2rem 1.25rem}}
+
+/* Parallax Layers */
+.parallax-bg{position:absolute;inset:0;will-change:transform;z-index:0}
+.parallax-mid{position:absolute;inset:0;will-change:transform;z-index:1}
+.parallax-fg{position:relative;z-index:2;max-width:1100px;width:100%}
+
+/* Reveal Animations */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-line{display:block;overflow:hidden}
+.reveal-line span{display:block;opacity:0;transform:translateY(110%);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-line span.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.88);transition:opacity 1s ease,transform 1s cubic-bezier(.22,1,.36,1)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+
+/* Stagger children */
+.stagger .reveal-line span:nth-child(1){transition-delay:.05s}
+.stagger .reveal-line span:nth-child(2){transition-delay:.15s}
+.stagger .reveal-line span:nth-child(3){transition-delay:.25s}
+.stagger .reveal-line span:nth-child(4){transition-delay:.35s}
+.stagger .reveal-line span:nth-child(5){transition-delay:.45s}
+.stagger .reveal-line span:nth-child(6){transition-delay:.55s}
+.stagger > .reveal:nth-child(2){transition-delay:.2s}
+.stagger > .reveal:nth-child(3){transition-delay:.4s}
+.stagger > .reveal:nth-child(4){transition-delay:.6s}
+
+/* Typography */
+.display{font-family:var(--font-display);font-weight:700;line-height:1.05;letter-spacing:-.02em}
+.display-2{font-family:var(--font-display);font-weight:600;line-height:1.15;letter-spacing:-.01em}
+.body-lg{font-size:clamp(1rem,2vw,1.2rem);line-height:1.8;color:var(--gray-500)}
+.label{font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--amber-dark)}
+
+/* Section 0 — Hero */
+.hero{background:var(--charcoal);color:var(--ivory)}
+.hero .label{color:var(--amber-light)}
+.hero-bg{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(212,165,116,.12),transparent 70%)}
+.hero-deco{position:absolute;width:300px;height:300px;border:1px solid rgba(212,165,116,.15);border-radius:50%;top:10%;right:-5%;animation:float-slow 20s ease-in-out infinite}
+.hero-deco-2{position:absolute;width:200px;height:200px;border:1px solid rgba(212,165,116,.1);border-radius:50%;bottom:15%;left:-3%;animation:float-slow 25s ease-in-out infinite reverse}
+@keyframes float-slow{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-30px) rotate(5deg)}}
+.hero-title{font-size:clamp(2.8rem,8vw,6.5rem)}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--gray-300);margin-top:1.5rem;font-weight:300;max-width:600px}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--gray-400);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;animation:bounce-subtle 2.5s ease-in-out infinite}
+.scroll-hint .line{width:1px;height:40px;background:linear-gradient(to bottom,var(--amber),transparent);animation:line-grow 2.5s ease-in-out infinite}
+@keyframes bounce-subtle{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+@keyframes line-grow{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* Section 1 — Problem */
+.problem-bg{background:radial-gradient(circle at 20% 50%,rgba(212,165,116,.06),transparent 50%)}
+.quote-block{border-left:3px solid var(--amber);padding-left:2rem;margin:2rem 0}
+.quote-block p{font-family:var(--font-display);font-style:italic;font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--gray-500);line-height:1.6}
+
+/* Stats Counter */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(26,26,26,.1)}
+.stat-item{text-align:center}
+.stat-number{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:var(--charcoal)}
+.stat-label{font-size:.85rem;color:var(--gray-500);margin-top:.25rem}
+
+/* Section 2 — Vision */
+.vision-section{background:var(--charcoal);color:var(--ivory)}
+.vision-bg{background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(212,165,116,.08),transparent 60%)}
+.vision-statement{font-size:clamp(1.5rem,4vw,2.8rem);font-weight:300;line-height:1.4}
+.vision-statement strong{font-weight:700;color:var(--amber-light)}
+.concept-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3rem}
+.concept-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:2rem;transition:border-color .4s,transform .4s}
+.concept-card:hover{border-color:var(--amber);transform:translateY(-4px)}
+.concept-card .card-icon{font-size:1.8rem;margin-bottom:1rem;display:block}
+.concept-card h4{font-family:var(--font-display);font-size:1.2rem;margin-bottom:.5rem}
+.concept-card p{font-size:.9rem;color:var(--gray-300);line-height:1.6}
+.concept-card .card-tag{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-top:1rem;font-weight:600}
+
+/* Section 3 — Research */
+.research-bg{background-image:radial-gradient(rgba(212,165,116,.08) 1px,transparent 1px);background-size:24px 24px}
+.research-timeline{position:relative;margin-top:3rem;padding-left:2rem}
+.research-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--amber),var(--gray-300))}
+.timeline-item{position:relative;padding-bottom:2.5rem;padding-left:1.5rem}
+.timeline-item::before{content:'';position:absolute;left:-2rem;top:.4rem;width:10px;height:10px;border-radius:50%;background:var(--amber);border:2px solid var(--ivory)}
+.timeline-item h4{font-family:var(--font-display);font-size:1.15rem;margin-bottom:.3rem}
+.timeline-item p{font-size:.9rem;color:var(--gray-500);line-height:1.6}
+.timeline-item .ref{font-size:.75rem;color:var(--amber-dark);margin-top:.4rem;font-style:italic}
+
+/* Horizontal scroll sub-section */
+.hscroll-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.hscroll-wrapper::-webkit-scrollbar{display:none}
+.hscroll-track{display:flex;gap:1.5rem;padding:1rem 0 2rem;width:max-content}
+.hscroll-card{min-width:280px;max-width:320px;background:var(--charcoal);color:var(--ivory);border-radius:16px;padding:2rem;flex-shrink:0;transition:transform .4s}
+.hscroll-card:hover{transform:scale(1.03)}
+.hscroll-card .card-num{font-family:var(--font-display);font-size:3rem;font-weight:900;color:var(--amber);opacity:.3;line-height:1}
+.hscroll-card h4{font-size:1rem;margin:.75rem 0 .5rem}
+.hscroll-card p{font-size:.85rem;color:var(--gray-300);line-height:1.5}
+
+/* Section 4 — Frameworks */
+.frameworks-section{background:var(--charcoal);color:var(--ivory)}
+.frameworks-bg{background:radial-gradient(circle at 80% 20%,rgba(212,165,116,.06),transparent 40%)}
+.framework-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:3rem}
+.framework-block{border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02)}
+.framework-header{padding:1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
+.framework-header h3{font-family:var(--font-display);font-size:1.1rem}
+.framework-header .tag{font-size:.7rem;padding:.25rem .75rem;border-radius:20px;background:rgba(212,165,116,.15);color:var(--amber-light);font-weight:600}
+.framework-body{padding:1.5rem 2rem}
+.framework-body ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.framework-body li{font-size:.9rem;color:var(--gray-300);padding-left:1.2rem;position:relative;line-height:1.5}
+.framework-body li::before{content:'';position:absolute;left:0;top:.55rem;width:5px;height:5px;border-radius:50%;background:var(--amber)}
+
+/* Section 5 — Demo Space */
+.demo-space{background:linear-gradient(180deg,var(--ivory),#F0E8DD)}
+.demo-placeholder{border:2px dashed var(--amber);border-radius:20px;padding:3rem;text-align:center;color:var(--gray-500);min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;transition:border-color .4s,background .4s}
+.demo-placeholder:hover{border-color:var(--amber-dark);background:rgba(212,165,116,.03)}
+.demo-placeholder .icon{width:64px;height:64px;border-radius:50%;background:rgba(212,165,116,.1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--amber-dark)}
+.demo-placeholder h4{font-family:var(--font-display);font-size:1.2rem;color:var(--charcoal)}
+.demo-placeholder p{font-size:.85rem;max-width:360px}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:2rem}
+
+/* Section 6 — About */
+.about-section{background:var(--charcoal);color:var(--ivory)}
+.about-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+@media(max-width:768px){.about-content{grid-template-columns:1fr;gap:2rem}}
+.about-photo{width:100%;aspect-ratio:4/5;background:linear-gradient(135deg,rgba(212,165,116,.15),rgba(212,165,116,.05));border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:4rem;color:var(--amber);opacity:.4;border:1px solid rgba(255,255,255,.06)}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.skill-tag{font-size:.78rem;padding:.35rem .9rem;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--gray-300);transition:border-color .3s}
+.skill-tag:hover{border-color:var(--amber)}
+
+/* Section 7 — Contact */
+.contact-section{text-align:center}
+.contact-bg{background:radial-gradient(circle at 50% 80%,rgba(212,165,116,.1),transparent 50%)}
+.contact-title{font-size:clamp(2rem,5vw,3.5rem)}
+.contact-links{display:flex;gap:1.5rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+.contact-link{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border:1px solid var(--charcoal);border-radius:100px;font-size:.9rem;font-weight:500;color:var(--charcoal);text-decoration:none;transition:all .3s}
+.contact-link:hover{background:var(--charcoal);color:var(--ivory);border-color:var(--charcoal)}
+.contact-link svg{width:18px;height:18px}
+
+/* Progress indicator */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--amber-dark),var(--amber-light));z-index:100;transition:width .1s linear}
+
+/* Section indicator dots */
+.section-nav{position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:.75rem}
+.section-dot{width:8px;height:8px;border-radius:50%;background:rgba(26,26,26,.2);cursor:pointer;transition:all .3s}
+.section-dot.active{background:var(--amber);transform:scale(1.4)}
+.section-dot:hover{background:var(--amber-dark)}
+@media(max-width:768px){.section-nav{right:.75rem;gap:.5rem}.section-dot{width:6px;height:6px}}
+
+/* Responsive */
+@media(max-width:768px){
+  .concept-cards{grid-template-columns:1fr}
+  .framework-grid{grid-template-columns:1fr}
+  .demo-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .hscroll-card{min-width:240px}
+}
+
+/* Utility */
+.text-amber{color:var(--amber)}
+.text-amber-light{color:var(--amber-light)}
+.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}.mb-4{margin-bottom:2rem}
+.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}.mt-4{margin-top:2rem}
+.mw-600{max-width:600px}.mw-700{max-width:700px}.mw-800{max-width:800px}
+
+/* Horizontal scroll hint */
+.hscroll-hint{display:flex;align-items:center;gap:.5rem;color:var(--gray-400);font-size:.75rem;margin-top:1rem}
+.hscroll-hint .arrow{animation:slide-hint 2s ease-in-out infinite}
+@keyframes slide-hint{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Section Navigation Dots -->
+<nav class="section-nav" id="sectionNav">
+  <div class="section-dot active" data-index="0" title="Hero"></div>
+  <div class="section-dot" data-index="1" title="Problem"></div>
+  <div class="section-dot" data-index="2" title="Vision"></div>
+  <div class="section-dot" data-index="3" title="Research"></div>
+  <div class="section-dot" data-index="4" title="Frameworks"></div>
+  <div class="section-dot" data-index="5" title="Demo"></div>
+  <div class="section-dot" data-index="6" title="About"></div>
+  <div class="section-dot" data-index="7" title="Contact"></div>
+</nav>
+
+<div class="scroll-container" id="scrollContainer">
+
+  <!-- ============ SECTION 0: HERO ============ -->
+  <section class="section hero" id="sec-hero">
+    <div class="parallax-bg hero-bg"></div>
+    <div class="hero-deco"></div>
+    <div class="hero-deco-2"></div>
+    <div class="parallax-fg">
+      <div class="label reveal mb-2">Portfolio — 2025</div>
+      <h1 class="display hero-title stagger">
+        <span class="reveal-line"><span>Rock Chen</span></span>
+        <span class="reveal-line"><span style="color:var(--amber-light)">陈若晨</span></span>
+      </h1>
+      <p class="hero-sub reveal" style="transition-delay:.5s">Software Engineer & Product Thinker</p>
+      <p class="hero-sub reveal" style="transition-delay:.65s;font-size:clamp(.9rem,1.8vw,1.1rem)">
+        探索 AI 的自主性与强交互性，<br>重新定义人机协作的边界。
+      </p>
+      <div class="scroll-hint">
+        <span>Scroll</span>
+        <div class="line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 1: PROBLEM STATEMENT ============ -->
+  <section class="section" id="sec-problem">
+    <div class="parallax-bg problem-bg"></div>
+    <div class="parallax-fg mw-800 stagger">
+      <div class="label reveal mb-2">01 — Problem</div>
+      <h2 class="display display-2 reveal" style="font-size:clamp(1.8rem,4.5vw,3rem)">
+        <span class="reveal-line"><span>AI Copilot 只是「副驾驶」，</span></span>
+        <span class="reveal-line"><span>不是「沉默的同伴」</span></span>
+      </h2>
+      <div class="quote-block reveal">
+        <p>当前的 AI 助手被困在浏览器侧边栏中，只能被动等待用户手动触发。它们缺乏主动性——无法在合适的时候主动介入，无法感知用户真正需要帮助的时刻。</p>
+      </div>
+      <p class="body-lg reveal">
+        We interact with AI the way we use a calculator: purposefully, deliberately, and always on our own initiative. But what if AI could be like a thoughtful colleague who knows when to speak up — and when to stay silent?
+      </p>
+      <div class="stats-grid reveal">
+        <div class="stat-item">
+          <div class="stat-number" data-target="95">0</div>
+          <div class="stat-label">AI 助手需要手动触发 %</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="3">0</div>
+          <div class="stat-label">主流交互模态</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="1">0</div>
+          <div class="stat-label">核心缺失：自主性</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2: VOICE HELPER VISION ============ -->
+  <section class="section vision-section" id="sec-vision">
+    <div class="parallax-bg vision-bg"></div>
+    <div class="parallax-fg stagger">
+      <div class="label reveal mb-2">02 — Voice Helper 语音助手</div>
+      <h2 class="display display-2 reveal" style="font-size:clamp(1.8rem,4vw,3rem);color:var(--ivory)">
+        <span class="reveal-line"><span>当 AI 学会了「察言观色」</span></span>
+      </h2>
+      <p class="vision-statement reveal mt-3" style="max-width:700px;color:var(--gray-300)">
+        Voice Helper 的愿景是创造一个 <strong>像沉默同伴一样的 AI</strong>：它不需要被唤醒，而是在感知到用户需要帮助的瞬间，自然地介入。自主性与强交互性，是当前市场上所有 AI 产品都缺失的两个维度。
+      </p>
+      <div class="concept-cards">
+        <div class="concept-card reveal-scale">
+          <span class="card-icon">◈</span>
+          <h4>Autonomy 自主性</h4>
+          <p>AI 主动判断何时介入、如何介入，而非被动等待指令。就像一个默契的搭档，知道什么时候该帮忙。</p>
+          <span class="card-tag">核心突破</span>
+        </div>
+        <div class="concept-card reveal-scale" style="transition-delay:.15s">
+          <span class="card-icon">◉</span>
+          <h4>Strong Interactivity 强交互性</h4>
+          <p>不仅仅是问答，而是多轮深度对话、情境感知、实时反馈的立体交互体验。</p>
+          <span class="card-tag">体验升级</span>
+        </div>
+        <div class="concept-card reveal-scale" style="transition-delay:.3s">
+          <span class="card-icon">◎</span>
+          <h4>Proactive Engagement 主动参与</h4>
+          <p>参考 MiniMax 的创造性产品理念——好的产品应该有「主动性」，在用户需要之前就已经准备好了。</p>
+          <span class="card-tag">产品哲学</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3: RESEARCH APPROACH ============ -->
+  <section class="section" id="sec-research">
+    <div class="parallax-bg research-bg"></div>
+    <div class="parallax-fg mw-800 stagger">
+      <div class="label reveal mb-2">03 — Research</div>
+      <h2 class="display display-2 reveal" style="font-size:clamp(1.8rem,4vw,3rem)">
+        <span class="reveal-line"><span>AI Agency 研究</span></span>
+        <span class="reveal-line"><span>与用户体验框架</span></span>
+      </h2>
+      <p class="body-lg reveal mt-2">
+        深入探索 AI 的「主体性」概念，结合小红书的产品评估标准与学术研究，构建了一套系统化的 AI 产品评价体系。
+      </p>
+      <div class="research-timeline reveal">
+        <div class="timeline-item">
+          <h4>AI Agency 理论探索</h4>
+          <p>研究 AI 代理（Agent）的自主行为模型，分析自主性与可控性之间的平衡点。从学术文献中提炼关键维度。</p>
+          <div class="ref">Ref: Human-AI Collaboration, ACM CHI 2024</div>
+        </div>
+        <div class="timeline-item">
+          <h4>小红书评估标准分析</h4>
+          <p>拆解小红书对 AI 产品的评估维度，理解内容平台如何衡量 AI 产品的用户体验价值。</p>
+          <div class="ref">Source: Xiaohongshu Product Evaluation Framework</div>
+        </div>
+        <div class="timeline-item">
+          <h4>MiniMax 创造性产品理念</h4>
+          <p>学习 MiniMax 对「主动性」的思考——好的 AI 产品不是工具，而是有能力主动创造价值的伙伴。</p>
+          <div class="ref">Source: MiniMax Product Philosophy</div>
+        </div>
+        <div class="timeline-item">
+          <h4>交互设计原型迭代</h4>
+          <p>基于研究发现，设计 Voice Helper 的交互原型，验证「主动介入」在不同场景下的用户体验。</p>
+          <div class="ref">Ongoing — Voice Helper Prototype v0.x</div>
+        </div>
+      </div>
+
+      <!-- Horizontal Scroll Sub-section -->
+      <div class="reveal mt-4">
+        <div class="label mb-2">Key Insights 核心洞察</div>
+        <div class="hscroll-wrapper">
+          <div class="hscroll-track">
+            <div class="hscroll-card">
+              <div class="card-num">01</div>
+              <h4>Context is King</h4>
+              <p>没有上下文感知，AI 永远只能做被动工具。真正的自主性源于对情境的深度理解。</p>
+            </div>
+            <div class="hscroll-card">
+              <div class="card-num">02</div>
+              <h4>Timing Matters</h4>
+              <p>主动介入的时机决定体验好坏。太早=打扰，太晚=无用。这需要精细的触发机制设计。</p>
+            </div>
+            <div class="hscroll-card">
+              <div class="card-num">03</div>
+              <h4>Trust Building</h4>
+              <p>用户需要逐步建立对 AI「主动行为」的信任。透明度和可控性是基础。</p>
+            </div>
+            <div class="hscroll-card">
+              <div class="card-num">04</div>
+              <h4>Graceful Degradation</h4>
+              <p>当 AI 判断失误时，优雅地退回被动模式，让用户重新掌控。容错设计至关重要。</p>
+            </div>
+            <div class="hscroll-card">
+              <div class="card-num">05</div>
+              <h4>Multimodal Signals</h4>
+              <p>结合语音、视觉、行为数据的多模态信号，才能实现真正精准的主动介入判断。</p>
+            </div>
+          </div>
+        </div>
+        <div class="hscroll-hint">
+          <span>← 左右滑动探索更多 →</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4: CORE FRAMEWORKS ============ -->
+  <section class="section frameworks-section" id="sec-frameworks">
+    <div class="parallax-bg frameworks-bg"></div>
+    <div class="parallax-fg stagger">
+      <div class="label reveal mb-2">04 — Frameworks</div>
+      <h2 class="display display-2 reveal" style="font-size:clamp(1.8rem,4vw,3rem);color:var(--ivory)">
+        <span class="reveal-line"><span>核心研究框架</span></span>
+      </h2>
+      <p class="reveal mt-2" style="color:var(--gray-300);max-width:600px;line-height:1.7">
+        基于系统性研究，提炼出评价 AI 产品自主性与交互性的多维框架。
+      </p>
+      <div class="framework-grid">
+        <div class="framework-block reveal-left">
+          <div class="framework-header">
+            <h3>Autonomy Spectrum<br><span style="font-size:.8rem;font-weight:400;color:var(--gray-400)">自主性光谱</span></h3>
+            <span class="tag">Core</span>
+          </div>
+          <div class="framework-body">
+            <ul>
+              <li><strong style="color:var(--amber-light)">L0 Reactive</strong> — 仅响应用户指令</li>
+              <li><strong style="color:var(--amber-light)">L1 Suggestive</strong> — 基于上下文提供建议</li>
+              <li><strong style="color:var(--amber-light)">L2 Proactive</strong> — 主动识别需求并介入</li>
+              <li><strong style="color:var(--amber-light)">L3 Collaborative</strong> — 与用户共同决策</li>
+              <li><strong style="color:var(--amber-light)">L4 Autonomous</strong> — 在授权范围内独立行动</li>
+            </ul>
+          </div>
+        </div>
+        <div class="framework-block reveal-right">
+          <div class="framework-header">
+            <h3>Interaction Depth<br><span style="font-size:.8rem;font-weight:400;color:var(--gray-400)">交互深度</span></h3>
+            <span class="tag">UX</span>
+          </div>
+          <div class="framework-body">
+            <ul>
+              <li><strong style="color:var(--amber-light)">Signal Clarity</strong> — 意图传递的清晰度</li>
+              <li><strong style="color:var(--amber-light)">Feedback Loop</strong> — 实时反馈的完整性</li>
+              <li><strong style="color:var(--amber-light)">Context Persistence</strong> — 上下文保持能力</li>
+              <li><strong style="color:var(--amber-light)">Modality Richness</strong> — 多模态支持程度</li>
+              <li><strong style="color:var(--amber-light)">Emotional Intelligence</strong> — 情感理解与响应</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5: DEMO SPACE ============ -->
+  <section class="section" id="sec-demo">
+    <div class="parallax-bg"></div>
+    <div class="parallax-fg stagger">
+      <div class="label reveal mb-2">05 — Demo Space</div>
+      <h2 class="display display-2 reveal" style="font-size:clamp(1.8rem,4vw,3rem)">
+        <span class="reveal-line"><span>体验 Voice Helper</span></span>
+      </h2>
+      <p class="body-lg reveal mt-2 mw-600">
+        以下区域预留给多媒体展示内容：产品演示视频、语音交互 Demo、研究可视化等。
+      </p>
+      <div class="demo-grid">
+        <div class="demo-placeholder reveal-scale">
+          <div class="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <h4>产品演示视频</h4>
+          <p>Voice Helper 核心功能演示 — 主动介入场景、语音交互体验</p>
+        </div>
+        <div class="demo-placeholder reveal-scale" style="transition-delay:.15s">
+          <div class="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <h4>语音交互 Demo</h4>
+          <p>实时语音对话演示 — 展示多轮对话与情境感知能力</p>
+        </div>
+        <div class="demo-placeholder reveal-scale" style="transition-delay:.3s">
+          <div class="icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h4>研究框架可视化</h4>
+          <p>自主性光谱与交互深度框架的交互式图表展示</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 6: ABOUT ============ -->
+  <section class="section about-section" id="sec-about">
+    <div class="parallax-bg"></div>
+    <div class="parallax-fg stagger">
+      <div class="label reveal mb-2">06 — About</div>
+      <div class="about-content">
+        <div class="about-photo reveal-left">RC</div>
+        <div>
+          <h2 class="display display-2 reveal" style="font-size:clamp(1.8rem,4vw,2.8rem);color:var(--ivory)">
+            <span class="reveal-line"><span>Rock Chen 陈若晨</span></span>
+          </h2>
+          <p class="reveal mt-2" style="color:var(--gray-300);line-height:1.8;font-size:.95rem">
+            Software Engineer & Product Thinker. 我相信好的产品源于对人的深刻理解，而非对技术的盲目追逐。Voice Helper 是我对「AI 应该如何与人相处」这个问题的回答。
+          </p>
+          <p class="reveal mt-2" style="color:var(--gray-300);line-height:1.8;font-size:.95rem">
+            在技术实现与产品思维之间寻找平衡，关注 AI 的自主性、交互设计和用户体验研究。
+          </p>
+          <div class="skill-tags reveal">
+            <span class="skill-tag">AI/ML Engineering</span>
+            <span class="skill-tag">Product Design</span>
+            <span class="skill-tag">User Research</span>
+            <span class="skill-tag">Interaction Design</span>
+            <span class="skill-tag">Voice UI</span>
+            <span class="skill-tag">Full-Stack Development</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">TypeScript</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 7: CONTACT ============ -->
+  <section class="section contact-section" id="sec-contact">
+    <div class="parallax-bg contact-bg"></div>
+    <div class="parallax-fg stagger" style="text-align:center">
+      <div class="label reveal mb-2">07 — Contact</div>
+      <h2 class="display contact-title reveal">
+        <span class="reveal-line"><span>Let's Build Together</span></span>
+        <span class="reveal-line"><span style="font-size:.6em;color:var(--gray-500)">一起创造更好的 AI 体验</span></span>
+      </h2>
+      <p class="body-lg reveal mt-2" style="max-width:500px;margin-left:auto;margin-right:auto">
+        如果你对 Voice Helper 的愿景感兴趣，或者想探讨 AI 产品的自主性与交互设计，欢迎联系我。
+      </p>
+      <div class="contact-links reveal mt-3">
+        <a href="mailto:rock@example.com" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email
+        </a>
+        <a href="#" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="#" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          GitHub
+        </a>
+      </div>
+      <p class="reveal mt-4" style="font-size:.75rem;color:var(--gray-400)">
+        © 2025 Rock Chen. Crafted with care.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  const container = document.getElementById('scrollContainer');
+  const sections = document.querySelectorAll('.section');
+  const dots = document.querySelectorAll('.section-dot');
+  const progressBar = document.getElementById('progressBar');
+
+  // Scroll progress
+  container.addEventListener('scroll', () => {
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight - container.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+
+    // Update active dot
+    let currentIndex = 0;
+    sections.forEach((sec, i) => {
+      if (sec.offsetTop <= scrollTop + container.clientHeight / 3) {
+        currentIndex = i;
+      }
+    });
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+  });
+
+  // Dot click navigation
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.dataset.index);
+      sections[idx].scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Intersection Observer for reveal animations
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { root: container, threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // Intersection Observer for line-by-line text reveals
+  const lineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const spans = entry.target.querySelectorAll('.reveal-line span');
+        spans.forEach(span => span.classList.add('visible'));
+      }
+    });
+  }, { root: container, threshold: 0.2 });
+
+  document.querySelectorAll('.reveal-line').forEach(el => {
+    lineObserver.observe(el.parentElement);
+  });
+
+  // Parallax effect
+  container.addEventListener('scroll', () => {
+    const scrollTop = container.scrollTop;
+    sections.forEach(section => {
+      const bg = section.querySelector('.parallax-bg');
+      const mid = section.querySelector('.parallax-mid');
+      const rect = section.getBoundingClientRect();
+      const sectionTop = rect.top;
+      if (bg) {
+        bg.style.transform = `translateY(${sectionTop * 0.3}px)`;
+      }
+      if (mid) {
+        mid.style.transform = `translateY(${sectionTop * 0.15}px)`;
+      }
+    });
+  });
+
+  // Counter animation
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        animateCounter(el, target);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { root: container, threshold: 0.5 });
+
+  document.querySelectorAll('.stat-number').forEach(el => {
+    counterObserver.observe(el);
+  });
+
+  function animateCounter(el, target) {
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased);
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(update);
+  }
+
+  // Trigger initial scroll event
+  container.dispatchEvent(new Event('scroll'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Chen — Research Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#FDF6EC;--cream-d:#F5EBD9;--brown:#3C2415;--brown-l:#6B4C3B;--blue:#2563EB;--blue-l:#DBEAFE;--yellow:#FEF3C7;--yb:#F59E0B;--red:#DC2626;--gray:#9CA3AF;--sb:260px;--cw:740px}
+html{scroll-behavior:smooth}
+body{font-family:'Merriweather',Georgia,serif;background:var(--cream);color:var(--brown);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+::selection{background:var(--blue);color:#fff}
+.sidebar{position:fixed;top:0;left:0;width:var(--sb);height:100vh;background:var(--brown);color:var(--cream);padding:2.5rem 1.5rem 2rem;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.sb-brand{font-family:'Caveat',cursive;font-size:1.6rem;font-weight:700;color:var(--yellow);margin-bottom:.25rem}
+.sb-sub{font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(253,246,236,.5);margin-bottom:2.5rem}
+.snav{list-style:none;flex:1}.snav li{margin-bottom:.15rem}
+.snav a{display:block;color:rgba(253,246,236,.7);text-decoration:none;font-size:.82rem;padding:.5rem .75rem;border-left:2px solid transparent;border-radius:0 4px 4px 0;transition:all .2s;line-height:1.4}
+.snav a:hover,.snav a.active{color:var(--cream);background:rgba(255,255,255,.08);border-left-color:var(--yellow)}
+.nd{display:block;font-family:'Caveat',cursive;font-size:.78rem;color:rgba(253,246,236,.35);margin-top:1px}
+.sb-ft{font-size:.7rem;color:rgba(253,246,236,.3);border-top:1px solid rgba(255,255,255,.1);padding-top:1rem;margin-top:1rem}
+.mt{display:none;position:fixed;top:1rem;left:1rem;z-index:200;width:40px;height:40px;background:var(--brown);border:none;border-radius:8px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.mt span{display:block;width:20px;height:2px;background:var(--cream);border-radius:2px}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90}
+.main{margin-left:var(--sb);min-height:100vh}
+.cw{max-width:calc(var(--cw) + 140px);margin:0 auto;padding:0 20px}
+.ca{max-width:var(--cw);padding:3rem 0 6rem;position:relative}
+.cover{min-height:100vh;display:flex;align-items:center;padding:4rem 0;position:relative}
+.ci{max-width:var(--cw)}
+.cl{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--brown-l);margin-bottom:1rem}
+.cover h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.hl{color:var(--blue);position:relative}
+.hl::after{content:'';position:absolute;bottom:2px;left:0;width:100%;height:8px;background:rgba(37,99,235,.12);border-radius:2px}
+.cd{font-size:1.05rem;line-height:2;color:var(--brown-l);margin-bottom:2rem;max-width:560px}
+.cm{display:flex;flex-wrap:wrap;gap:1.5rem;font-size:.85rem;color:var(--gray)}
+.cm span{display:flex;align-items:center;gap:.4rem}
+.sh{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:'Caveat',cursive;font-size:1.1rem;color:var(--gray);animation:fl 2.5s ease-in-out infinite}
+.sh::after{content:'\2193';display:block;text-align:center;margin-top:.25rem;font-size:1.4rem}
+@keyframes fl{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+.ch{padding:4rem 0;border-top:1px solid rgba(60,36,21,.08);position:relative}
+.ch:first-of-type{border-top:none}
+.chh{display:flex;align-items:flex-start;gap:1rem;margin-bottom:2rem}
+.cnum{font-family:'Caveat',cursive;font-size:3rem;font-weight:700;color:rgba(37,99,235,.2);line-height:1;flex-shrink:0}
+.ctg{flex:1}
+.ct{font-family:'Caveat',cursive;font-size:.95rem;color:var(--brown-l);margin-bottom:.25rem}
+.ch h2{font-size:1.6rem;font-weight:700;line-height:1.3}
+.cv{display:inline-block;font-family:'Caveat',cursive;font-size:.82rem;color:var(--blue);background:var(--blue-l);padding:2px 10px;border-radius:12px;margin-top:.4rem}
+h3{font-size:1.15rem;font-weight:700;margin:2rem 0 .75rem}
+h4{font-size:1rem;font-weight:700;color:var(--brown-l);margin:1.5rem 0 .5rem}
+p{margin-bottom:1rem}
+a{color:var(--blue);text-decoration:underline;text-decoration-color:rgba(37,99,235,.3);text-underline-offset:3px;transition:text-decoration-color .2s}
+a:hover{text-decoration-color:var(--blue)}
+ul,ol{margin:.5rem 0 1.25rem 1.5rem}li{margin-bottom:.4rem}
+blockquote{border-left:3px solid var(--blue);padding:.75rem 1.25rem;margin:1.5rem 0;background:var(--blue-l);border-radius:0 6px 6px 0;font-style:italic;color:var(--brown-l)}
+blockquote cite{display:block;font-style:normal;font-size:.85rem;color:var(--gray);margin-top:.4rem}
+strong{font-weight:700}em{font-style:italic}
+code{font-family:'Courier New',monospace;background:rgba(60,36,21,.06);padding:2px 6px;border-radius:3px;font-size:.88em}
+hr{border:none;border-top:1px dashed rgba(60,36,21,.15);margin:2rem 0}
+.mg{position:absolute;right:-40px;width:120px;font-family:'Caveat',cursive;font-size:.88rem;color:var(--red);line-height:1.4;opacity:.7;pointer-events:none}
+.mg span{display:block;padding:.5rem 0;transform:rotate(-1deg)}
+.mg span::before{content:'\2192';margin-right:4px}
+.mg .b{color:var(--blue);opacity:.6}
+.mg .g{color:var(--gray)}
+.ins{background:var(--blue-l);border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:1.25rem 1.5rem;margin:1.5rem 0}
+.ins::before{content:'\1F4A1 Key Insight';display:block;font-family:'Caveat',cursive;font-size:1rem;color:var(--blue);font-weight:600;margin-bottom:.4rem}
+.ins p:last-child{margin-bottom:0}
+.sk{background:var(--yellow);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:2px;box-shadow:2px 3px 8px rgba(0,0,0,.08);position:relative;font-family:'Caveat',cursive;font-size:1.1rem;line-height:1.6;color:var(--brown)}
+.sk::before{content:'\1F4CC';position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:1rem}
+.sk::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40px;height:14px;background:rgba(0,0,0,.06);border-radius:0 0 50% 50%}
+.sk p{margin-bottom:.5rem}.sk p:last-child{margin-bottom:0}
+.sk-pk{background:#FCE7F3}.sk-gn{background:#D1FAE5}
+.df{background:#fff;border:1px solid rgba(60,36,21,.1);border-radius:8px;padding:1.25rem 1.5rem;margin:1.25rem 0}
+.df .dt{font-weight:700;color:var(--blue);font-size:1.05rem;margin-bottom:.3rem}
+.df .dp{font-style:italic;color:var(--gray);font-size:.88rem;margin-bottom:.5rem}
+.df .dd{color:var(--brown-l)}
+.qb{border:2px solid var(--red);border-radius:8px;padding:1rem 1.25rem;margin:1.5rem 0;position:relative}
+.qb::before{content:'\2753';position:absolute;top:-10px;left:1rem;background:var(--cream);padding:0 4px}
+.qb p{font-weight:700;color:var(--red);margin-bottom:0}
+.fw{background:#fff;border:1px solid rgba(60,36,21,.1);border-radius:12px;padding:2rem;margin:2rem 0;position:relative;overflow:hidden}
+.fw::before{content:'Framework Diagram';position:absolute;top:.75rem;right:1rem;font-family:'Caveat',cursive;font-size:.85rem;color:var(--gray)}
+.fwt{text-align:center;font-size:1rem;font-weight:700;margin-bottom:1.5rem}
+.dia{display:flex;flex-direction:column;align-items:center;gap:1.5rem;padding:1rem 0}
+.dr{display:flex;gap:2rem;align-items:center;justify-content:center;flex-wrap:wrap}
+.dn{border-radius:12px;padding:1rem 1.5rem;text-align:center;min-width:140px;font-size:.9rem;font-weight:700;transition:transform .2s,box-shadow .2s;color:#fff}
+.dn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.dn1{background:linear-gradient(135deg,#2563EB,#1D4ED8)}
+.dn2{background:linear-gradient(135deg,#059669,#047857)}
+.dn3{background:linear-gradient(135deg,#D97706,#B45309)}
+.dn4{background:linear-gradient(135deg,#7C3AED,#6D28D9)}
+.dn5{background:var(--brown);font-size:1rem;padding:1.25rem 2rem;border-radius:16px;box-shadow:0 4px 16px rgba(60,36,21,.3)}
+.darr{font-size:1.5rem;color:var(--gray)}
+.nsub{display:block;font-size:.75rem;font-weight:400;opacity:.8;margin-top:4px}
+.tl{position:relative;padding:1.5rem 0 1.5rem 2.5rem;margin:2rem 0}
+.tl::before{content:'';position:absolute;top:0;bottom:0;left:12px;width:2px;background:linear-gradient(to bottom,var(--blue),var(--yb),#059669,var(--red));border-radius:2px}
+.ti{position:relative;margin-bottom:2rem}.ti:last-child{margin-bottom:0}
+.tdot{position:absolute;left:-2.5rem;top:.35rem;width:12px;height:12px;border-radius:50%;border:2px solid var(--blue);background:var(--cream)}
+.ti:nth-child(2) .tdot{border-color:var(--yb)}.ti:nth-child(3) .tdot{border-color:#059669}
+.ti:nth-child(4) .tdot{border-color:var(--red);background:var(--red)}
+.tdt{font-family:'Caveat',cursive;font-size:.95rem;color:var(--blue);margin-bottom:.2rem}
+.ti:nth-child(2) .tdt{color:var(--yb)}.ti:nth-child(3) .tdt{color:#059669}.ti:nth-child(4) .tdt{color:var(--red)}
+.ttt{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
+.ttx{font-size:.88rem;color:var(--brown-l)}
+.ttg{display:inline-block;font-family:'Caveat',cursive;font-size:.8rem;padding:1px 8px;border-radius:10px;margin-top:.3rem;background:var(--blue-l);color:var(--blue)}
+.ttg.y{background:var(--yellow);color:#92400E}.ttg.gn{background:#D1FAE5;color:#065F46}.ttg.r{background:#FEE2E2;color:#991B1B}
+.vid{background:var(--brown);border-radius:12px;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--cream);margin:2rem 0;cursor:pointer;transition:transform .2s;position:relative;overflow:hidden}
+.vid:hover{transform:scale(1.01)}
+.vid::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.15),transparent)}
+.pb{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem;position:relative}
+.pb::after{content:'';display:block;width:0;height:0;border-style:solid;border-width:10px 0 10px 18px;border-color:transparent transparent transparent #fff;margin-left:3px}
+.vtxt{font-family:'Caveat',cursive;font-size:1.1rem;opacity:.8;position:relative}
+.nt{border:2px dashed rgba(60,36,21,.15);border-radius:12px;padding:2rem;margin:2rem 0;min-height:160px;position:relative;background:repeating-linear-gradient(transparent,transparent 31px,rgba(60,36,21,.04) 31px,rgba(60,36,21,.04) 32px);background-position:0 1rem}
+.ntl{font-family:'Caveat',cursive;font-size:1.1rem;color:var(--gray);position:absolute;top:-12px;left:1.5rem;background:var(--cream);padding:0 .5rem}
+.nt p{font-family:'Caveat',cursive;font-size:1rem;color:var(--brown-l);line-height:2}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.tag{display:inline-block;font-size:.78rem;padding:3px 10px;border-radius:12px;background:var(--cream-d);color:var(--brown-l);border:1px solid rgba(60,36,21,.1)}
+.tag.bl{background:var(--blue-l);color:var(--blue);border-color:transparent}
+.tag.gn{background:#D1FAE5;color:#065F46;border-color:transparent}
+.tag.yl{background:var(--yellow);color:#92400E;border-color:transparent}
+.tag.rd{background:#FEE2E2;color:#991B1B;border-color:transparent}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.mc{background:#fff;border:1px solid rgba(60,36,21,.08);border-radius:8px;padding:1.25rem;transition:box-shadow .2s}
+.mc:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.mc h4{font-size:.88rem;margin:0 0 .3rem;color:var(--brown)}
+.mc p{font-size:.82rem;color:var(--brown-l);margin:0}
+.mc .ic{font-size:1.5rem;margin-bottom:.5rem;display:block}
+.tc{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.5rem 0}
+.cnt{text-align:center;padding:4rem 0 3rem;border-top:1px solid rgba(60,36,21,.08)}
+.cnt h2{font-family:'Caveat',cursive;font-size:2rem;margin-bottom:.5rem}
+.cnt>p{color:var(--brown-l);margin-bottom:1.5rem}
+.clk{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
+.clk a{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.25rem;background:var(--brown);color:var(--cream);text-decoration:none;border-radius:8px;font-size:.88rem;transition:opacity .2s}
+.clk a:hover{opacity:.85}
+.pft{text-align:center;padding:1.5rem 0;font-size:.78rem;color:var(--gray)}
+@media(max-width:1100px){.mg{display:none}}
+@media(max-width:768px){
+.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+.mt{display:flex}.ov.open{display:block}
+.main{margin-left:0}.cover{min-height:auto;padding:5rem 0 3rem}
+.cover h1{font-size:2rem}.tc{grid-template-columns:1fr}.cg{grid-template-columns:1fr}
+.dr{flex-direction:column}.darr{transform:rotate(90deg)}.clk{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+<button class="mt" id="btn" aria-label="Menu"><span></span><span></span><span></span></button>
+<div class="ov" id="ov"></div>
+
+<aside class="sidebar" id="sb">
+  <div class="sb-brand">Rock Chen</div>
+  <div class="sb-sub">Research Journal</div>
+  <ul class="snav" id="nav">
+    <li><a href="#cover" class="active">封面</a></li>
+    <li><a href="#intro">研究引言</a><span class="nd">2025.01</span></li>
+    <li><a href="#problem">问题发现</a><span class="nd">2025.02</span></li>
+    <li><a href="#lit">文献综述</a><span class="nd">2025.03</span></li>
+    <li><a href="#fw">框架设计</a><span class="nd">2025.04</span></li>
+    <li><a href="#prod">产品应用</a><span class="nd">2025.05</span></li>
+    <li><a href="#vh">Voice Helper</a><span class="nd">2025.06</span></li>
+    <li><a href="#demo">演示</a><span class="nd">Latest</span></li>
+    <li><a href="#contact">联系方式</a></li>
+  </ul>
+  <div class="sb-ft"><p>Rock Chen &#169; 2025</p><p>Software Engineer &amp; Product Thinker</p></div>
+</aside>
+
+<div class="main"><div class="cw">
+
+<section class="cover" id="cover">
+  <div class="ci">
+    <div class="cl">&#x1F4DD; 研究手札 &#8212; Research Journal</div>
+    <h1>探索 AI <span class="hl">主动性</span>的边界</h1>
+    <p class="cd">当 AI 开始"替你做决定"，它是越界了，还是终于懂你了？<br>这本手札记录了我对 AI 自主性、交互性与用户体验之间关系的深入探索&#8212;&#8212;从文献研究到框架设计，再到 Voice Helper 产品的实践落地。</p>
+    <div class="cm">
+      <span>&#x1F4C5; 2025.01 &#8212; Present</span>
+      <span>&#x1F464; Rock Chen</span>
+      <span>&#x1F3F7;&#xFE0F; AI Agency &#183; Product Design &#183; UX Research</span>
+    </div>
+  </div>
+  <div class="sh">向下翻阅</div>
+</section>
+
+<div class="ca">
+
+<!-- CH1: Research Introduction -->
+<section class="ch" id="intro">
+  <div class="mg"><span style="top:20px">这是整本研究的起点 &#x270F;&#xFE0F;</span><span class="b" style="top:180px">核心动机</span></div>
+  <div class="chh"><span class="cnum">01</span><div class="ctg"><div class="ct">2025年1月 &#183; 初稿</div><h2>研究引言：为什么 AI 需要"主动性"？</h2><span class="cv">v1.0 &#183; 初始版本</span></div></div>
+  <p>作为一个同时关注技术和产品的人，我一直在思考一个问题：<strong>AI 应该有多主动？</strong></p>
+  <p>当前的 AI 产品大致可以分为两个极端：</p>
+  <div class="tc">
+    <div class="mc"><span class="ic">&#x1F916;</span><h4>完全被动型</h4><p>用户说什么就做什么，从不主动建议。如：传统语音助手 Siri、Google Assistant。</p></div>
+    <div class="mc"><span class="ic">&#x1F9E0;</span><h4>过度主动型</h4><p>频繁推送建议、替用户做决定。用户感到被"操控"或"打扰"。如：某些推荐系统。</p></div>
+  </div>
+  <p>这两者之间的<strong>"甜蜜地带"</strong>在哪里？如何让 AI 的主动行为让人感到<strong>自然而非侵入</strong>？</p>
+  <div class="sk">
+    <p>&#x1F4A1; 研究假设：存在一个最优的"主动性水平"，取决于用户当前的任务上下文和个人偏好。</p>
+    <p>核心问题不是"AI 应该主动吗？"，而是"<strong>AI 应该在何时、以何种方式主动？</strong>"</p>
+  </div>
+  <h3>研究目标</h3>
+  <ol><li>定义 AI "主动性" (Initiative) 的概念框架</li><li>探索自主性 (Autonomy) 与交互性 (Interactivity) 的关系</li><li>建立评估 AI 主动行为用户体验的方法</li><li>将理论框架应用于 Voice Helper 产品设计</li></ol>
+</section>
+
+<!-- CH2: Problem Discovery -->
+<section class="ch" id="problem">
+  <div class="mg"><span style="top:30px">小红书案例是关键转折点</span><span class="g" style="top:280px">自主性 &#8800; 主动性</span></div>
+  <div class="chh"><span class="cnum">02</span><div class="ctg"><div class="ct">2025年2月 &#183; 修订</div><h2>问题发现：自主性与交互性的张力</h2><span class="cv">v2.1 &#183; 新增小红书案例分析</span></div></div>
+  <p>研究的起点来自对<strong>小红书 (Xiaohongshu)</strong> 的深入观察。作为一款以"种草"为核心的内容社区，小红书的 AI 推荐算法体现了一种独特的"主动性"&#8212;&#8212;它在你还没开口之前，就已经知道你可能想要什么。</p>
+  <h3>案例分析：小红书的 AI 推荐行为</h3>
+  <div class="cg">
+    <div class="mc"><h4>&#x1F50D; 信息发现</h4><p>主动推送可能感兴趣的内容，降低搜索成本</p></div>
+    <div class="mc"><h4>&#x1F3AF; 场景感知</h4><p>根据用户行为模式预判需求（如旅行前的攻略推荐）</p></div>
+    <div class="mc"><h4>&#x26A0;&#xFE0F; 信息茧房</h4><p>过度个性化导致视野收窄，削弱用户的自主探索</p></div>
+    <div class="mc"><h4>&#x1F504; 用户反馈</h4><p>"不感兴趣"按钮是用户对 AI 主动性的直接"纠偏"机制</p></div>
+  </div>
+  <div class="ins"><p>小红书的案例揭示了 AI 产品中一对核心矛盾：<strong>AI 的自主性越强，用户的控制感可能越弱</strong>。优秀的产品设计需要在"帮助用户发现"和"尊重用户选择"之间找到平衡。</p></div>
+  <h3>关键发现</h3>
+  <div class="df"><div class="dt">自主性 (Autonomy)</div><div class="dp">AI 在没有明确用户指令的情况下，自主执行操作的能力</div><div class="dd">例如：自动生成摘要、主动推送通知、自动补全任务。自主性高意味着 AI 可以独立完成更多操作，但也带来了"AI 是否越权"的伦理问题。</div></div>
+  <div class="df"><div class="dt">交互性 (Interactivity)</div><div class="dp">AI 与用户之间双向信息交换的深度和频次</div><div class="dd">例如：确认对话、偏好询问、协作编辑。交互性高意味着 AI 频繁与用户"商量"，保证控制感，但可能降低效率。</div></div>
+  <div class="qb"><p>当 AI 需要执行一个用户"可能想要但不一定想要"的操作时，应该自主执行还是先询问用户？</p></div>
+  <div class="sk sk-pk"><p>&#x1F914; 我的初步结论：不存在"一刀切"的答案。主动性水平应该是一个<strong>连续谱</strong>，而非二元选择。</p></div>
+</section>
+
+<!-- CH3: Literature Review -->
+<section class="ch" id="lit">
+  <div class="mg"><span style="top:25px">Agency 概念是核心理论支撑</span><span class="b" style="top:380px">重点关注！</span></div>
+  <div class="chh"><span class="cnum">03</span><div class="ctg"><div class="ct">2025年3月 &#183; 更新</div><h2>文献综述：Agency 与前沿 Agent 实践</h2><span class="cv">v1.5 &#183; 持续更新中</span></div></div>
+  <p>为了构建理论框架，我系统性地研究了以下几个领域的文献：</p>
+  <div class="tags"><span class="tag bl">AI Agency</span><span class="tag gn">Human-Computer Interaction</span><span class="tag yl">Autonomous Agents</span><span class="tag">User Experience Design</span><span class="tag bl">Proactive Computing</span></div>
+  <h3>核心概念：Agency (智能体性)</h3>
+  <div class="df"><div class="dt">Agency</div><div class="dp">/&#x02C8;e&#x026A;d&#x0292;&#x0259;nsi/ &#8212; 在 AI 语境中，指 AI 系统展现出的自主决策和行动能力</div><div class="dd">Agency 不是简单的"自动化"&#8212;&#8212;它暗示着 AI 系统具备了某种程度的<strong>意图理解、目标推理和自适应行为</strong>。一个有 Agency 的 AI 不是被动执行指令，而是能够主动理解情境、提出方案，并在用户授权范围内做出判断。</div></div>
+  <blockquote>"Agency in AI systems is not just about autonomy&#8212;it&#x27;s about the capacity to act meaningfully within a social context, understanding the implications of one&#x27;s actions on human partners."<cite>&#8212; adapted from recent HCI literature on Human-AI Collaboration</cite></blockquote>
+  <h3>前沿 Agent 实践调研</h3>
+  <div class="cg">
+    <div class="mc"><h4>&#x1F9BE; AutoGPT / BabyAGI</h4><p>完全自主的目标分解与执行，但缺乏与用户的中间确认环节</p></div>
+    <div class="mc"><h4>&#x1F4AC; Claude / GPT with Tools</h4><p>在用户对话中穿插工具调用，平衡自主性与透明度</p></div>
+    <div class="mc"><h4>&#x1F4F1; Apple Intelligence</h4><p>设备端智能 + 上下文感知，强调隐私保护的"有限主动性"</p></div>
+    <div class="mc"><h4>&#x1F527; Cursor / Devin</h4><p>编程 Agent：用户可监控每一步操作，实现"可审计的自主性"</p></div>
+  </div>
+  <div class="ins"><p>核心发现：最成功的 Agent 产品都实现了<strong>"可控的自主性"</strong>&#8212;&#8212;AI 可以主动行动，但用户始终拥有"知道发生了什么"和"随时可以干预"的权利。</p></div>
+  <h3>Agency 的多维理解</h3>
+  <ul>
+    <li><strong>感知层 (Perception)</strong>：AI 对用户意图和上下文的理解深度</li>
+    <li><strong>决策层 (Decision)</strong>：AI 自主选择行动方案的能力</li>
+    <li><strong>执行层 (Execution)</strong>：AI 独立完成操作的能力范围</li>
+    <li><strong>反馈层 (Feedback)</strong>：AI 向用户传达行为原因和结果的能力</li>
+  </ul>
+  <div class="sk sk-gn"><p>&#x1F4DD; 我计划在后续研究中深入探讨：<strong>如何量化 AI 的 Agency 水平</strong>？是否可以建立一个可测量的评估模型？</p></div>
+  <div class="nt"><span class="ntl">&#x1F4CE; 待补充：更多文献笔记</span><p>&#8226; Tversky &amp; Kahneman (1974) &#8212; 关于人类决策中的启发式偏差</p><p>&#8226; Shneiderman (2020) &#8212; Human-Centered AI 的三大原则</p><p>&#8226; Amershi et al. (2019) &#8212; Guidelines for Human-AI Interaction</p><p>&#8226; &#8230;</p></div>
+</section>
+
+<!-- CH4: Framework Design -->
+<section class="ch" id="fw">
+  <div class="mg"><span style="top:30px">这是本研究的核心贡献</span><span style="top:400px">三角关系图 &#x2192;</span></div>
+  <div class="chh"><span class="cnum">04</span><div class="ctg"><div class="ct">2025年4月 &#183; 核心版本</div><h2>框架设计：自主性 &#215; 交互性 &#215; 用户体验</h2><span class="cv">v3.0 &#183; 框架定稿</span></div></div>
+  <p>基于前期的文献研究和案例分析，我提出以下理论框架，用以描述 AI 产品中<strong>自主性、交互性与用户体验</strong>之间的关系：</p>
+  <div class="fw">
+    <div class="fwt">AI Initiative Framework</div>
+    <div class="dia">
+      <div class="dr"><div class="dn dn1">Agency<span class="nsub">智能体性</span></div></div>
+      <div class="darr">&#x2193;</div>
+      <div class="dr"><div class="dn dn2">自主性<span class="nsub">Autonomy</span></div><div class="darr">&#x27F7;</div><div class="dn dn3">交互性<span class="nsub">Interactivity</span></div></div>
+      <div class="darr">&#x2193;</div>
+      <div class="dr"><div class="dn dn4">用户体验<span class="nsub">User Experience</span></div></div>
+      <div class="darr">&#x2193;</div>
+      <div class="dr"><div class="dn dn5">最优主动性水平<span class="nsub">Optimal Initiative Zone</span></div></div>
+    </div>
+  </div>
+  <h3>框架解读</h3>
+  <p><strong>1. Agency 是上层概念</strong>&#8212;&#8212;它决定了 AI 系统"能做什么"。一个具有高 Agency 的 AI 系统拥有更强的感知、决策和执行能力。</p>
+  <p><strong>2. 自主性与交互性是一对互补维度</strong>&#8212;&#8212;它们不是对立关系，而是需要动态平衡。</p>
+  <ul>
+    <li>高自主性 + 低交互性 = AI 像"黑盒"，用户失去控制感</li>
+    <li>低自主性 + 高交互性 = AI 像"复读机"，用户觉得效率低</li>
+    <li>最优解 = 根据场景动态调整两者的比例</li>
+  </ul>
+  <p><strong>3. 用户体验是最终的检验标准</strong>&#8212;&#8212;不管技术多先进，如果用户感到不安、困惑或被打扰，主动性设计就是失败的。</p>
+  <div class="ins">
+    <p><strong>核心命题：AI 的主动性不是"越多越好"或"越少越好"，而是在特定上下文中达到"恰到好处"。</strong></p>
+    <p>这就要求 AI 产品必须具备<strong>上下文感知</strong>和<strong>自适应调节</strong>的能力&#8212;&#8212;根据用户当前的任务状态、情绪状态和偏好，动态调整主动行为的强度和方式。</p>
+  </div>
+  <h3>主动性行为的分级</h3>
+  <div class="cg">
+    <div class="mc"><h4>L0 &#183; 完全被动</h4><p>仅响应用户显式指令</p></div>
+    <div class="mc"><h4>L1 &#183; 建议式</h4><p>主动提供建议，由用户决定</p></div>
+    <div class="mc"><h4>L2 &#183; 确认式</h4><p>执行前征求用户同意</p></div>
+    <div class="mc"><h4>L3 &#183; 透明式</h4><p>自动执行，但事后告知</p></div>
+    <div class="mc"><h4>L4 &#183; 完全自主</h4><p>自主执行，无需用户介入</p></div>
+  </div>
+  <div class="sk sk-pk"><p>&#x26A0;&#xFE0F; 注意：等级越高，不意味着越好。不同场景对应不同的最优等级。</p><p>例如：发送消息建议 L2，整理日程建议 L3，自动保存草稿建议 L4。</p></div>
+</section>
+
+<!-- CH5: Product Application -->
+<section class="ch" id="prod">
+  <div class="mg"><span style="top:20px">从理论到实践</span></div>
+  <div class="chh"><span class="cnum">05</span><div class="ctg"><div class="ct">2025年5月</div><h2>产品应用：让主动性自然发生</h2><span class="cv">v1.2</span></div></div>
+  <p>理论框架只有在产品中落地才有意义。以下是我从研究中提炼的<strong>产品设计原则</strong>：</p>
+  <h3>设计原则</h3>
+  <div class="df"><div class="dt">原则一：渐进式信任</div><div class="dd">不要一开始就要求用户信任 AI 的完全自主。从低级别的主动性开始（L1 建议），随着用户对 AI 能力的了解加深，逐步提高主动性级别。</div></div>
+  <div class="df"><div class="dt">原则二：可解释的主动</div><div class="dd">每次 AI 主动执行操作时，都应该清晰地解释"为什么这样做"。可解释性是建立用户信任的关键。</div></div>
+  <div class="df"><div class="dt">原则三：优雅的降级</div><div class="dd">当 AI 不确定用户意图时，应该优雅地"降级"到更被动的模式（询问或等待），而不是冒险执行错误操作。</div></div>
+  <div class="df"><div class="dt">原则四：用户控制感</div><div class="dd">无论 AI 有多主动，用户必须始终感到"我在掌控"。通过"撤销"、"修改建议"、"调整偏好"等机制维持控制感。</div></div>
+  <h3>用户体验评估维度</h3>
+  <div class="tags"><span class="tag bl">信任感 Trust</span><span class="tag gn">效率感 Efficiency</span><span class="tag yl">控制感 Control</span><span class="tag rd">惊喜感 Delight</span><span class="tag">安全感 Safety</span><span class="tag">透明度 Transparency</span></div>
+  <p>一个成功的主动性设计应该让用户在以下方面都有正向体验：</p>
+  <ul>
+    <li><strong>信任感</strong>：相信 AI 的判断是合理的</li>
+    <li><strong>效率感</strong>：AI 的主动性确实节省了时间</li>
+    <li><strong>控制感</strong>：随时可以改变或撤销 AI 的行为</li>
+    <li><strong>惊喜感</strong>：偶尔发现 AI 做了超出预期的好事</li>
+    <li><strong>安全感</strong>：不用担心 AI 会做出有害操作</li>
+    <li><strong>透明度</strong>：清楚知道 AI 做了什么、为什么做</li>
+  </ul>
+  <div class="sk"><p>&#x1F3AF; 最终目标：让用户说出"它真的懂我"，而不是"它又自作主张了"。</p></div>
+</section>
+
+<!-- CH6: Voice Helper -->
+<section class="ch" id="vh">
+  <div class="mg"><span style="top:20px">核心项目 &#x1F31F;</span><span class="b" style="top:500px">理论与实践的结合</span></div>
+  <div class="chh"><span class="cnum">06</span><div class="ctg"><div class="ct">2025年6月 &#183; 持续迭代</div><h2>Voice Helper：语音助手的主动性实践</h2><span class="cv">v2.0 &#183; 产品开发中</span></div></div>
+  <p><strong>Voice Helper</strong> 是我将上述研究框架付诸实践的核心项目&#8212;&#8212;一款重新定义"语音助手"交互方式的 AI 产品。</p>
+  <h3>项目概述</h3>
+  <p>Voice Helper 不是传统的"你说一句它回一句"的语音助手。它基于本研究提出的 AI Initiative Framework，在语音交互中实现了<strong>分级主动性</strong>。</p>
+  <h3>核心特性</h3>
+  <div class="cg">
+    <div class="mc"><h4>&#x1F9E0; 上下文感知</h4><p>理解对话上下文，不需要用户每次都重复完整信息</p></div>
+    <div class="mc"><h4>&#x1F4A1; 主动建议</h4><p>根据用户习惯主动提供相关信息和操作建议</p></div>
+    <div class="mc"><h4>&#x1F504; 自适应级别</h4><p>根据任务复杂度和用户偏好，动态调整主动性级别</p></div>
+    <div class="mc"><h4>&#x1F6E1;&#xFE0F; 透明可控</h4><p>每次主动操作都可解释、可撤销，用户始终拥有最终决策权</p></div>
+  </div>
+  <h3>技术架构</h3>
+  <div class="tags"><span class="tag bl">Natural Language Processing</span><span class="tag gn">Context Management</span><span class="tag yl">Intent Recognition</span><span class="tag">Proactive Engine</span><span class="tag bl">Voice Interface</span></div>
+  <p>Voice Helper 的技术架构围绕"主动性引擎"构建：</p>
+  <ul>
+    <li><strong>意图识别层</strong>：不仅理解"用户说了什么"，更推断"用户可能需要什么"</li>
+    <li><strong>上下文管理层</strong>：维护多轮对话的状态和用户偏好模型</li>
+    <li><strong>主动性引擎</strong>：根据框架中的 L0-L4 级别，决定主动行为的方式</li>
+    <li><strong>反馈与学习层</strong>：根据用户反馈持续优化主动性策略</li>
+  </ul>
+  <h3>研究进度</h3>
+  <div class="tl">
+    <div class="ti">
+      <div class="tdot"></div>
+      <div class="tdt">2025年1月</div>
+      <div class="ttt">问题定义与研究启动</div>
+      <div class="ttx">确定研究方向：AI 主动性。完成初步文献调研。</div>
+      <span class="ttg">Research</span>
+    </div>
+    <div class="ti">
+      <div class="tdot"></div>
+      <div class="tdt">2025年2月 &#8212; 3月</div>
+      <div class="ttt">案例分析 &amp; 文献综述</div>
+      <div class="ttx">完成小红书案例研究。系统梳理 Agency 理论与前沿 Agent 实践。</div>
+      <span class="ttg y">Analysis</span>
+    </div>
+    <div class="ti">
+      <div class="tdot"></div>
+      <div class="tdt">2025年4月 &#8212; 5月</div>
+      <div class="ttt">框架设计与产品原则</div>
+      <div class="ttx">提出 AI Initiative Framework。确立产品设计四原则和 UX 评估维度。</div>
+      <span class="ttg gn">Framework</span>
+    </div>
+    <div class="ti">
+      <div class="tdot"></div>
+      <div class="tdt">2025年6月 &#8212; Present</div>
+      <div class="ttt">Voice Helper 产品开发</div>
+      <div class="ttx">将研究框架应用于 Voice Helper 产品，构建原型并进行用户测试。</div>
+      <span class="ttg r">Building</span>
+    </div>
+  </div>
+  <div class="nt"><span class="ntl">&#x1F4CE; Voice Helper 开发笔记</span><p>&#8226; 用户测试反馈收集中...</p><p>&#8226; 主动性级别切换的 UI 方案迭代...</p><p>&#8226; 上下文窗口优化...</p><p>&#8226; &#8230;</p></div>
+</section>
+
+<!-- CH7: Demo -->
+<section class="ch" id="demo">
+  <div class="mg"><span style="top:20px">Coming Soon!</span></div>
+  <div class="chh"><span class="cnum">07</span><div class="ctg"><div class="ct">即将发布</div><h2>演示：Voice Helper in Action</h2><span class="cv">Coming Soon</span></div></div>
+  <p>一个真实的产品演示比千言万语更有说服力。以下展示了 Voice Helper 如何在日常场景中展现"恰到好处"的主动性：</p>
+
+  <h3>演示场景一：日程管理</h3>
+  <div class="vid">
+    <div class="pb"></div>
+    <div class="vtxt">Demo Video: 智能日程管理 &#8212; Coming Soon</div>
+  </div>
+
+  <h3>演示场景二：信息检索</h3>
+  <div class="vid">
+    <div class="pb"></div>
+    <div class="vtxt">Demo Video: 主动信息检索 &#8212; Coming Soon</div>
+  </div>
+
+  <div class="sk"><p>&#x1F3AC; 视频演示正在制作中。将通过多个真实场景展示 Voice Helper 如何在不同主动性级别下工作，以及用户如何感知和反馈。</p></div>
+
+  <div class="nt"><span class="ntl">&#x1F4CE; 演示笔记与录屏</span><p>&#8226; 场景脚本编写中...</p><p>&#8226; UI 录屏工具准备就绪</p><p>&#8226; &#8230;</p></div>
+</section>
+
+<!-- Contact -->
+<section class="cnt" id="contact">
+  <h2>Let&apos;s Connect</h2>
+  <p>如果你对 AI 主动性研究、产品设计或 Voice Helper 项目感兴趣，欢迎交流。</p>
+  <div class="clk">
+    <a href="mailto:rock@example.com">&#x2709; Email</a>
+    <a href="#">&#x1F426; Twitter / X</a>
+    <a href="#">&#x1F4AC; WeChat</a>
+    <a href="#">&#x1F4BB; GitHub</a>
+  </div>
+</section>
+
+</div><!-- /ca -->
+</div><!-- /cw -->
+</div><!-- /main -->
+
+<div class="pft">Built with care. Rock Chen &#169; 2025</div>
+
+<script>
+(function(){
+  var sb=document.getElementById('sb'),btn=document.getElementById('btn'),ov=document.getElementById('ov'),nav=document.getElementById('nav'),links=nav.querySelectorAll('a');
+  function toggleSidebar(){sb.classList.toggle('open');ov.classList.toggle('open')}
+  btn.addEventListener('click',toggleSidebar);
+  ov.addEventListener('click',toggleSidebar);
+  // Close sidebar on nav click (mobile)
+  for(var i=0;i<links.length;i++){links[i].addEventListener('click',function(){if(sb.classList.contains('open')){toggleSidebar()}})}
+  // Scroll spy
+  var sections=[];
+  for(var j=0;j<links.length;j++){var href=links[j].getAttribute('href');if(href&&href!=='#cover'){var el=document.querySelector(href);if(el){sections.push({el:el,link:links[j]})}}}
+  window.addEventListener('scroll',function(){
+    var scrollY=window.pageYOffset||document.documentElement.scrollTop;
+    for(var k=0;k<sections.length;k++){
+      var rect=sections[k].el.getBoundingClientRect();
+      if(rect.top<=120){for(var m=0;m<links.length;m++){links[m].classList.remove('active')}sections[k].link.classList.add('active')}
+    }
+  });
+})();
+</script>
+</body>
+</html>

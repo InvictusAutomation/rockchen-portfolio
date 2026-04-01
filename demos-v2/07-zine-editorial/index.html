@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Chen — Zine Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Architects+Daughter&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --orange: #FF6B35;
+            --teal: #00B4D8;
+            --yellow: #FFD60A;
+            --pink: #FF69B4;
+            --offwhite: #FFF8E7;
+            --dark: #2D2D2D;
+            --mid: #666;
+            --light: #F5F0E6;
+            --blue-ink: #1A3A5C;
+            --red-pen: #E63946;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--offwhite);
+            color: var(--dark);
+            line-height: 1.7;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .zine-page {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .font-impact { font-family: 'Archivo Black', sans-serif; }
+        .font-hand { font-family: 'Architects Daughter', cursive; }
+        .font-mono { font-family: 'Space Mono', monospace; }
+
+        /* === TABLE OF CONTENTS === */
+        .toc {
+            background: white;
+            border: 2px dashed var(--dark);
+            padding: 28px 32px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        .toc::before {
+            content: 'TABLE OF CONTENTS';
+            position: absolute;
+            top: -14px;
+            left: 24px;
+            background: var(--yellow);
+            padding: 2px 16px;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transform: rotate(-1deg);
+        }
+        .toc ol { list-style: none; counter-reset: toc; }
+        .toc ol li {
+            counter-increment: toc;
+            padding: 6px 0;
+            border-bottom: 1px dotted #ccc;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+        .toc ol li::before {
+            content: counter(toc, decimal-leading-zero);
+            font-family: 'Archivo Black', sans-serif;
+            color: var(--orange);
+            font-size: 18px;
+            min-width: 36px;
+        }
+        .toc a {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .toc a:hover { color: var(--orange); }
+        .toc .toc-page {
+            margin-left: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--mid);
+        }
+
+        /* === SECTIONS === */
+        .zine-section {
+            margin-bottom: 70px;
+            position: relative;
+        }
+        .section-number {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 120px;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--orange);
+            position: absolute;
+            top: -50px;
+            left: -10px;
+            z-index: 0;
+            line-height: 1;
+            user-select: none;
+        }
+        .section-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 32px;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 24px;
+        }
+
+        /* === DIVIDERS === */
+        .divider { text-align: center; margin: 50px auto; padding: 10px 0; }
+        .divider svg { display: inline-block; max-width: 100%; }
+
+        /* === COVER === */
+        .cover {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+        .cover-badge {
+            display: inline-block;
+            background: var(--pink);
+            color: white;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 6px 20px;
+            transform: rotate(-3deg);
+            margin-bottom: 24px;
+        }
+        .cover h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(48px, 8vw, 96px);
+            line-height: 0.95;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+        .cover h1 span.teal { color: var(--teal); }
+        .cover h1 span.orange { color: var(--orange); }
+        .cover-subtitle {
+            font-family: 'Architects Daughter', cursive;
+            font-size: clamp(20px, 3vw, 28px);
+            color: var(--mid);
+            transform: rotate(-2deg);
+            margin-bottom: 32px;
+        }
+        .cover-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: var(--mid);
+            letter-spacing: 1px;
+        }
+        .cover-deco {
+            position: absolute;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .cover-deco .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid;
+        }
+        .cover-deco .circle-1 {
+            width: 180px; height: 180px;
+            border-color: var(--yellow);
+            top: 8%; right: 5%;
+            opacity: 0.5;
+        }
+        .cover-deco .circle-2 {
+            width: 80px; height: 80px;
+            border-color: var(--pink);
+            bottom: 15%; left: 8%;
+            opacity: 0.4;
+        }
+        .cover-deco .star-deco {
+            position: absolute;
+            top: 12%; left: 6%;
+            font-size: 40px;
+            color: var(--orange);
+            opacity: 0.6;
+            transform: rotate(15deg);
+        }
+
+        /* === MANIFESTO === */
+        .manifesto-list { list-style: none; padding: 0; }
+        .manifesto-item {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(18px, 3vw, 26px);
+            line-height: 1.4;
+            padding: 14px 0 14px 36px;
+            position: relative;
+        }
+        .manifesto-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            transform: translateY(-50%);
+            width: 20px; height: 20px;
+        }
+        .manifesto-item:nth-child(1)::before { background: var(--orange); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+        .manifesto-item:nth-child(2)::before { background: var(--teal); border-radius: 50%; }
+        .manifesto-item:nth-child(3)::before { background: var(--pink); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        .manifesto-item:nth-child(4)::before { background: var(--yellow); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+        .manifesto-item:nth-child(5)::before { background: var(--orange); clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); }
+
+        /* === HIGHLIGHT BOX === */
+        .highlight-box {
+            background: rgba(255, 214, 10, 0.3);
+            padding: 4px 12px;
+            display: inline;
+            border-radius: 2px;
+            box-shadow: inset 0 -2px 0 rgba(255, 214, 10, 0.5);
+        }
+
+        /* === PROBLEM CARDS === */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 30px 0;
+        }
+        @media (max-width: 640px) { .problem-grid { grid-template-columns: 1fr; } }
+        .problem-card {
+            border: 2px solid var(--dark);
+            padding: 24px;
+            position: relative;
+            background: white;
+            transition: transform 0.3s;
+        }
+        .problem-card:nth-child(1) { transform: rotate(-1.5deg); }
+        .problem-card:nth-child(2) { transform: rotate(1deg); }
+        .problem-card:nth-child(3) { transform: rotate(0.8deg); }
+        .problem-card:nth-child(4) { transform: rotate(-0.5deg); }
+        .problem-card:hover { transform: rotate(0deg) scale(1.02); }
+        .problem-card .card-icon { font-size: 36px; display: block; margin-bottom: 12px; }
+        .problem-card h3 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .problem-card p { font-size: 14px; color: var(--mid); line-height: 1.6; }
+
+        /* === VISION BLOCK === */
+        .vision-block {
+            background: var(--teal);
+            color: white;
+            padding: 40px 36px;
+            margin: 30px 0;
+            transform: rotate(-0.5deg);
+            position: relative;
+        }
+        .vision-block h3 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+        .vision-block p { font-size: 17px; line-height: 1.8; max-width: 560px; }
+        .vision-block .vision-note {
+            position: absolute;
+            top: 20px; right: 24px;
+            font-family: 'Architects Daughter', cursive;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            transform: rotate(3deg);
+        }
+
+        /* === FEATURE LIST === */
+        .feature-list { list-style: none; padding: 0; margin-top: 28px; }
+        .feature-list li {
+            padding: 10px 0 10px 44px;
+            position: relative;
+            font-size: 15px;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+        }
+        .feature-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 12px;
+            color: var(--orange);
+            font-size: 20px;
+        }
+        .feature-list li strong { font-family: 'Archivo Black', sans-serif; font-size: 14px; }
+
+        /* === STICKER LABELS === */
+        .sticker {
+            display: inline-block;
+            padding: 4px 14px;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: white;
+            transform: rotate(-2deg);
+            margin: 4px 4px;
+        }
+        .sticker-orange { background: var(--orange); }
+        .sticker-teal { background: var(--teal); }
+        .sticker-pink { background: var(--pink); }
+        .sticker-yellow { background: var(--yellow); color: var(--dark); }
+
+        /* === RESEARCH NOTES === */
+        .research-note {
+            background: white;
+            border-left: 4px solid var(--orange);
+            padding: 24px 28px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 2px 3px 0 rgba(0,0,0,0.08);
+        }
+        .research-note::after {
+            content: 'NOTE';
+            position: absolute;
+            top: -10px; left: 20px;
+            background: var(--orange);
+            color: white;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 10px;
+            padding: 2px 12px;
+            letter-spacing: 1px;
+        }
+        .research-note.teal-border { border-left-color: var(--teal); }
+        .research-note.teal-border::after { background: var(--teal); content: 'INSIGHT'; }
+        .research-note.pink-border { border-left-color: var(--pink); }
+        .research-note.pink-border::after { background: var(--pink); content: 'DATA'; }
+        .research-note h4 { font-family: 'Archivo Black', sans-serif; font-size: 16px; margin-bottom: 8px; margin-top: 8px; }
+        .research-note p { font-size: 14px; color: var(--mid); line-height: 1.7; }
+
+        /* === SKETCH AREAS === */
+        .sketch-area {
+            background: white;
+            border: 2px solid var(--dark);
+            padding: 32px;
+            margin: 24px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .sketch-area::before {
+            content: 'SKETCH';
+            position: absolute;
+            top: 0; right: 0;
+            background: var(--dark);
+            color: white;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 10px;
+            padding: 3px 14px;
+            letter-spacing: 2px;
+        }
+        .sketch-title {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 22px;
+            color: var(--blue-ink);
+            margin-bottom: 16px;
+        }
+        .framework-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+        }
+        .framework-node {
+            border: 2px solid var(--dark);
+            padding: 14px 20px;
+            text-align: center;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 13px;
+            background: var(--offwhite);
+            min-width: 120px;
+        }
+        .framework-node.primary { background: var(--orange); color: white; transform: rotate(-2deg); }
+        .framework-node.secondary { background: var(--teal); color: white; transform: rotate(1deg); }
+        .framework-arrow { font-size: 28px; color: var(--mid); font-family: monospace; }
+        .sketch-handwritten {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 15px;
+            color: var(--blue-ink);
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px dashed #ccc;
+            line-height: 1.8;
+        }
+        .sketch-handwritten::before { content: '→ '; color: var(--red-pen); }
+
+        /* Flow steps */
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.5);
+        }
+        .flow-step .step-num {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 24px;
+            min-width: 40px;
+        }
+        .flow-step strong { font-family: 'Archivo Black', sans-serif; font-size: 13px; display: block; }
+        .flow-step p { font-size: 13px; color: var(--mid); }
+
+        /* === DEMO === */
+        .demo-frame {
+            border: 3px solid var(--dark);
+            padding: 8px;
+            margin: 24px 0;
+            transform: rotate(-0.8deg);
+            background: white;
+            position: relative;
+        }
+        .demo-frame::before {
+            content: '';
+            position: absolute;
+            width: 60px; height: 20px;
+            background: rgba(255, 107, 53, 0.6);
+            top: -14px; left: 50%;
+            transform: translateX(-50%) rotate(1deg);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .demo-placeholder {
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--mid);
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            gap: 12px;
+        }
+        .play-btn {
+            width: 64px; height: 64px;
+            border: 3px solid var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .play-btn:hover { transform: scale(1.1); background: var(--orange); }
+        .play-btn:hover svg polygon { fill: white; }
+        .play-btn svg { margin-left: 4px; }
+        .demo-caption {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 14px;
+            color: var(--mid);
+            text-align: center;
+            margin-top: 12px;
+        }
+        .demo-features { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; justify-content: center; }
+
+        /* === PHOTO CARDS === */
+        .photo-card {
+            display: inline-block;
+            border: 3px solid white;
+            box-shadow: 3px 4px 0 rgba(0,0,0,0.15);
+            padding: 6px;
+            background: white;
+            transition: transform 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        .photo-card:hover { transform: rotate(0deg) scale(1.05) !important; z-index: 10; }
+        .photo-card .photo-placeholder {
+            display: block;
+            width: 240px; height: 180px;
+            background: linear-gradient(135deg, #e8e4dc, #d4cfc5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--mid);
+            flex-direction: column;
+            gap: 8px;
+        }
+        .photo-tape {
+            position: absolute;
+            width: 80px; height: 24px;
+            background: rgba(255, 214, 10, 0.5);
+            top: -12px; left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            z-index: 2;
+        }
+        .photo-row {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .photo-row .photo-card:nth-child(1) { transform: rotate(-3deg); }
+        .photo-row .photo-card:nth-child(2) { transform: rotate(2deg); }
+        .photo-row .photo-card:nth-child(3) { transform: rotate(-1.5deg); }
+
+        /* === CONVERSATION === */
+        .conversation {
+            margin-top: 32px;
+            background: white;
+            border: 2px solid var(--dark);
+            padding: 24px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+        }
+        .conversation-header {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 11px;
+            color: var(--orange);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .conversation .line { color: var(--mid); margin-bottom: 4px; }
+        .conversation .user-name { color: var(--teal); font-weight: bold; }
+        .conversation .helper-name { color: var(--orange); font-weight: bold; }
+        .conversation .annotation {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed #ccc;
+            font-family: 'Architects Daughter', cursive;
+            color: var(--red-pen);
+            font-size: 12px;
+        }
+
+        /* === BACK COVER === */
+        .back-cover {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+        .back-cover h2 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(36px, 6vw, 64px);
+            margin-bottom: 20px;
+        }
+        .back-cover h2 span { color: var(--orange); }
+        .back-cover > p {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 20px;
+            color: var(--mid);
+            margin-bottom: 30px;
+        }
+        .contact-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border: 2px solid var(--dark);
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 13px;
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .contact-link:hover {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+            transform: rotate(-1deg) scale(1.05);
+        }
+        .contact-link svg { width: 18px; height: 18px; }
+        .back-cover-footer {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: #bbb;
+            letter-spacing: 1px;
+            margin-top: 40px;
+        }
+
+        /* === DECORATIONS === */
+        .hand-underline {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'%3E%3Cpath d='M2 8 Q50 2 100 7 T198 5' stroke='%23FF6B35' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: 100% 12px;
+            padding-bottom: 8px;
+        }
+        .rotated-text { display: inline-block; transform: rotate(-3deg); }
+        .rotated-text.right { transform: rotate(2deg); }
+        .margin-note {
+            font-family: 'Architects Daughter', cursive;
+            font-size: 14px;
+            color: var(--red-pen);
+            position: absolute;
+            right: -60px; top: 20px;
+            width: 120px;
+            transform: rotate(3deg);
+            line-height: 1.4;
+        }
+        @media (max-width: 960px) { .margin-note { display: none; } }
+
+        /* === ANIMATIONS === */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* === SCROLLBAR === */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--offwhite); }
+        ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 4px; }
+
+        @media (max-width: 640px) {
+            .zine-page { padding: 24px 16px 60px; }
+            .section-number { font-size: 72px; top: -30px; }
+            .toc { padding: 20px 18px; }
+            .vision-block { padding: 28px 20px; }
+            .sketch-area { padding: 20px 16px; }
+            .framework-diagram { flex-direction: column; }
+            .framework-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="zine-page">
+
+    <!-- TABLE OF CONTENTS -->
+    <nav class="toc fade-in">
+        <ol>
+            <li><a href="#manifesto">Manifesto</a> <span class="toc-page">p.02</span></li>
+            <li><a href="#problem">The Problem</a> <span class="toc-page">p.04</span></li>
+            <li><a href="#vision">Voice Helper Vision</a> <span class="toc-page">p.06</span></li>
+            <li><a href="#research">Research Notes</a> <span class="toc-page">p.10</span></li>
+            <li><a href="#framework">Framework Sketches</a> <span class="toc-page">p.14</span></li>
+            <li><a href="#demo">Demo Showcase</a> <span class="toc-page">p.18</span></li>
+            <li><a href="#contact">Back Cover</a> <span class="toc-page">p.22</span></li>
+        </ol>
+    </nav>
+
+    <!-- COVER -->
+    <section class="cover fade-in" id="cover">
+        <div class="cover-deco">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="star-deco">★</div>
+            <svg style="position:absolute;bottom:25%;right:8%;opacity:0.5;" width="100" height="40" viewBox="0 0 100 40" fill="none">
+                <path d="M0 20 Q25 5 50 20 T100 20" stroke="#FF6B35" stroke-width="2.5" fill="none" stroke-dasharray="6 4"/>
+                <polygon points="95,14 105,20 95,26" fill="#FF6B35"/>
+            </svg>
+        </div>
+        <div class="cover-badge">ISSUE NO. 01 — 2026</div>
+        <h1>
+            <span class="orange">ROCK</span><br>
+            <span class="teal">CHEN</span>
+        </h1>
+        <div class="cover-subtitle">Software Engineer & Product Thinker</div>
+        <p style="max-width:440px;font-size:15px;color:var(--mid);margin-bottom:32px;">
+            A zine about building AI that <span class="hand-underline">actually listens</span> —
+            the story of Voice Helper and a vision for proactive, autonomous voice interaction.
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+            <span class="sticker sticker-orange">AI / ML</span>
+            <span class="sticker sticker-teal">Voice UX</span>
+            <span class="sticker sticker-pink">Product Design</span>
+            <span class="sticker sticker-yellow">Proactive AI</span>
+        </div>
+        <div class="cover-meta" style="margin-top:40px;">
+            SOFTWARE ENGINEER &bull; PRODUCT BUILDER &bull; AI ENTHUSIAST
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 2 100 12 T200 12 T300 12 T400 12" stroke="#FF6B35" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- MANIFESTO -->
+    <section class="zine-section fade-in" id="manifesto">
+        <div class="section-number">01</div>
+        <div class="section-title"><span class="rotated-text">THE</span> MANIFESTO</div>
+        <p class="font-hand" style="font-size:18px;color:var(--mid);margin-bottom:28px;">What I believe about the future of human-AI interaction ↓</p>
+        <ul class="manifesto-list">
+            <li class="manifesto-item">AI should <span class="highlight-box">anticipate</span>, not just react.</li>
+            <li class="manifesto-item">The best interface is <span class="highlight-box">no interface</span> — voice is the frontier.</li>
+            <li class="manifesto-item">Autonomy without trust is just <span class="highlight-box">automation</span>.</li>
+            <li class="manifesto-item">Real intelligence means knowing when <span class="highlight-box">NOT</span> to act.</li>
+            <li class="manifesto-item">Every voice assistant should feel like a <span class="highlight-box">thought partner</span>, not a tool.</li>
+        </ul>
+        <p class="font-hand" style="font-size:16px;color:var(--blue-ink);margin-top:28px;padding-left:20px;border-left:3px solid var(--pink);">
+            "We don't need smarter commands. We need AI that understands context, reads between the lines, and acts on our behalf before we even ask."
+        </p>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 22 100 12 T200 12 T300 12 T400 12" stroke="#00B4D8" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- THE PROBLEM -->
+    <section class="zine-section fade-in" id="problem">
+        <div class="section-number">02</div>
+        <div class="section-title" style="position:relative;">
+            THE <span class="rotated-text right">PROBLEM</span>
+            <span class="margin-note">Why current voice assistants fall short →</span>
+        </div>
+        <p style="font-size:15px;color:var(--mid);margin-bottom:28px;max-width:600px;">
+            Today's voice assistants are <strong>reactive machines</strong>. They wait for commands, execute them literally, and fail when context shifts.
+        </p>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <span class="card-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" stroke="#FF6B35" stroke-width="2.5"/><path d="M12 18l4 4 8-8" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <h3>Command-Only</h3>
+                <p>Users must learn specific syntax. No natural conversation flow.</p>
+            </div>
+            <div class="problem-card">
+                <span class="card-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" stroke="#00B4D8" stroke-width="2.5"/><line x1="12" y1="12" x2="24" y2="24" stroke="#00B4D8" stroke-width="2.5" stroke-linecap="round"/><line x1="24" y1="12" x2="12" y2="24" stroke="#00B4D8" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+                <h3>No Memory</h3>
+                <p>Every interaction starts from zero. No learning from past behavior.</p>
+            </div>
+            <div class="problem-card">
+                <span class="card-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" stroke="#FF69B4" stroke-width="2.5"/><path d="M18 10v8l5 3" stroke="#FF69B4" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+                <h3>Zero Proactivity</h3>
+                <p>Can't suggest actions, anticipate needs, or take initiative.</p>
+            </div>
+            <div class="problem-card">
+                <span class="card-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" stroke="#FFD60A" stroke-width="2.5"/><path d="M13 22c0-3 2.5-5 5-5s5 2 5 5" stroke="#2D2D2D" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="14" r="1.5" fill="#2D2D2D"/><circle cx="22" cy="14" r="1.5" fill="#2D2D2D"/></svg></span>
+                <h3>One-Shot Thinking</h3>
+                <p>Processes single requests. No multi-step planning or reasoning.</p>
+            </div>
+        </div>
+        <div class="font-hand" style="margin-top:32px;font-size:17px;color:var(--blue-ink);padding:20px 24px;border:2px dashed var(--red-pen);background:rgba(230,57,70,0.04);">
+            → 74% of voice assistant users report frustration with having to repeat themselves.
+            <strong style="color:var(--red-pen);">This isn't a bug — it's a fundamental design flaw.</strong>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 2 100 12 T200 12 T300 12 T400 12" stroke="#FF69B4" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- VOICE HELPER VISION -->
+    <section class="zine-section fade-in" id="vision">
+        <div class="section-number">03</div>
+        <div class="section-title"><span class="rotated-text">VOICE HELPER</span> VISION</div>
+        <div class="vision-block">
+            <span class="vision-note">★ the big idea</span>
+            <h3>An AI Voice Assistant<br>That Thinks Ahead.</h3>
+            <p>
+                Voice Helper is designed to be a <span class="hand-underline">proactive, autonomous</span> voice assistant
+                that understands context, learns preferences, and takes meaningful actions —
+                not just answers questions.
+            </p>
+        </div>
+        <p style="font-size:15px;color:var(--mid);margin:24px 0;">Core capabilities that set Voice Helper apart:</p>
+        <ul class="feature-list">
+            <li><strong>Proactive Autonomy</strong> — Anticipates user needs based on context, time, habits, and conversational signals</li>
+            <li><strong>Contextual Memory</strong> — Maintains rich conversation history and learns long-term user preferences</li>
+            <li><strong>Natural Dialogue</strong> — Supports free-form conversation without rigid command structures</li>
+            <li><strong>Multi-Step Reasoning</strong> — Plans and executes complex tasks across multiple domains</li>
+            <li><strong>Adaptive Personality</strong> — Adjusts tone, formality, and proactivity based on situation</li>
+        </ul>
+        <div class="photo-row">
+            <div class="photo-card">
+                <div class="photo-tape"></div>
+                <div class="photo-placeholder">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    Voice UI
+                </div>
+            </div>
+            <div class="photo-card">
+                <div class="photo-tape" style="background:rgba(0,180,216,0.4);"></div>
+                <div class="photo-placeholder">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    Architecture
+                </div>
+            </div>
+            <div class="photo-card">
+                <div class="photo-tape" style="background:rgba(255,105,180,0.4);"></div>
+                <div class="photo-placeholder">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    Demo Flow
+                </div>
+            </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+            <span class="sticker sticker-teal">NLP</span>
+            <span class="sticker sticker-orange">Context Engine</span>
+            <span class="sticker sticker-pink">Memory Layer</span>
+            <span class="sticker sticker-yellow">Task Planner</span>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 22 100 12 T200 12 T300 12 T400 12" stroke="#FFD60A" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- RESEARCH NOTES -->
+    <section class="zine-section fade-in" id="research">
+        <div class="section-number">04</div>
+        <div class="section-title"><span class="rotated-text right">RESEARCH</span> NOTES</div>
+        <p class="font-hand" style="font-size:17px;color:var(--mid);margin-bottom:28px;">Findings from user research and technical exploration ↓</p>
+
+        <div class="research-note">
+            <h4>User Interview Insight</h4>
+            <p>"I want my assistant to know what I need <em>before</em> I ask. Like a good colleague who already has the document ready before the meeting." — Participant #7, UX Research</p>
+        </div>
+        <div class="research-note teal-border">
+            <h4>Technical Discovery</h4>
+            <p>Modern transformer-based models can maintain context windows of 128K+ tokens. Combined with a RAG pipeline, Voice Helper can reference past conversations while keeping latency under 2 seconds.</p>
+        </div>
+        <div class="research-note pink-border">
+            <h4>Market Data</h4>
+            <p>The voice assistant market is projected to reach $32B by 2028, but user satisfaction scores remain below 45%. The gap isn't technology — it's <strong>interaction design</strong>. Proactive features are the #1 requested improvement.</p>
+        </div>
+        <div class="research-note">
+            <h4>Competitive Analysis</h4>
+            <p>Existing solutions (Siri, Alexa, Google Assistant) focus on <em>command-and-response</em> patterns. None implement true conversational autonomy. Voice Helper's differentiator is the <span class="highlight-box">proactive reasoning layer</span> — middleware that evaluates context and decides when to act independently.</p>
+        </div>
+
+        <div style="margin-top:32px;text-align:center;">
+            <svg width="200" height="80" viewBox="0 0 200 80" fill="none">
+                <path d="M100 8 L108 32 L132 32 L112 48 L120 72 L100 56 L80 72 L88 48 L68 32 L92 32 Z" stroke="#FF6B35" stroke-width="2" fill="rgba(255,107,53,0.1)" stroke-linejoin="round"/>
+                <text x="100" y="46" text-anchor="middle" font-family="Archivo Black,sans-serif" font-size="11" fill="#FF6B35">KEY</text>
+            </svg>
+            <p class="font-hand" style="font-size:15px;color:var(--mid);">The proactive reasoning layer is the core innovation.</p>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 2 100 12 T200 12 T300 12 T400 12" stroke="#FF6B35" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- FRAMEWORK SKETCHES -->
+    <section class="zine-section fade-in" id="framework">
+        <div class="section-number">05</div>
+        <div class="section-title"><span class="rotated-text">FRAMEWORK</span> SKETCHES</div>
+        <p style="font-size:15px;color:var(--mid);margin-bottom:24px;">Early architectural thinking — how Voice Helper's proactive system is structured.</p>
+
+        <div class="sketch-area">
+            <div class="sketch-title">Voice Helper Architecture v0.1</div>
+            <div class="framework-diagram">
+                <div class="framework-node primary">Voice Input</div>
+                <div class="framework-arrow">→</div>
+                <div class="framework-node">NLU Engine</div>
+                <div class="framework-arrow">→</div>
+                <div class="framework-node secondary">Context Manager</div>
+            </div>
+            <div class="framework-diagram" style="margin-top:16px;">
+                <div class="framework-node secondary">Proactive Reasoner</div>
+                <div class="framework-arrow">→</div>
+                <div class="framework-node">Task Planner</div>
+                <div class="framework-arrow">→</div>
+                <div class="framework-node primary">Action Output</div>
+            </div>
+            <div class="sketch-handwritten">
+                The Proactive Reasoner sits between understanding and action. It evaluates: Should I respond now? Should I wait for more context? Should I suggest something the user hasn't asked for yet? This is what makes Voice Helper fundamentally different.
+            </div>
+        </div>
+
+        <div class="sketch-area" style="margin-top:32px;">
+            <div class="sketch-title">Interaction Flow</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="flow-step" style="border:2px dashed var(--orange);">
+                    <span class="step-num" style="color:var(--orange);">1</span>
+                    <div><strong>Listen & Understand</strong><p style="font-size:13px;color:var(--mid);">Process natural speech, extract intent and entities</p></div>
+                </div>
+                <div class="flow-step" style="border:2px dashed var(--teal);">
+                    <span class="step-num" style="color:var(--teal);">2</span>
+                    <div><strong>Enrich with Context</strong><p style="font-size:13px;color:var(--mid);">Pull from memory, time, location, conversation history</p></div>
+                </div>
+                <div class="flow-step" style="border:2px dashed var(--pink);">
+                    <span class="step-num" style="color:var(--pink);">3</span>
+                    <div><strong>Reason & Decide</strong><p style="font-size:13px;color:var(--mid);">Evaluate urgency, relevance, and proactivity opportunities</p></div>
+                </div>
+                <div class="flow-step" style="border:2px dashed var(--yellow);">
+                    <span class="step-num" style="color:#C9A800;">4</span>
+                    <div><strong>Act & Respond</strong><p style="font-size:13px;color:var(--mid);">Execute tasks, provide answers, or make proactive suggestions</p></div>
+                </div>
+            </div>
+            <div class="sketch-handwritten">
+                This is a simplified view — in practice, steps 2-3 loop continuously, updating context in real-time as the conversation evolves.
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 22 100 12 T200 12 T300 12 T400 12" stroke="#00B4D8" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- DEMO SHOWCASE -->
+    <section class="zine-section fade-in" id="demo">
+        <div class="section-number">06</div>
+        <div class="section-title"><span class="rotated-text right">DEMO</span> SHOWCASE</div>
+        <p style="font-size:15px;color:var(--mid);margin-bottom:24px;">See Voice Helper in action — a walkthrough of core interaction patterns.</p>
+
+        <div class="demo-frame">
+            <div class="demo-placeholder">
+                <div class="play-btn" id="playBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#2D2D2D"><polygon points="6,3 20,12 6,21"/></svg>
+                </div>
+                <span>Voice Helper Demo</span>
+                <span style="font-size:11px;opacity:0.6;">Click to preview</span>
+            </div>
+            <div class="demo-caption">← Proactive voice interaction demo — watch how the assistant anticipates needs →</div>
+        </div>
+
+        <p class="font-hand" style="font-size:16px;color:var(--blue-ink);margin:24px 0 16px;padding:16px 20px;background:rgba(0,180,216,0.06);border-left:3px solid var(--teal);">
+            Demo highlights: The assistant detects scheduling conflicts from casual conversation, suggests alternative times, and offers to send calendar invites — all without being explicitly asked.
+        </p>
+
+        <div class="demo-features">
+            <span class="sticker sticker-orange">Natural Speech</span>
+            <span class="sticker sticker-teal">Auto-Scheduling</span>
+            <span class="sticker sticker-pink">Context Awareness</span>
+            <span class="sticker sticker-yellow">Proactive Alerts</span>
+        </div>
+
+        <div class="conversation">
+            <div class="conversation-header">SAMPLE CONVERSATION</div>
+            <div class="line"><span class="user-name">USER:</span> I have a meeting with Sarah at 3pm tomorrow...</div>
+            <div class="line"><span class="helper-name">HELPER:</span> Got it. I also noticed you have a dentist appointment at 2:30pm tomorrow. That might be tight — should I suggest moving Sarah to 4pm?</div>
+            <div class="line"><span class="user-name">USER:</span> Yeah, 4pm works better actually.</div>
+            <div class="line"><span class="helper-name">HELPER:</span> Done! I've updated Sarah's meeting to 4pm and sent her a revised invite. I'll also remind you 30 min before the dentist.</div>
+            <div class="annotation">
+                ↑ Notice: User never asked to check for conflicts or send invites. Voice Helper proactively handled the entire flow.
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="divider"><svg width="400" height="24" viewBox="0 0 400 24" fill="none"><path d="M0 12 Q50 2 100 12 T200 12 T300 12 T400 12" stroke="#FF69B4" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>
+
+    <!-- BACK COVER / CONTACT -->
+    <section class="back-cover fade-in" id="contact">
+        <div class="section-number" style="left:50%;transform:translateX(-50%);text-align:center;font-size:80px;top:-30px;">07</div>
+        <h2>LET'S <span>TALK.</span></h2>
+        <p>Got an idea? A project? A wild concept?<br>I'm always up for a good conversation.</p>
+        <div class="contact-links">
+            <a href="mailto:rock@example.com" class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+                Email
+            </a>
+            <a href="#" class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                GitHub
+            </a>
+            <a href="#" class="contact-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                LinkedIn
+            </a>
+        </div>
+        <div style="margin-top:40px;opacity:0.6;">
+            <svg width="120" height="40" viewBox="0 0 120 40" fill="none">
+                <path d="M10 20 Q30 5 60 20 T110 20" stroke="#FF6B35" stroke-width="2" fill="none" stroke-dasharray="5 3"/>
+                <polygon points="108,15 116,20 108,25" fill="#FF6B35"/>
+            </svg>
+        </div>
+        <div class="back-cover-footer">ROCK CHEN &copy; 2026 &bull; HANDCRAFTED WITH CARE &bull; ISSUE 01</div>
+    </section>
+
+</div>
+
+<script>
+    // Scroll fade-in animation
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+        observer.observe(el);
+    });
+
+    // Play button interaction (demo placeholder)
+    document.getElementById('playBtn').addEventListener('click', function() {
+        var placeholder = this.closest('.demo-placeholder');
+        var originalHTML = placeholder.innerHTML;
+        placeholder.innerHTML = '<div style="text-align:center;padding:40px;"><svg style="margin-bottom:16px;" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><p style="font-size:16px;color:#2D2D2D;">Demo video coming soon</p><p style="font-size:13px;color:#999;margin-top:8px;">Full interactive demo in development</p><button onclick="this.closest(\'.demo-placeholder\').innerHTML=\'' + originalHTML.replace(/'/g, "\\'") + '\'" style="margin-top:16px;padding:8px 20px;border:2px solid #2D2D2D;background:none;font-family:Archivo Black,sans-serif;font-size:12px;cursor:pointer;">BACK</button></div>';
+    });
+
+    // Add subtle parallax to cover decorations
+    window.addEventListener('scroll', function() {
+        var scrolled = window.pageYOffset;
+        var deco = document.querySelector('.cover-deco');
+        if (deco && scrolled < window.innerHeight) {
+            deco.style.transform = 'translateY(' + (scrolled * 0.15) + 'px)';
+        }
+    });
+</script>
+
+</body>
+</html>
